@@ -1,0 +1,90 @@
+{% extends "base.html" %} {% block title %}Signup{% endblock %} {% block content
+%}
+<form method="POST">
+  <h3 align="center">Please fill in this form</h3>
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="firstName"
+      name="firstName"
+      placeholder="Enter first name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="fatherName">Father's Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="fatherName"
+      name="fatherName"
+      placeholder="Enter Father's name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="gfatherName">Grandfather's Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="gfatherName"
+      name="gfatherName"
+      placeholder="Enter Grandfather's name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="birthDay">Date of Birth</label>
+    <input
+      type="date"
+      class="form-control"
+      id="birthDay"
+      name="birthDay"
+      placeholder="Enter Date of Birth"
+    />
+  </div>
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <select class="form-control" id="gender" name="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="phoneNumber"
+      name="phoneNumber"
+      placeholder="Enter Phone Number"
+      pattern="[0-9]{9}"
+      value="+251-"
+    />
+  </div>
+  <div class="form-group">
+    <label for="bloodType">Blood Type</label>
+    <select class="form-control" id="bloodType" name="bloodType">
+      <option value="a+">A+</option>
+      <option value="a-">A-</option>
+      <option value="b+">B+</option>
+      <option value="b-">B-</option>
+      <option value="ab+">AB+</option>
+      <option value="ab-">AB-</option>
+      <option value="o+">O+</option>
+      <option value="o-">O-</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="expiryDate">Expiry Date</label>
+    <input
+      type="date"
+      class="form-control"
+      id="expiryDate"
+      name="expiryDate"
+      placeholder="Enter Expiry Date"
+    />
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
