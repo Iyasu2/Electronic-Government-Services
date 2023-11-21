@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
-from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from passlib.hash import sha256_crypt
+from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
@@ -32,11 +32,12 @@ def signup():
             new_user = User(email=email, first_name=first_name, password=sha256_crypt.hash(password1))
             db.session.add(new_user)
             db.session.commit()
+            login_user(user, remember=True)
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
 
 
-    return render_template("signup.html")
+    return render_template("signup.html", user=current_user)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,13 +49,16 @@ def login():
         if user:
             if sha256_crypt.verify(password, user.password):
                 flash('Logged in successfully!', category='success')
+                login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
                 flash('Incorrect password or email', category='error')
         else:
             flash('Email does not exist.', category='error')
-    return render_template("login.html", text=True)
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return "<p>Logout</p>"
+    logout_user()
+    return redirect(url_for('auth.login') )
