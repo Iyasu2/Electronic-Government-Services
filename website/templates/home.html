@@ -5,6 +5,14 @@
     <meta http-equiv="x-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='script.js') }}"
+    ></script>
   </head>
   <body>
     <header>
@@ -92,13 +100,6 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='script.js') }}?v=1"
-    ></script>
-    <script
-      type="text/css"
-      src="{{ url_for('static', filename='style.css') }}"
-    ></script>
+    <script defer></script>
   </body>
 </html>
