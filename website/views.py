@@ -32,3 +32,7 @@ def delete_note():
             db.session.commit()
             return jsonify({})
 
+@views.route('/form', methods=['GET'])
+def forms():
+    return render_template("form.html", user=current_user)
+
