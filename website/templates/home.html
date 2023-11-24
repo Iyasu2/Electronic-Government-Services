@@ -1,48 +1,10 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
 <div id="button-container"></div>
-<script>
-  // Define an array of texts for each button
-  const buttonTexts = [
-    "Driver's license Renewal",
-    "New National ID",
-    "National ID Renewal",
-    "Birth Certificate",
-    "Text for Button 5",
-  ];
-  const container = document.getElementById("button-container");
-
-  for (let i = 0; i < buttonTexts.length; i++) {
-    if (i % 2 === 0) {
-      const buttonPairDiv = document.createElement("div");
-      buttonPairDiv.className = "button-pair";
-      container.appendChild(buttonPairDiv);
-    }
-
-    const buttonDiv = document.createElement("div");
-    buttonDiv.className = "button-wrapper";
-    container.lastElementChild.appendChild(buttonDiv);
-
-    const button = document.createElement("button");
-    button.textContent = "Apply";
-    button.onclick = function () {
-      window.location.href = "/form";
-    };
-    buttonDiv.appendChild(button);
-
-    const text = document.createElement("p");
-    text.textContent = buttonTexts[i];
-    buttonDiv.appendChild(text);
-  }
-</script>
-
-<style>
-  .button-pair {
-    display: flex;
-  }
-
-  .button-wrapper {
-    margin: 10px;
-  }
-</style>
+<script src="{{ url_for('static', filename='script_form.js') }}"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='style_form.css') }}"
+/>
 {% endblock %}

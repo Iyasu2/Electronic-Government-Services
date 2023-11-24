@@ -33,5 +33,6 @@ def delete_note():
 
 @views.route('/form', methods=['GET'])
 def forms():
-    return render_template("form.html", user=current_user)
+    variable = request.args.get('variable')
+    return render_template("form.html", user=current_user, variable=variable)
 

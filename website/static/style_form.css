@@ -1,0 +1,7 @@
+.button-pair {
+  display: flex;
+}
+
+.button-wrapper {
+  margin: 10px;
+}
