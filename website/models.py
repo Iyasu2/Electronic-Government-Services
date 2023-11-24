@@ -8,7 +8,7 @@ class Note(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class Common:
+class Common():
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(50))
     fatherName = db.Column(db.String(50))
@@ -17,7 +17,7 @@ class Common:
     gender = db.Column(db.String(10))
     region = db.Column(db.String(50))
 
-class Common2:
+class Common2():
     id = db.Column(db.Integer, primary_key=True)
     subCity = db.Column(db.String(50))
     woreda = db.Column(db.String(50))
@@ -56,8 +56,4 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(50))
     first_name = db.Column(db.String(50))
     notes = db.relationship('Note')
-    driver_license_renewal = db.relationship('Driver_license_renewal')
-    national_id_new = db.relationship('National_id_new')
-    national_id_renewal = db.relationship('National_id_renewal')
-    birth_certificate = db.relationship('Birth_certificate')
 

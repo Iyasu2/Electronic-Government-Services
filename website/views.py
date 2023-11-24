@@ -71,21 +71,21 @@ def forms():
         if variable == 'birth_certificate':
             fatherfullName = request.form.get('fatherfullName')
             motherfullName = request.form.get('motherfullName')
-            new_birth_certificate = Birth_certificate(data=birth_certificate, user_id=current_user.id)
+            new_birth_certificate = Birth_certificate(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, fatherfullName=fatherfullName, motherfullName=motherfullName, user_id=current_user.id)
             db.session.add(new_birth_certificate)
             db.session.commit()
             flash('Application completed!', category='success')
             return redirect(url_for('views.home'))
         
         if variable == 'national_id_new':
-            new_national_id_new = National_id_new(data=national_id_new, user_id=current_user.id)
+            new_national_id_new = National_id_new(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
             db.session.add(new_national_id_new)
             db.session.commit()
             flash('Application completed!', category='success')
             return redirect(url_for('views.home'))
         
         if variable == 'national_id_renewal':
-            new_national_id_renewal = National_id_renewal(data=national_id_renewal, user_id=current_user.id)
+            new_national_id_renewal = National_id_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
             db.session.add(new_national_id_renewal)
             db.session.commit()
             flash('Application completed!', category='success')
