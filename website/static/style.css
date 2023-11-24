@@ -251,3 +251,7 @@ header {
 .login-register p a:hover {
   text-decoration: underline;
 }
+.custom-alert {
+  width: 300px; /* Adjust the width to your desired value */
+  margin: 0 auto; /* Center the alert horizontally */
+}
