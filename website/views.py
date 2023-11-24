@@ -32,6 +32,7 @@ def delete_note():
             return jsonify({})
 
 @views.route('/form', methods=['GET'])
+@login_required
 def forms():
     variable = request.args.get('variable')
     return render_template("form.html", user=current_user, variable=variable)

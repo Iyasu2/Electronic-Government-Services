@@ -20,7 +20,19 @@ html {
   margin: 0;
   padding: 0;
 }
+header-logo {
+  position: fixed;
+  top: 0;
+  left: 50%; /* Center the header using left: 50% */
+  transform: translateX(-50%); /* Adjust to center the header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+  width: 100%;
+  padding: 10px; /* Adjust the padding as needed */
 
+}
 header {
   position: fixed;
   top: 0;
@@ -40,7 +52,7 @@ header {
   user-select: none;
 }
 
-.navigation a {
+.navbar a {
   background: transparent;
   position: relative;
   font-size: 1.1em;
@@ -49,7 +61,7 @@ header {
   font-weight: 500;
   margin-left: 40px;
 }
-.navigation a::after {
+.navbar a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -62,11 +74,11 @@ header {
   transform: scalex(0);
   transition: transform 0.5s;
 }
-.navigation a:hover::after {
+.navbar a:hover::after {
   transform: scalex(1);
 }
 
-.navigation .btnLogin-popup {
+.navbar .btnLogin-popup {
   width: 130px;
   height: 50px;
   background: transparent;
@@ -80,7 +92,7 @@ header {
   margin-left: 40px;
   transition: 0.5s;
 }
-.navigation .btnLogin-popup:hover {
+.navbar .btnLogin-popup:hover {
   background: #fff;
   color: #162938;
 }
