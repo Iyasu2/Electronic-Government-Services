@@ -126,6 +126,8 @@
       <option value="o-">O-</option>
     </select>
   </div>
+  {% endif %} {% if variable == 'national_id_renewal' or variable ==
+  'driver_license_renewal' %}
   <div class="form-group">
     <label for="expiryDate">Current ID Expiry Date</label>
     <input
@@ -166,7 +168,7 @@
   {% endif %} {% if variable == 'driver_license_renewal' %}
   <div class="form-group">
     <label for="grade">Grade</label>
-    <select class="form-control" id="gender" name="gender" required>
+    <select class="form-control" id="grade" name="grade" required>
       <option value="">Select license grade</option>
       <option value="auto">Auto</option>
       <option value="public1">Public1</option>

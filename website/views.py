@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user, login_user, logout_user
-from .models import Note
+from .models import Note, Birth_certificate, National_id_renewal, National_id_new, Driver_license_renewal
 from . import db
 import json
+from datetime import datetime
 
 views = Blueprint('views', __name__)
 
@@ -31,8 +32,64 @@ def delete_note():
             db.session.commit()
             return jsonify({})
 
-@views.route('/form', methods=['GET'])
+@views.route('/form', methods=['GET', 'POST'])
+@login_required
 def forms():
     variable = request.args.get('variable')
+    if request.method == 'POST':
+        firstName = request.form.get('firstName')
+        fatherName = request.form.get('fatherName')
+        gfatherName = request.form.get('gfatherName')
+        birthDay_str = request.form.get('birthDay')
+        birthDay = datetime.strptime(birthDay_str, '%Y-%m-%d').date()
+        gender = request.form.get('gender')
+        region = request.form.get('region')
+
+        if variable == 'driver_license_renewal' or variable == 'national_id_new' or variable == 'national_id_renewal':
+            subCity = request.form.get('subCity')
+            woreda = request.form.get('woreda')
+            houseNumber = request.form.get('houseNumber')
+            phoneNumber = request.form.get('phoneNumber')
+            bloodType = request.form.get('bloodType')
+
+        if variable == 'driver_license_renewal' or variable == 'national_id_renewal':
+            expiryDate_str = request.form.get('expiryDate')
+            expiryDate = datetime.strptime(expiryDate_str, '%Y-%m-%d').date()
+
+        if variable == 'national_id_renewal' or variable == 'national_id_new':
+            ecName = request.form.get('ecName')
+            ecphoneNumber = request.form.get('ecphoneNumber')
+
+        if variable == 'driver_license_renewal':
+            grade = request.form.get('grade')
+            new_driver_license_renewal = Driver_license_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, grade=grade, user_id=current_user.id)
+            db.session.add(new_driver_license_renewal)
+            db.session.commit()
+            flash('Application completed!', category='success')
+            return redirect(url_for('views.home'))
+        
+        if variable == 'birth_certificate':
+            fatherfullName = request.form.get('fatherfullName')
+            motherfullName = request.form.get('motherfullName')
+            new_birth_certificate = Birth_certificate(data=birth_certificate, user_id=current_user.id)
+            db.session.add(new_birth_certificate)
+            db.session.commit()
+            flash('Application completed!', category='success')
+            return redirect(url_for('views.home'))
+        
+        if variable == 'national_id_new':
+            new_national_id_new = National_id_new(data=national_id_new, user_id=current_user.id)
+            db.session.add(new_national_id_new)
+            db.session.commit()
+            flash('Application completed!', category='success')
+            return redirect(url_for('views.home'))
+        
+        if variable == 'national_id_renewal':
+            new_national_id_renewal = National_id_renewal(data=national_id_renewal, user_id=current_user.id)
+            db.session.add(new_national_id_renewal)
+            db.session.commit()
+            flash('Application completed!', category='success')
+            return redirect(url_for('views.home'))
+        
     return render_template("form.html", user=current_user, variable=variable)
 
