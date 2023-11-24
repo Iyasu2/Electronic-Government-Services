@@ -34,11 +34,13 @@ header-logo {
 
 }
 header {
+  background: rgba(25, 25, 25, 1);
+  backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   left: 50%; /* Center the header using left: 50% */
   transform: translateX(-50%); /* Adjust to center the header */
-  display: flex;
+  display: block;
   justify-content: space-between;
   align-items: center;
   z-index: 99;
@@ -70,7 +72,7 @@ header {
   height: 3px;
   background: #ea2222;
   border-radius: 5px;
-  transform-origin: right;
+  transform-origin: left;
   transform: scalex(0);
   transition: transform 0.5s;
 }
