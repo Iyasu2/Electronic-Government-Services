@@ -85,11 +85,6 @@ def forms():
             db.session.add(new_driver_license_renewal)
             db.session.commit()
             flash('Application completed!', category='success')
-            print(f"{Driver_license_renewal.photo}")
-            print(f"{Driver_license_renewal.photo}")
-            print(f"{Driver_license_renewal.photo}")
-            print(f"{Driver_license_renewal.photo}")
-            print(f"{Driver_license_renewal.photo}")
             return redirect(url_for('views.home'))
         
         if variable == 'birth_certificate':
