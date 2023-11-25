@@ -1,9 +1,7 @@
 const buttonTexts = [
-  { text: "Driver's license Renewal", variable: "driver_license_renewal" },
-  { text: "New National ID", variable: "national_id_new" },
-  { text: "National ID Renewal", variable: "national_id_renewal" },
-  { text: "Birth Certificate", variable: "birth_certificate" },
-  { text: "Text for Button 5", variable: "button_5" },
+  { text: "Driver's license Renewal", route: "driver_license_renewal" },
+  { text: "National ID", route: "national_id" },
+  { text: "Birth Certificate", route: "birth_certificate" },
 ];
 const container = document.getElementById("button-container");
 
@@ -18,11 +16,9 @@ for (let i = 0; i < buttonTexts.length; i++) {
   buttonDiv.className = "button-wrapper";
   container.lastElementChild.appendChild(buttonDiv);
 
-  const button = document.createElement("button");
+  const button = document.createElement("a");
   button.textContent = "Apply";
-  button.onclick = function () {
-    window.location.href = "/form?variable=" + buttonTexts[i].variable;
-  };
+  button.href = "/form/" + buttonTexts[i].route;
   buttonDiv.appendChild(button);
 
   const text = document.createElement("p");
