@@ -47,6 +47,7 @@ def delete_note():
 @login_required
 def forms():
     form = UploadFileForm()
+    photo = None
     variable = request.args.get('variable')
     if request.method == 'POST':
         firstName = request.form.get('firstName')
@@ -59,10 +60,9 @@ def forms():
         pending = PendingStatus.APPLIED_PENDING
         if form.validate_on_submit():
             file = form.file.data
-            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),'static/uploads',secure_filename(file.filename)))
-
-        photo = None
-        birthPhoto = None
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
+            photo = UPLOAD_FOLDER + '/' + filename
 
         if variable == 'driver_license_renewal' or variable == 'national_id_new' or variable == 'national_id_renewal':
             subCity = request.form.get('subCity')
