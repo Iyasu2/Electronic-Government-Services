@@ -70,7 +70,7 @@ header {
   bottom: -6px;
   width: 100%;
   height: 3px;
-  background: #ea2222;
+  background: #2236ea;
   border-radius: 5px;
   transform-origin: left;
   transform: scalex(0);
@@ -254,4 +254,10 @@ header {
 .custom-alert {
   width: 300px; /* Adjust the width to your desired value */
   margin: 0 auto; /* Center the alert horizontally */
+}
+.fixed-width-btn {
+  width: 200px; /* Set your desired fixed width */
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }

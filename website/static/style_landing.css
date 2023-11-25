@@ -1,0 +1,26 @@
+body {
+	background-color: #f8f9fa;
+	margin-top: 0px; /* Adjusted margin to account for the fixed navbar */
+}
+
+.service-card {
+	margin: 10px;
+	border-radius: 10px;
+	overflow: hidden;
+	transition: transform 0.3s ease-in-out;
+	max-width: 3006px; /* Set the maximum width of the card */
+}
+
+.service-card:hover {
+	transform: scale(1.05);
+}
+
+.card-img-top {
+	height: 200px;
+	object-fit: cover;
+}
+
+.card-body {
+	background-color: #007bff;
+	color: #fff;
+}
