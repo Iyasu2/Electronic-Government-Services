@@ -60,7 +60,7 @@ def forms():
         pending = PendingStatus.APPLIED_PENDING
         if form.validate_on_submit():
             file = form.file.data
-            filename = secure_filename(file.filename)
+            filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file.filename.rsplit('.', 1)[1].lower()}")
             file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
             photo = UPLOAD_FOLDER + '/' + filename
 
@@ -85,6 +85,11 @@ def forms():
             db.session.add(new_driver_license_renewal)
             db.session.commit()
             flash('Application completed!', category='success')
+            print(f"{Driver_license_renewal.photo}")
+            print(f"{Driver_license_renewal.photo}")
+            print(f"{Driver_license_renewal.photo}")
+            print(f"{Driver_license_renewal.photo}")
+            print(f"{Driver_license_renewal.photo}")
             return redirect(url_for('views.home'))
         
         if variable == 'birth_certificate':
