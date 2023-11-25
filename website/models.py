@@ -1,12 +1,18 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from enum import Enum
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class PendingStatus(Enum):
+    NOT_APPLIED = 'Not Applied'
+    APPLIED_PENDING = 'Applied and Pending'
+    APPLIED_ACCEPTED = 'Applied and Accepted'
 
 class Common():
     id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +23,7 @@ class Common():
     gender = db.Column(db.String(10))
     region = db.Column(db.String(50))
     photo = db.Column(db.String(100))
+    pending = db.Column(db.Enum(PendingStatus), default=PendingStatus.NOT_APPLIED)
 
 class Common2():
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block
+content %}
+<h1>Applications</h1>
+<ul>
+  {% for table in tables %}
+  <li style="font-size: 20px; font-weight: bold">
+    {{ table }} - <span style="color: red">Pending</span>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

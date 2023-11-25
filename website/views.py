@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user, login_user, logout_user
-from .models import Note, Birth_certificate, National_id_renewal, National_id_new, Driver_license_renewal
+from .models import PendingStatus, Note, Birth_certificate, National_id_renewal, National_id_new, Driver_license_renewal
 from . import db
 import json
 import os
@@ -47,6 +47,7 @@ def forms():
         birthDay = datetime.strptime(birthDay_str, '%Y-%m-%d').date()
         gender = request.form.get('gender')
         region = request.form.get('region')
+        pending = PendingStatus.APPLIED_PENDING
 
         photo = None
         birthPhoto = None
@@ -75,7 +76,7 @@ def forms():
 
         if variable == 'driver_license_renewal':
             grade = request.form.get('grade')
-            new_driver_license_renewal = Driver_license_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, grade=grade, user_id=current_user.id)
+            new_driver_license_renewal = Driver_license_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, grade=grade, user_id=current_user.id)
             db.session.add(new_driver_license_renewal)
             db.session.commit()
             flash('Application completed!', category='success')
@@ -84,7 +85,7 @@ def forms():
         if variable == 'birth_certificate':
             fatherfullName = request.form.get('fatherfullName')
             motherfullName = request.form.get('motherfullName')
-            new_birth_certificate = Birth_certificate(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, fatherfullName=fatherfullName, motherfullName=motherfullName, user_id=current_user.id)
+            new_birth_certificate = Birth_certificate(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, fatherfullName=fatherfullName, motherfullName=motherfullName, user_id=current_user.id)
             db.session.add(new_birth_certificate)
             db.session.commit()
             flash('Application completed!', category='success')
@@ -97,14 +98,15 @@ def forms():
                     filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{birthPhoto_file.filename.rsplit('.', 1)[1].lower()}")
                     birthPhoto_file.save(os.path.join(UPLOAD_FOLDER, filename))
                     birthPhoto = 'UPLOAD_FOLDER' + '/filename'
-            new_national_id_new = National_id_new(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, birthPhoto=birthPhoto, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
+
+            new_national_id_new = National_id_new(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, birthPhoto=birthPhoto, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
             db.session.add(new_national_id_new)
             db.session.commit()
             flash('Application completed!', category='success')
             return redirect(url_for('views.home'))
         
         if variable == 'national_id_renewal':
-            new_national_id_renewal = National_id_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
+            new_national_id_renewal = National_id_renewal(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
             db.session.add(new_national_id_renewal)
             db.session.commit()
             flash('Application completed!', category='success')
@@ -112,3 +114,17 @@ def forms():
         
     return render_template("form.html", user=current_user, variable=variable)
 
+@views.route('/applications', methods=['GET'])
+@login_required
+def applications():
+    applied_pending_models = []
+
+    table_models = [Driver_license_renewal, National_id_new, National_id_renewal, Birth_certificate]
+
+    for table_model in table_models:
+        table_name = table_model.__tablename__
+        table_pending_status = table_model.query.filter_by(pending=PendingStatus.APPLIED_PENDING).first()
+        if table_pending_status:
+            applied_pending_models.append(table_name)
+
+    return render_template('applications.html', tables=applied_pending_models, user=current_user)
