@@ -1,6 +1,10 @@
 {% extends "base.html" %} {% block title %}Signup{% endblock %} {% block content
 %}
-<form method="POST" onsubmit="return validateForm()">
+<form
+  method="POST"
+  enctype="multipart/form-data"
+  onsubmit="return validateForm()"
+>
   <h3 align="center">Please fill in this form</h3>
   <div class="form-group">
     <label for="firstName">First Name</label>
@@ -67,14 +71,7 @@
   </div>
   <div class="form-group">
     <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-    <input
-      type="file"
-      class="form-control-file"
-      id="photo"
-      name="photo"
-      accept=".jpg, .png"
-      required
-    />
+    {{form.hidden_tag()}} {{form.file()}}
   </div>
   {% if variable != 'birth_certificate' %}
   <div class="form-group">
@@ -207,20 +204,6 @@
       id="motherfullName"
       name="motherfullName"
       placeholder="Enter Mother's Full Name"
-      required
-    />
-  </div>
-  {% endif %} {% if variable == 'national_id_new' %}
-  <div class="form-group">
-    <label for="birthPhoto"
-      >Upload a scan of your Birth Certificate(.jpg, .png or .pdf)</label
-    >
-    <input
-      type="file"
-      class="form-control-file"
-      id="birthPhoto"
-      name="birthPhoto"
-      accept=".jpg, .png, .pdf"
       required
     />
   </div>

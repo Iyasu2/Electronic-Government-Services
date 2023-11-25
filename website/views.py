@@ -6,9 +6,17 @@ import json
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from wtforms.validators import InputRequired
 
 views = Blueprint('views', __name__)
-UPLOAD_FOLDER = '/website/static/uploads'
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(current_file_dir, 'static/uploads')
+
+class UploadFileForm(FlaskForm):
+    file = FileField("FILE", validators=[InputRequired()])
+    submit = SubmitField("Upload File")
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
@@ -38,6 +46,7 @@ def delete_note():
 @views.route('/form', methods=['GET', 'POST'])
 @login_required
 def forms():
+    form = UploadFileForm()
     variable = request.args.get('variable')
     if request.method == 'POST':
         firstName = request.form.get('firstName')
@@ -48,16 +57,12 @@ def forms():
         gender = request.form.get('gender')
         region = request.form.get('region')
         pending = PendingStatus.APPLIED_PENDING
+        if form.validate_on_submit():
+            file = form.file.data
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),'static/uploads',secure_filename(file.filename)))
 
         photo = None
         birthPhoto = None
-        if 'photo' in request.files:
-            photo_file = request.files['photo']
-            if photo_file:
-                filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{photo_file.filename.rsplit('.', 1)[1].lower()}")
-                photo_file.save(os.path.join(UPLOAD_FOLDER, filename))
-                photo = 'UPLOAD_FOLDER' + '/filename'
-
 
         if variable == 'driver_license_renewal' or variable == 'national_id_new' or variable == 'national_id_renewal':
             subCity = request.form.get('subCity')
@@ -92,14 +97,7 @@ def forms():
             return redirect(url_for('views.home'))
         
         if variable == 'national_id_new':
-            if 'birthPhoto' in request.files:
-                birthPhoto_file = request.files['birthPhoto']
-                if birthPhoto_file:
-                    filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{birthPhoto_file.filename.rsplit('.', 1)[1].lower()}")
-                    birthPhoto_file.save(os.path.join(UPLOAD_FOLDER, filename))
-                    birthPhoto = 'UPLOAD_FOLDER' + '/filename'
-
-            new_national_id_new = National_id_new(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, birthPhoto=birthPhoto, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
+            new_national_id_new = National_id_new(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
             db.session.add(new_national_id_new)
             db.session.commit()
             flash('Application completed!', category='success')
@@ -112,7 +110,7 @@ def forms():
             flash('Application completed!', category='success')
             return redirect(url_for('views.home'))
         
-    return render_template("form.html", user=current_user, variable=variable)
+    return render_template("form.html", user=current_user, variable=variable, form=form)
 
 @views.route('/applications', methods=['GET'])
 @login_required

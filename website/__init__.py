@@ -14,6 +14,7 @@ def create_app():
     this will create and configure our flask application
     '''
     app = Flask(__name__)
+    app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.config['SECRET_KEY'] = 'AB-IYuh' #a better secret key might be needed for real applications
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)

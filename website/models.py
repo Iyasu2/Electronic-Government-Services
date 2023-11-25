@@ -43,7 +43,6 @@ class National_id_new(Common, Common2, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ecName = db.Column(db.String(50))
     ecphoneNumber = db.Column(db.String(50))
-    birthPhoto = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class National_id_renewal(Common, Common2, db.Model):
