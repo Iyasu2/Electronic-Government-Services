@@ -16,6 +16,7 @@ class Common():
     birthDay = db.Column(db.Date)
     gender = db.Column(db.String(10))
     region = db.Column(db.String(50))
+    photo = db.Column(db.String(100))
 
 class Common2():
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +36,7 @@ class National_id_new(Common, Common2, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ecName = db.Column(db.String(50))
     ecphoneNumber = db.Column(db.String(50))
+    birthPhoto = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class National_id_renewal(Common, Common2, db.Model):

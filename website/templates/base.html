@@ -14,30 +14,48 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  />
+  <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='script.js') }}"
+  ></script>
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          {% if user.is_authenticated %}
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          {% else %}
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
-          <a class="nav-item nav-link" id="signUp" href="/signup">Sign up</a>
-          {% endif %}
+    <header>
+      <h2 class="logo"></h2>
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbar">
+          <div class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+              <button class="btnLogin-popup btn-nav" id="logout" onclick="window.location.href='/logout'">Logout</button>
+            {% else %}
+              <a class="nav-link" id="home" href='/'>Home</a>
+              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="#">Service</a>
+              <a class="nav-link mb-4" href="#">Contact</a>
+                <button class="btnLogin-popup btn-nav mb-4" id="login" onclick="window.location.href='/login'">Login</button>
+                <button class="btnLogin-popup btn-nav" id="signUp" onclick="window.location.href='/signup'">Sign up</button>
+              </div>
+            {% endif %}
+          </div>
         </div>
-      </div>
+      </nav>
+    </header>
+    
+    
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -80,3 +98,4 @@
     ></script>
   </body>
 </html>
+

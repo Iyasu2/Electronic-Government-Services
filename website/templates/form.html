@@ -65,6 +65,17 @@
       required
     />
   </div>
+  <div class="form-group">
+    <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
+    <input
+      type="file"
+      class="form-control-file"
+      id="photo"
+      name="photo"
+      accept=".jpg, .png"
+      required
+    />
+  </div>
   {% if variable != 'birth_certificate' %}
   <div class="form-group">
     <label for="subCity">Sub-City</label>
@@ -196,6 +207,20 @@
       id="motherfullName"
       name="motherfullName"
       placeholder="Enter Mother's Full Name"
+      required
+    />
+  </div>
+  {% endif %} {% if variable == 'national_id_new' %}
+  <div class="form-group">
+    <label for="birthPhoto"
+      >Upload a scan of your Birth Certificate(.jpg, .png or .pdf)</label
+    >
+    <input
+      type="file"
+      class="form-control-file"
+      id="birthPhoto"
+      name="birthPhoto"
+      accept=".jpg, .png, .pdf"
       required
     />
   </div>
