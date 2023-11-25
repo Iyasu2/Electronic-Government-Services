@@ -13,7 +13,7 @@
                 <div class="card service-card">
                     <img src="static/assets/Driver's License Renewal.jpg" class="card-img-top" alt="Driver's License Renewal">
                     <div class="card-body">
-                        <h5 class="card-title">Driver's License Renewal</h5>
+                        <h5 class="card-title">Driver's License</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
                         <button class="btn btn-primary btn-apply" onclick="redirectToForm('driver_license_renewal')">Apply</button>
                     </div>
@@ -24,9 +24,9 @@
                 <div class="card service-card">
                     <img src="static/assets/National Id.jpg" class="card-img-top" alt="New National ID">
                     <div class="card-body">
-                        <h5 class="card-title">New National ID</h5>
+                        <h5 class="card-title">National ID</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-                        <button class="btn btn-primary btn-apply" onclick="redirectToForm('national_id_new')">Apply</button>
+                        <button class="btn btn-primary btn-apply" onclick="redirectToForm('national_id')">Apply</button>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,8 @@
 
 <script>
   function redirectToForm(variable) {
-      window.location.href = "/form?variable=" + variable;
+      window.location.href = "/form"+variable;
+      
   }
 </script>
 </body>
