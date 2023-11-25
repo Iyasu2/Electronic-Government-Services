@@ -51,6 +51,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
           <div class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
+            <button class="btnLogin-popup btn-nav" id="applications" onclick="window.location.href='/applications'">Applications</button>
               <button class="btnLogin-popup btn-nav " id="logout" onclick="window.location.href='/logout'">Logout</button>
             {% else %}
               <a class="nav-link mb-4" id="home" href='/'>Home</a>
