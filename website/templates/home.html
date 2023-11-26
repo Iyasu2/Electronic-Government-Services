@@ -1,10 +1,137 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<div id="button-container"></div>
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{{ url_for('static', filename='style_form.css') }}"
-/>
-<script src="{{ url_for('static', filename='script_form.js') }}"></script>
-{% endblock %}
+  %}
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style_home.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script_form.js') }}"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card service-card">
+            <img
+              src="static/assets/Driver's License Renewal.jpg"
+              class="card-img-top"
+              alt="Driver's License Renewal"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Driver's License</h5>
+              <p class="card-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                tellus, luctus nec ullamcorper mattis.
+              </p>
+              <button
+                class="btn btn-primary btn-apply"
+                onclick="redirectToForm('/driver_license_renewal')"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="card service-card">
+            <img
+              src="static/assets/National Id.jpg"
+              class="card-img-top"
+              alt="New National ID"
+            />
+            <div class="card-body">
+              <h5 class="card-title">National ID</h5>
+              <p class="card-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                tellus, luctus nec ullamcorper mattis.
+              </p>
+              <button
+                class="btn btn-primary btn-apply"
+                onclick="redirectToForm('/national_id')"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="card service-card">
+            <img
+              src="static/assets/Birth Certificate.jpg"
+              class="card-img-top"
+              alt="Birth Certificate"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Birth Certificate</h5>
+              <p class="card-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                tellus, luctus nec ullamcorper mattis.
+              </p>
+              <button
+                class="btn btn-primary btn-apply"
+                onclick="redirectToForm('/birth_certificate')"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <style>
+      .service-card {
+        margin: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+        max-width: 300px; /* Set the maximum width of the card */
+      }
+  
+      .service-card:hover img {
+        transform: scale(1.05);
+      }
+  
+      .service-card:hover .card-body {
+        transform: scale(1.05);
+      }
+  
+      .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+      }
+  
+      .card-body {
+        background-color: #007bff;
+        color: #fff;
+        transition: transform 0.3s ease-in-out;
+      }
+  
+      .btn-apply {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+  
+      .service-card:hover .btn-apply {
+        opacity: 1;
+      }
+    </style>
+  
+    <script>
+      function redirectToForm(variable) {
+        const route = "/form" + variable;
+        console.log(route);
+        window.location.href = route;
+      }
+    </script>
+  </body>
+  {% endblock %}
+  

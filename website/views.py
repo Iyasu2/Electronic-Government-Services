@@ -18,7 +18,7 @@ class UploadFileForm(FlaskForm):
     file = FileField("FILE", validators=[InputRequired()])
     submit = SubmitField("Upload File")
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         note = request.form.get('note')
@@ -31,6 +31,9 @@ def home():
             db.session.commit()
             flash('Note added!', category='success')
     return render_template("home.html", user=current_user)
+@views.route('/', methods=['GET', 'POST'])
+def landing():
+    return render_template("landing.html", user=current_user)
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():
