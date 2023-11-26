@@ -36,6 +36,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      {% else %}
+      <div class="alert alert-danger alert-dismissible fade show fixed-top custom-alert text-center" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       {% endif %} {% endfor %} {% endif %} {% endwith %}
     <header>
       <h2 class="logo"></h2>

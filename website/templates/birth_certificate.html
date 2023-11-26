@@ -16,6 +16,7 @@ block content %}
           id="firstName"
           name="firstName"
           placeholder="Enter first name"
+          value="{{Birth_certificate.firstName if Birth_certificate.firstName}}"
           required
         />
       </div>
@@ -29,6 +30,7 @@ block content %}
           id="fatherName"
           name="fatherName"
           placeholder="Enter Father's name"
+          value="{{Birth_certificate.fatherName if Birth_certificate.fatherName}}"
           required
         />
       </div>
@@ -42,6 +44,7 @@ block content %}
           id="gfatherName"
           name="gfatherName"
           placeholder="Enter Grandfather's name"
+          value="{{Birth_certificate.gfatherName if Birth_certificate.gfatherName}}"
           required
         />
       </div>
@@ -55,6 +58,7 @@ block content %}
           id="birthDay"
           name="birthDay"
           placeholder="Enter Date of Birth"
+          value="{{Birth_certificate.birthDay if Birth_certificate.birthDay}}"
           required
         />
       </div>
@@ -67,8 +71,13 @@ block content %}
         <label for="gender">Gender</label>
         <select class="form-control" id="gender" name="gender" required>
           <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
+          {% if Birth_certificate.gender %}
+          <option value="{{ Birth_certificate.gender }}" selected>
+            {{ Birth_certificate.gender }}
+          </option>
+          {% endif %}
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
         </select>
       </div>
     </div>
@@ -81,6 +90,7 @@ block content %}
           id="region"
           name="region"
           placeholder="Enter Region"
+          value="{{Birth_certificate.region if Birth_certificate.region}}"
           required
         />
       </div>
@@ -100,6 +110,7 @@ block content %}
           id="fatherfullName"
           name="fatherfullName"
           placeholder="Enter Father's Full Name"
+          value="{{Birth_certificate.fatherfullName if Birth_certificate.fatherfullName}}"
           required
         />
       </div>
@@ -116,6 +127,7 @@ block content %}
           id="motherfullName"
           name="motherfullName"
           placeholder="Enter Mother's Full Name"
+          value="{{Birth_certificate.motherfullName if Birth_certificate.motherfullName}}"
           required
         />
       </div>
@@ -125,4 +137,4 @@ block content %}
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-{% endblock %} >>>>>>> abel2
+{% endblock %}

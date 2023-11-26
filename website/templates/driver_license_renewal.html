@@ -16,6 +16,7 @@ block content %}
           id="firstName"
           name="firstName"
           placeholder="Enter first name"
+          value="{{Driver_license_renewal.firstName if Driver_license_renewal.firstName}}"
           required
         />
       </div>
@@ -29,6 +30,7 @@ block content %}
           id="fatherName"
           name="fatherName"
           placeholder="Enter Father's name"
+          value="{{Driver_license_renewal.fatherName if Driver_license_renewal.fatherName}}"
           required
         />
       </div>
@@ -42,6 +44,7 @@ block content %}
           id="gfatherName"
           name="gfatherName"
           placeholder="Enter Grandfather's name"
+          value="{{Driver_license_renewal.gfatherName if Driver_license_renewal.gfatherName}}"
           required
         />
       </div>
@@ -55,6 +58,7 @@ block content %}
           id="birthDay"
           name="birthDay"
           placeholder="Enter Date of Birth"
+          value="{{Driver_license_renewal.birthDay if Driver_license_renewal.birthDay}}"
           required
         />
       </div>
@@ -67,8 +71,13 @@ block content %}
         <label for="gender">Gender</label>
         <select class="form-control" id="gender" name="gender" required>
           <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
+          {% if Driver_license_renewal.gender %}
+          <option value="{{ Driver_license_renewal.gender }}" selected>
+            {{ Driver_license_renewal.gender }}
+          </option>
+          {% endif %}
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
         </select>
       </div>
     </div>
@@ -81,6 +90,7 @@ block content %}
           id="region"
           name="region"
           placeholder="Enter Region"
+          value="{{Driver_license_renewal.region if Driver_license_renewal.region}}"
           required
         />
       </div>
@@ -100,6 +110,7 @@ block content %}
           id="subCity"
           name="subCity"
           placeholder="Enter Sub-City"
+          value="{{Driver_license_renewal.subCity if Driver_license_renewal.subCity}}"
           required
         />
       </div>
@@ -116,6 +127,7 @@ block content %}
           id="woreda"
           name="woreda"
           placeholder="Enter Woreda"
+          value="{{Driver_license_renewal.woreda if Driver_license_renewal.woreda}}"
           required
         />
       </div>
@@ -129,6 +141,7 @@ block content %}
           id="houseNumber"
           name="houseNumber"
           placeholder="Enter House Number"
+          value="{{Driver_license_renewal.houseNumber if Driver_license_renewal.houseNumber}}"
           required
         />
       </div>
@@ -142,6 +155,7 @@ block content %}
           id="phoneNumber"
           name="phoneNumber"
           placeholder="Enter Phone Number"
+          value="{{Driver_license_renewal.phoneNumber if Driver_license_renewal.phoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
           required
@@ -153,14 +167,19 @@ block content %}
         <label for="bloodType">Blood Type</label>
         <select class="form-control" id="bloodType" name="bloodType" required>
           <option value="">Select Bloodtype</option>
-          <option value="a+">A+</option>
-          <option value="a-">A-</option>
-          <option value="b+">B+</option>
-          <option value="b-">B-</option>
-          <option value="ab+">AB+</option>
-          <option value="ab-">AB-</option>
-          <option value="o+">O+</option>
-          <option value="o-">O-</option>
+          {% if Driver_license_renewal.bloodType %}
+          <option value="{{ Driver_license_renewal.bloodType }}" selected>
+            {{ Driver_license_renewal.bloodType }}
+          </option>
+          {% endif %}
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
         </select>
       </div>
     </div>
@@ -176,6 +195,7 @@ block content %}
           id="expiryDate"
           name="expiryDate"
           placeholder="Current ID Expiry Date"
+          value="{{Driver_license_renewal.expiryDate if Driver_license_renewal.expiryDate}}"
           required
         />
       </div>
@@ -185,10 +205,15 @@ block content %}
         <label for="grade">Grade</label>
         <select class="form-control" id="grade" name="grade" required>
           <option value="">Select license grade</option>
-          <option value="auto">Auto</option>
-          <option value="public1">Public1</option>
-          <option value="public2">Public2</option>
-          <option value="heavyTruck">Heavy Truck</option>
+          {% if Driver_license_renewal.grade %}
+          <option value="{{ Driver_license_renewal.grade }}" selected>
+            {{ Driver_license_renewal.grade }}
+          </option>
+          {% endif %}
+          <option value="Auto">Auto</option>
+          <option value="Public1">Public1</option>
+          <option value="Public2">Public2</option>
+          <option value="Heavy Truck">Heavy Truck</option>
         </select>
       </div>
     </div>
@@ -197,4 +222,4 @@ block content %}
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-{% endblock %} >>>>>>> abel2
+{% endblock %}
