@@ -1,52 +1,51 @@
 body {
-	background-color: #f8f9fa;
-	margin-top: 0px; /* Adjusted margin to account for the fixed navbar */
-  }
-  
+  background-color: #f8f9fa;
+  margin-top: 0px; /* Adjusted margin to account for the fixed navbar */
+}
+
+.service-card {
+  margin: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  max-width: 300px; /* Set the maximum width of the card */
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Media Query for Responsive Design */
+@media screen and (min-width: 576px) {
   .service-card {
-	margin: 10px;
-	border-radius: 10px;
-	overflow: hidden;
-	transition: transform 0.3s ease-in-out;
-	max-width: 300px; /* Set the maximum width of the card */
+    transform: scale(0.8); /* Scale down the card for larger small screens */
   }
-  
-  .service-card:hover {
-	transform: scale(1.05);
+}
+
+@media screen and (min-width: 768px) {
+  .service-card {
+    transform: scale(0.9); /* Scale down the card for medium screens */
   }
-  
-  .card-img-top {
-	height: 200px;
-	object-fit: cover;
+}
+
+@media screen and (min-width: 992px) {
+  .service-card {
+    transform: scale(0.95); /* Scale down the card for large screens */
   }
-  
-  .card-body {
-	background-color: #007bff;
-	color: #fff;
+}
+
+@media screen and (min-width: 1200px) {
+  .service-card {
+    transform: scale(1); /* Default scale for extra-large screens */
   }
-  
-  /* Media Query for Responsive Design */
-  @media screen and (min-width: 576px) {
-	.service-card {
-	  transform: scale(0.8); /* Scale down the card for larger small screens */
-	}
-  }
-  
-  @media screen and (min-width: 768px) {
-	.service-card {
-	  transform: scale(0.9); /* Scale down the card for medium screens */
-	}
-  }
-  
-  @media screen and (min-width: 992px) {
-	.service-card {
-	  transform: scale(0.95); /* Scale down the card for large screens */
-	}
-  }
-  
-  @media screen and (min-width: 1200px) {
-	.service-card {
-	  transform: scale(1); /* Default scale for extra-large screens */
-	}
-  }
-  
+}
