@@ -17,9 +17,17 @@ html {
   background-size: cover;
   background-position: center;
   width: 100%;
-  margin: 0;
+  margin: 40px 0px;
   padding: 0;
 }
+/* Media Query for Small Screens */
+@media (max-width: 991.98px) {
+	body,
+html  {
+	  margin: 70px 0px;
+	}
+  }
+
 header-logo {
   position: fixed;
   top: 0;
@@ -45,7 +53,7 @@ header {
   align-items: center;
   z-index: 99;
   width: 100%;
-  padding: 10px; /* Adjust the padding as needed */
+  padding: 5px; /* Adjust the padding as needed */
 }
 
 .logo {
@@ -261,3 +269,13 @@ header {
   margin-right: auto;
   display: block;
 }
+.navbar-nav.ml-auto {
+	margin-top: 0; /* or any other default value */
+  }
+  
+  /* Media Query for Small Screens */
+  @media (max-width: 991.98px) {
+	.navbar-nav.ml-auto {
+	  margin-top: 20px;
+	}
+  }

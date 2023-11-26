@@ -4,20 +4,14 @@
     method="POST"
     enctype="multipart/form-data"
     onsubmit="return validateForm()"
+    style="color: white;"
   >
     <h3 align="center">Please fill in this form</h3>
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="firstName"
-            name="firstName"
-            placeholder="Enter first name"
-            required
-          />
+          <label for="photo">Upload a 3x4 photo (.jpg or .png)</label>
+          {{form.hidden_tag()}} {{form.file()}}
         </div>
       </div>
       <div class="col-md-3">
@@ -87,8 +81,15 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-          <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-          {{form.hidden_tag()}} {{form.file()}}
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter first name"
+            required
+          />
         </div>
       </div>
       <div class="col-md-3">
@@ -195,7 +196,9 @@
     </div>
   
     <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary btn-sm" style="width: 150px;">Submit</button>
+    </div>
   </form>
   {% endblock %}
   

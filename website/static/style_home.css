@@ -1,26 +1,77 @@
 body {
 	background-color: #f8f9fa;
 	margin-top: 50px; /* Adjusted margin to account for the fixed navbar */
-}
-
-.service-card {
+  }
+  
+  .service-card {
 	margin: 10px;
 	border-radius: 10px;
 	overflow: hidden;
 	transition: transform 0.3s ease-in-out;
-	max-width: 3006px; /* Set the maximum width of the card */
-}
-
-.service-card:hover {
+	max-width: 300px; /* Set the maximum width of the card */
+  }
+  
+  .service-card:hover {
 	transform: scale(1.05);
-}
-
-.card-img-top {
+  }
+  
+  .service-card:hover .card-body {
+	transform: scale(1.05);
+  }
+  
+  .card-img-top {
 	height: 200px;
 	object-fit: cover;
-}
-
-.card-body {
+	transition: transform 0.3s ease-in-out;
+  }
+  
+  .card-body {
 	background-color: #007bff;
 	color: #fff;
-}
+	transition: transform 0.3s ease-in-out;
+  }
+  
+  .btn-apply {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+  }
+  
+  .service-card:hover .btn-apply {
+	opacity: 1;
+  }
+  
+  
+  /* Media Query for Responsive Design */
+  @media screen and (min-width: 576px) {
+	.service-card {
+	  transform: scale(0.9); /* Scale down the card for larger small screens */
+	}
+  
+	.service-card:hover .card-body {
+	  transform: scale(0.9);
+	}
+  
+  }
+  
+  @media screen and (min-width: 768px) {
+	.service-card {
+	  transform: scale(0.95); /* Scale down the card for medium screens */
+	}
+  
+	.service-card:hover .card-body {
+	  transform: scale(0.95);
+	}
+  
+  }
+  
+  @media screen and (min-width: 992px) {
+	.service-card {
+	  transform: scale(1); /* Default scale for large screens */
+	}
+  
+	.service-card:hover .card-body {
+	  transform: scale(1);
+	}
+  
+  }
+  

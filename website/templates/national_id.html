@@ -1,13 +1,20 @@
 {% extends "base.html" %} 
 {% block title %}Signup{% endblock %} 
 {% block content %}
-<form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form method="POST" 
+enctype="multipart/form-data" 
+onsubmit="return validateForm()"
+style="color: white;">
   <h3 align="center">Please fill in this form</h3>
+  
   <div class="row">
+    <img id="image-preview" src="#" alt="Preview" style="display: none; max-width: 100%; max-height: 150px; margin-top: 10px;">
     <div class="col-md-3">
       <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name" required/>
+        
+        <label for="photo">Upload a 3x4 photo (.jpg or .png)</label>
+        <input type="file" class="form-control" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
+        
       </div>
     </div>
     <div class="col-md-3">
@@ -49,8 +56,8 @@
     </div>
     <div class="col-md-3">
       <div class="form-group">
-        <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-        {{form.hidden_tag()}} {{form.file()}}
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name" required/>
       </div>
     </div>
     <div class="col-md-3">
@@ -113,13 +120,36 @@
     </div>
     <div class="col-md-3">
       <div class="form-group">
-        <label for="ecphoneNumber">Emergency Contact Phone Number</label>
+        <label for="ecphoneNumber">Emergency Phone Number</label>
         <input type="tel" class="form-control" id="ecphoneNumber" name="ecphoneNumber" placeholder="Enter Emergency Contact Phone Number" pattern="^(\+251-)?\d{9}$" value="+251-" required/>
       </div>
     </div>
   </div>
 
   <br />
-  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  <div class="d-flex justify-content-center">
+  <button type="submit" class="btn btn-primary btn-sm" style="width: 150px;">Submit</button>
+</div>
+<script>
+   function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        var placeholder = document.getElementById('image-placeholder');
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          preview.style.display = 'none';
+          placeholder.style.display = 'block';
+        }
+      }
+</script>
 </form>
 {% endblock %}

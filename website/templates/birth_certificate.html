@@ -1,12 +1,22 @@
-{% extends "base.html" %} {% block title %}Signup{% endblock %} {% block content
-  %}
+{% extends "base.html" %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+<div class="container">
   <form
     method="POST"
     enctype="multipart/form-data"
     onsubmit="return validateForm()"
+    style="color: white;"
   >
     <h3 align="center">Please fill in this form</h3>
+
     <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
+          {{form.hidden_tag()}} {{form.file()}}
+        </div>
+      </div>
       <div class="col-md-3">
         <div class="form-group">
           <label for="firstName">First Name</label>
@@ -46,6 +56,9 @@
           />
         </div>
       </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="birthDay">Date of Birth</label>
@@ -59,9 +72,6 @@
           />
         </div>
       </div>
-    </div>
-  
-    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="gender">Gender</label>
@@ -87,12 +97,6 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-          <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-          {{form.hidden_tag()}} {{form.file()}}
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="form-group">
           <label for="fatherfullName">Father's Full Name</label>
           <input
             type="text"
@@ -105,7 +109,7 @@
         </div>
       </div>
     </div>
-  
+
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
@@ -121,9 +125,11 @@
         </div>
       </div>
     </div>
-  
+
     <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="row justify-content-center">
+      <button type="submit" class="btn btn-primary btn-sm" style="width: 100px;">Submit</button>
+    </div>
   </form>
-  {% endblock %}
-  
+</div>
+{% endblock %}
