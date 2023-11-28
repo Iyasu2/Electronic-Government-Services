@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block
+content %}
+<h1>User Pending Applications</h1>
+<ul>
+  {% for user_id, applications in tables.items() %}
+  <li style="font-size: 20px; font-weight: bold">
+    user_id:{{ user_id }}
+    <ul style="font-size: 15px; font-weight: bold">
+      {% for table_name in applications %}
+      <li>{{ table_name }}</li>
+      {% set lower_table_name = table_name.lower() %}
+      <div>
+        <div>
+          <button
+            class="btn btn-primary"
+            onclick="redirectToForm('/{{ lower_table_name }}', '{{ user_id }}')"
+          >
+            Review
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+<script>
+  function redirectToForm(variable, user_id) {
+    var route = "/admin/form" + variable + "?user_id=" + user_id;
+    window.location.href = route;
+  }
+</script>
+{% endblock %}

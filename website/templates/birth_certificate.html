@@ -17,6 +17,9 @@ block content %}
           name="firstName"
           placeholder="Enter first name"
           value="{{Birth_certificate.firstName if Birth_certificate.firstName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -31,6 +34,9 @@ block content %}
           name="fatherName"
           placeholder="Enter Father's name"
           value="{{Birth_certificate.fatherName if Birth_certificate.fatherName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -45,6 +51,9 @@ block content %}
           name="gfatherName"
           placeholder="Enter Grandfather's name"
           value="{{Birth_certificate.gfatherName if Birth_certificate.gfatherName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -59,6 +68,9 @@ block content %}
           name="birthDay"
           placeholder="Enter Date of Birth"
           value="{{Birth_certificate.birthDay if Birth_certificate.birthDay}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -69,7 +81,7 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="gender">Gender</label>
-        <select class="form-control" id="gender" name="gender" required>
+        <select class="form-control" id="gender" name="gender" {% if buttontype == 'button3' %}disabled{% endif %} required>
           <option value="">Select Gender</option>
           {% if Birth_certificate.gender %}
           <option value="{{ Birth_certificate.gender }}" selected>
@@ -91,6 +103,9 @@ block content %}
           name="region"
           placeholder="Enter Region"
           value="{{Birth_certificate.region if Birth_certificate.region}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -98,7 +113,10 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
+        {% if buttontype == 'button3' %}<input type="text" class="form-control" value="{{ Birth_certificate.photo.filename if Birth_certificate.photo }}" readonly>
+        {% else %}
         {{form.hidden_tag()}} {{form.file()}}
+        {% endif %}
       </div>
     </div>
     <div class="col-md-3">
@@ -111,6 +129,9 @@ block content %}
           name="fatherfullName"
           placeholder="Enter Father's Full Name"
           value="{{Birth_certificate.fatherfullName if Birth_certificate.fatherfullName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -128,6 +149,9 @@ block content %}
           name="motherfullName"
           placeholder="Enter Mother's Full Name"
           value="{{Birth_certificate.motherfullName if Birth_certificate.motherfullName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>

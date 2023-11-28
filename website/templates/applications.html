@@ -4,14 +4,20 @@ content %}
 <ul>
   {% for table in tables %}
   <li style="font-size: 20px; font-weight: bold">
-    {{ table }} - <span style="color: red">Pending</span>
+    {{ table[0] }} - <span style="color: red">Pending</span>
     <div>
       <div>
         <button
           class="btn btn-primary"
-          onclick="redirectToForm('/{{ table }}', 'button1')"
+          onclick="redirectToForm('/{{ table[0] }}', 'button1')"
         >
           Edit
+        </button>
+        <button
+          class="btn btn-primary"
+          onclick="sendDeleteRequest('{{ table[1] }}')"
+        >
+          Delete
         </button>
       </div>
     </div>
@@ -22,6 +28,17 @@ content %}
   function redirectToForm(variable, buttonType) {
     var route = "/form" + variable + "?button_type=" + buttonType;
     window.location.href = route;
+  }
+  function sendDeleteRequest(table_id) {
+    fetch("/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ table_id: table_id }),
+    }).then((_res) => {
+      window.location.href = "/";
+    });
   }
 </script>
 {% endblock %}

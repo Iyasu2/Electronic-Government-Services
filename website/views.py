@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user, login_user, logout_user
-from .models import PendingStatus, Note, Birth_certificate, National_id, Driver_license_renewal
+from .models import PendingStatus, Birth_certificate, National_id, Driver_license_renewal
 from . import db
 import json
 import os
@@ -19,32 +19,55 @@ class UploadFileForm(FlaskForm):
     submit = SubmitField("Upload File")
 
 @views.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
     return render_template("home.html", user=current_user)
+
+@views.route('/admin/home', methods=['GET', 'POST'])
+@login_required
+def home_admin():
+    applied_pending_models = []
+
+    table_models = [(Driver_license_renewal, 'Driver_license_renewal'), (National_id, 'National_id'), (Birth_certificate, 'Birth_certificate')]
+
+    for table_model, table_name in table_models:
+        table_pending_status = table_model.query.filter_by(pending=PendingStatus.APPLIED_PENDING).all()
+        for item in table_pending_status:
+            user_id = item.user_id
+            applied_pending_models.append((user_id, table_name))
+
+    grouped_applications = {}
+    for user_id, table_name in applied_pending_models:
+        if user_id in grouped_applications:
+            grouped_applications[user_id].append(table_name)
+        else:
+            grouped_applications[user_id] = [table_name]
+            
+    return render_template('home_admin.html', tables=grouped_applications, user=current_user)
+
 @views.route('/', methods=['GET', 'POST'])
 def landing():
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
     return render_template("landing.html", user=current_user)
 
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
+@views.route('/delete', methods=['POST'])
+@login_required
+def delete_application():
+    data = request.get_json()
+    table_id = data['table_id']
+
+    table_models = [Driver_license_renewal, National_id, Birth_certificate]
+    for table_model in table_models:
+        table = table_model.query.filter_by(user_id=current_user.id, id=table_id).first()
+        if table:
+            db.session.delete(table)
             db.session.commit()
-            return jsonify({})
+            flash('Application deleted successfully.', category='success')
+            return redirect(url_for('views.applications', user_id=current_user.id))
+
+    flash('Table not found.', category='error')
+    return redirect(url_for('views.applications'))
 
 @views.route('/form/birth_certificate', methods=['GET', 'POST'])
 @login_required
@@ -99,6 +122,15 @@ def birth_certificate():
         return redirect(url_for('views.home'))
     birth = Birth_certificate.query.first()
     return render_template("birth_certificate.html", user=current_user, form=form, Birth_certificate=birth, button_type=button_type)
+
+@views.route('admin/form/birth_certificate', methods=['GET', 'POST'])
+@login_required
+def birth_certificate_admin():
+    user_id = request.args.get('user_id', type=int)
+    if request.method == 'POST':
+        pass
+    birth = Birth_certificate.query.filter_by(user_id=user_id).first()
+    return render_template("birth_certificate.html", user=current_user, Birth_certificate=birth)
     
 @views.route('/form/driver_license_renewal', methods=['GET', 'POST'])
 @login_required
@@ -163,7 +195,7 @@ def driver_license_renewal():
         flash('Application completed!', category='success')
         return redirect(url_for('views.home'))
     license = Driver_license_renewal.query.first()
-    return render_template("driver_license_renewal.html", user=current_user, form=form, Driver_license_renewal=license)
+    return render_template("driver_license_renewal.html", user=current_user, form=form, Driver_license_renewal=license, button_type=button_type)
     
 @views.route('/form/national_id', methods=['GET', 'POST'])
 @login_required
@@ -231,7 +263,7 @@ def national_id():
         flash('Application completed!', category='success')
         return redirect(url_for('views.home'))
     national = National_id.query.first()
-    return render_template("national_id.html", user=current_user, form=form, National_id=national)
+    return render_template("national_id.html", user=current_user, form=form, National_id=national, button_type=button_type)
 
 @views.route('/applications', methods=['GET'])
 @login_required
@@ -244,6 +276,7 @@ def applications():
         table_name = table_model.__tablename__
         table_pending_status = table_model.query.filter_by(pending=PendingStatus.APPLIED_PENDING).first()
         if table_pending_status:
-            applied_pending_models.append(table_name)
-
+            table_id = table_pending_status.id
+            applied_pending_models.append((table_name, table_id))
+            
     return render_template('applications.html', tables=applied_pending_models, user=current_user)

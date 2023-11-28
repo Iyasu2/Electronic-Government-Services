@@ -4,12 +4,6 @@ from sqlalchemy.sql import func
 from enum import Enum
 import uuid
 
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
 class PendingStatus(Enum):
     NOT_APPLIED = 'Not Applied'
     APPLIED_PENDING = 'Applied and Pending'
@@ -58,5 +52,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
     first_name = db.Column(db.String(50))
-    notes = db.relationship('Note')
+    admin = db.Column(db.Boolean, default=False)
 
+class Admin_User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(50))
+    first_name = db.Column(db.String(50))
+    admin = db.Column(db.Boolean, default=False)

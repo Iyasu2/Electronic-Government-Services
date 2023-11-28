@@ -17,6 +17,9 @@ content %}
           name="firstName"
           placeholder="Enter first name"
           value="{{National_id.firstName if National_id.firstName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -31,6 +34,9 @@ content %}
           name="fatherName"
           placeholder="Enter Father's name"
           value="{{National_id.fatherName if National_id.fatherName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -45,6 +51,9 @@ content %}
           name="gfatherName"
           placeholder="Enter Grandfather's name"
           value="{{National_id.gfatherName if National_id.gfatherName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -59,6 +68,9 @@ content %}
           name="birthDay"
           placeholder="Enter Date of Birth"
           value="{{National_id.birthDay if National_id.birthDay}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -69,7 +81,7 @@ content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="gender">Gender</label>
-        <select class="form-control" id="gender" name="gender" required>
+        <select class="form-control" id="gender" name="gender" {% if buttontype == 'button3' %}disabled{% endif %} required>
           <option value="">Select Gender</option>
           {% if National_id.gender %}
           <option value="{{ National_id.gender }}" selected>
@@ -91,6 +103,9 @@ content %}
           name="region"
           placeholder="Enter Region"
           value="{{National_id.region if National_id.region}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -98,7 +113,12 @@ content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-        {{form.hidden_tag()}} {{form.file()}}
+        {% if buttontype == 'button3' %}<input
+          type="text"
+          class="form-control"
+          value="{{ Birth_certificate.photo.filename if Birth_certificate.photo }}"
+        />
+        {% else %} {{form.hidden_tag()}} {{form.file()}} {% endif %}
       </div>
     </div>
     <div class="col-md-3">
@@ -111,6 +131,9 @@ content %}
           name="subCity"
           placeholder="Enter Sub-City"
           value="{{National_id.subCity if National_id.subCity}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -128,6 +151,9 @@ content %}
           name="woreda"
           placeholder="Enter Woreda"
           value="{{National_id.woreda if National_id.woreda}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -142,6 +168,9 @@ content %}
           name="houseNumber"
           placeholder="Enter House Number"
           value="{{National_id.houseNumber if National_id.houseNumber}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -158,6 +187,9 @@ content %}
           value="{{National_id.phoneNumber if National_id.phoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -165,7 +197,7 @@ content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="bloodType">Blood Type</label>
-        <select class="form-control" id="bloodType" name="bloodType" required>
+        <select class="form-control" id="bloodType" name="bloodType" {% if buttontype == 'button3' %}disabled{% endif %} required>
           <option value="">Select Bloodtype</option>
           {% if National_id.bloodType %}
           <option value="{{ National_id.bloodType }}" selected>
@@ -196,6 +228,9 @@ content %}
           name="expiryDate"
           placeholder="Current ID Expiry Date"
           value="{{National_id.expiryDate if National_id.expiryDate}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -210,6 +245,9 @@ content %}
           name="ecName"
           placeholder="Enter Emergency Contact Name"
           value="{{National_id.ecName if National_id.ecName}}"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
@@ -226,6 +264,9 @@ content %}
           value="{{National_id.ecphoneNumber if National_id.ecphoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
+          {% if buttontype == 'button3' %}
+          readonly
+          {% endif %}
           required
         />
       </div>
