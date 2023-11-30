@@ -18,6 +18,14 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}"
   />
+  <link 
+  rel="stylesheet" type="text/css" 
+  href="{{ url_for('static', filename='style_login.css') }}"
+  />
+  <link 
+  rel="stylesheet" type="text/css" 
+  href="{{ url_for('static', filename='style_signup.css') }}"
+  />
   <script
     type="text/javascript"
     src="{{ url_for('static', filename='script.js') }}"
@@ -49,14 +57,14 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
-          <div class="navbar-nav ml-auto">
+          <div class="navbar-nav ml-auto style="margin-top: 20px;">
             {% if user.is_authenticated %}
             <button class="btnLogin-popup btn-nav mb-4" id="applications" onclick="window.location.href='/applications'">Applications</button>
             <button class="btnLogin-popup btn-nav mb-4" id="logout" onclick="window.location.href='/logout'">Logout</button>
             {% else %}
               <a class="nav-link mb-4" id="home" href='/'>Home</a>
               <a class="nav-link mb-4" href="#">About</a>
-              <a class="nav-link mb-4" href="#">Service</a>
+              <!-- <a class="nav-link mb-4" href="#">Service</a> -->
               <a class="nav-link mb-4" href="#">Contact</a>
                 <button class="btnLogin-popup btn-nav mb-4" id="login" onclick="window.location.href='/login'">Login</button>
                 <button class="btnLogin-popup btn-nav" id="signUp" onclick="window.location.href='/signup'">Sign up</button>
@@ -65,7 +73,9 @@
           </div>
         </div>
       </nav>
+      
     </header>
+    
     <div class="container">{% block content %} {% endblock %}</div>
     
     </nav>

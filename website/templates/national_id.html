@@ -1,22 +1,34 @@
 {% extends "base.html" %} 
 {% block title %}Signup{% endblock %} 
 {% block content %}
+<style>
+  /* Add custom CSS styles for the image preview */
+  .image-preview-container {
+    height: 150px; /* Set a fixed height for the image preview container */
+    overflow: hidden; /* Hide any overflow content */
+  }
+
+  .image-preview {
+    max-width: 100%; /* Make sure the image doesn't exceed the container width */
+    height: auto; /* Maintain the image aspect ratio */
+  }
+</style>
 <form method="POST" 
 enctype="multipart/form-data" 
 onsubmit="return validateForm()"
 style="color: white;">
-  <h3 align="center">Please fill in this form</h3>
-  
-  <div class="row">
-    <img id="image-preview" src="#" alt="Preview" style="display: none; max-width: 100%; max-height: 150px; margin-top: 10px;">
-    <div class="col-md-3">
-      <div class="form-group">
-        
-        <label for="photo">Upload a 3x4 photo (.jpg or .png)</label>
-        <input type="file" class="form-control" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
-        
-      </div>
+<h3 align="center">Please fill in this National ID form</h3>
+
+<div align="center" class="row">
+  <div class="col-md-3 mx-auto">
+    <div class="form-group image-preview-container">
+      <img id="image-preview" class="image-preview" src="#" alt="Image Preview" />
+      {{ form.hidden_tag() }} {{ form.file(onchange="previewImage(this)") }}
+      <label for="photo">Upload photo (3x4, jpg or .png)</label>
     </div>
+  </div>
+</div>
+<div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="fatherName">Father's Name</label>
@@ -35,9 +47,9 @@ style="color: white;">
         <input type="date" class="form-control" id="birthDay" name="birthDay" placeholder="Enter Date of Birth" required/>
       </div>
     </div>
-  </div>
+  
 
-  <div class="row">
+  
     <div class="col-md-3">
       <div class="form-group">
         <label for="gender">Gender</label>
@@ -48,6 +60,8 @@ style="color: white;">
         </select>
       </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="region">Region</label>
@@ -66,15 +80,16 @@ style="color: white;">
         <input type="text" class="form-control" id="subCity" name="subCity" placeholder="Enter Sub-City" required/>
       </div>
     </div>
-  </div>
 
-  <div class="row">
+  
     <div class="col-md-3">
       <div class="form-group">
         <label for="woreda">Woreda</label>
         <input type="text" class="form-control" id="woreda" name="woreda" placeholder="Enter Woreda" required/>
       </div>
     </div>
+    </div>
+    <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="houseNumber">House Number</label>
@@ -103,15 +118,16 @@ style="color: white;">
         </select>
       </div>
     </div>
-  </div>
 
-  <div class="row">
+  
     <div class="col-md-3">
       <div class="form-group">
         <label for="expiryDate">Current ID Expiry Date</label>
         <input type="date" class="form-control" id="expiryDate" name="expiryDate" placeholder="Current ID Expiry Date" required/>
       </div>
     </div>
+    </div>
+    <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="ecName">Emergency Contact Name</label>
@@ -152,4 +168,19 @@ style="color: white;">
       }
 </script>
 </form>
+<script>
+  function previewImage(input) {
+    var preview = document.getElementById('image-preview');
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
 {% endblock %}

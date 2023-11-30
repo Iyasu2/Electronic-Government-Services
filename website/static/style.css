@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
+
+
+
 * {
   margin: 0;
   padding: 0;
@@ -17,8 +20,9 @@ html {
   background-size: cover;
   background-position: center;
   width: 100%;
-  margin: 20px 0px;
+  margin: 5px 0px;
   padding: 0;
+  
 }
 /* Media Query for Small Screens */
 @media (max-width: 991.98px) {
@@ -38,11 +42,11 @@ header-logo {
   align-items: center;
   z-index: 99;
   width: 100%;
-  padding: 10px; /* Adjust the padding as needed */
+  padding: 5px; /* Adjust the padding as needed */
 
 }
 header {
-  background: rgba(25, 25, 25, 1);
+  background: rgba(25, 25, 25, 0.75);
   backdrop-filter: blur(10px);
   position: fixed;
   top: 0;

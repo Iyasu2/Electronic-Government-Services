@@ -1,22 +1,64 @@
 {% extends "base.html" %}
 {% block title %}Signup{% endblock %}
 {% block content %}
-<div class="container">
+<style>
+  .service-card {
+   
+    max-width: 175px;
+    max-height: 400px; /* Set the maximum width of the card */
+  }
+  
+  .card-img-top2 {
+    
+    width: 175px; /* Set the maximum width of the image */
+    height: 200px; /* Set the maximum height of the image */
+     /* Ensure the image covers the specified dimensions */
+     /* /* Allow the height to adjust based on the max-height */
+  }
+  .rounded-bottom {
+    border-radius: 0 0 0.25rem 0.25rem;
+  }
+
+  /* Add other styles as needed */
+
+  /* Center the card */
+  
+  </style>
+<div class="container mt-5">
   <form
     method="POST"
     enctype="multipart/form-data"
     onsubmit="return validateForm()"
     style="color: white;"
   >
-    <h3 align="center">Please fill in this form</h3>
+    <h3 align="center">Please fill in this Birth Certificate form</h3>
 
-    <div class="row">
-      <div class="col-md-3">
-        <div class="form-group">
-          <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-          {{form.hidden_tag()}} {{form.file()}}
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-lg-4 col-md-6 mx-auto">
+          <div class="service-card mx-auto">
+            
+            <form id="uploadForm" enctype="multipart/form-data">
+              <div class="d-flex align-items-center justify-content-center">
+                <img id="cardImage" class=" card-img-top2" src="https://via.placeholder.com/300x400" alt="Placeholder Image" />
+              </div>
+              {{ form.hidden_tag() }} 
+              <input type="file" id="fileInput" style="display: none" onchange="previewImage(this)">
+
+<!-- Visible button to trigger file input click -->
+<button type="button" class="btn btn-primary rounded-bottom" onclick="openFileInput()">Select Image</button>
+
+              </div>
+            </form>
+          </div>
         </div>
       </div>
+    </div>
+    
+    
+    
+
+    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="firstName">First Name</label>
@@ -30,6 +72,7 @@
           />
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="form-group">
           <label for="fatherName">Father's Name</label>
@@ -43,6 +86,7 @@
           />
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="form-group">
           <label for="gfatherName">Grandfather's Name</label>
@@ -56,9 +100,7 @@
           />
         </div>
       </div>
-    </div>
 
-    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="birthDay">Date of Birth</label>
@@ -72,6 +114,9 @@
           />
         </div>
       </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="gender">Gender</label>
@@ -82,6 +127,7 @@
           </select>
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="form-group">
           <label for="region">Region</label>
@@ -95,6 +141,7 @@
           />
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="form-group">
           <label for="fatherfullName">Father's Full Name</label>
@@ -108,9 +155,7 @@
           />
         </div>
       </div>
-    </div>
 
-    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label for="motherfullName">Mother's Full Name</label>
@@ -125,11 +170,45 @@
         </div>
       </div>
     </div>
+      <!-- Continue with the rest of the form fields as before -->
+
 
     <br />
+    <!-- Additional form rows -->
+
     <div class="row justify-content-center">
       <button type="submit" class="btn btn-primary btn-sm" style="width: 100px;">Submit</button>
     </div>
   </form>
+
+  <script>
+  function redirectToForm(formPath) {
+  // Add your logic to redirect to the specified form path
+  console.log("Redirect to form: " + formPath);
+
+  // Trigger the file input click when "Apply" is clicked
+  var fileUploadButton = document.getElementById('fileUpload');
+  fileUploadButton.click();
+}
+
+function openFileInput() {
+    // Trigger the hidden file input click when the button is clicked
+    document.getElementById('fileInput').click();
+  }
+
+  function previewImage(input) {
+    var preview = document.getElementById('cardImage');
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+  </script>
 </div>
 {% endblock %}

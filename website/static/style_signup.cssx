@@ -1,0 +1,71 @@
+body {
+	background-color: #f8f9fa;
+	margin-top: 50px; /* Adjusted margin to account for the fixed navbar */
+}
+
+.service-card {
+	margin: 10px;
+	border-radius: 10px;
+	overflow: hidden;
+	transition: transform 0.3s ease-in-out;
+	max-width: 300px; /* Set the maximum width of the card */
+}
+
+.service-card:hover {
+	transform: scale(1.05);
+}
+.service-card:hover .card-body {
+	transform: scale(1.05);
+}
+
+.card-img-top {
+	height: 150px; /* Adjusted height */
+	object-fit: cover;
+	transition: transform 0.3s ease-in-out;
+}
+
+.card-body {
+	background-color: #007bff;
+	color: #171717;
+	transition: transform 0.3s ease-in-out;
+}
+.btn-apply {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.service-card:hover .btn-apply {
+	opacity: 1;
+}
+
+/* Media Query for Responsive Design */
+@media screen and (min-width: 576px) {
+	.service-card {
+		transform: scale(0.8); /* Scale down the card for larger small screens */
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.service-card {
+		transform: scale(0.9); /* Scale down the card for medium screens */
+	}
+}
+
+@media screen and (min-width: 992px) {
+	.service-card {
+		transform: scale(0.95); /* Scale down the card for large screens */
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.service-card {
+		transform: scale(1); /* Default scale for extra-large screens */
+	}
+}  
+.blurred-card {
+	background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
+	border-radius: 10px; /* Adjust the border-radius for rounded corners */
+	padding: 20px; /* Add padding as needed */
+	backdrop-filter: blur(10px); /* Apply blur effect */
+	text-align: center; /* Center the content in the blurred card */
+}

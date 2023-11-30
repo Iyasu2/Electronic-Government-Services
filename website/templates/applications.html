@@ -1,11 +1,46 @@
-{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block
-content %}
-<h1>Applications</h1>
-<ul>
-  {% for table in tables %}
-  <li style="font-size: 20px; font-weight: bold">
-    {{ table }} - <span style="color: red">Pending</span>
-  </li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block content %}
+<div class="container mt-5">
+  <h1>Applications</h1>
+  <div class="row">
+    {% for table in tables %}
+      <div class="col-lg-4">
+        <div class="card service-card">
+          <img
+          src="static/assets/Driver's License Renewal.jpg"
+          class="card-img-top"
+          alt="Driver's License Renewal"
+        />
+          <div class="card-body">
+            <h5 class="card-title" style="font-size: 20px; font-weight: bold;">
+              {{ table[0] }} - <span style="color: red;">Pending</span>
+            </h5>
+            <div class="btn-group" role="group">
+              <button class="btn btn-success" onclick="redirectToForm('/{{ table[0] }}', 'button1')">Edit</button>
+                <button class="btn btn-danger" onclick="sendDeleteRequest('{{ table[1] }}')">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  function redirectToForm(variable, buttonType) {
+    var route = "/form" + variable + "?button_type=" + buttonType;
+    window.location.href = route;
+  }
+
+  function sendDeleteRequest(table_id) {
+    fetch('/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ table_id: table_id }),
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+</script>
 {% endblock %}
