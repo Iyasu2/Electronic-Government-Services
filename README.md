@@ -8,7 +8,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/your-username/Electronic-Government-Service.git
+git clone https://github.com/Iyasu2/Electronic-Government-Service.git
 cd Electronic-Government-Service
 Install dependencies:
 
