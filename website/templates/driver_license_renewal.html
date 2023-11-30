@@ -17,9 +17,6 @@ block content %}
           name="firstName"
           placeholder="Enter first name"
           value="{{Driver_license_renewal.firstName if Driver_license_renewal.firstName}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -34,9 +31,6 @@ block content %}
           name="fatherName"
           placeholder="Enter Father's name"
           value="{{Driver_license_renewal.fatherName if Driver_license_renewal.fatherName}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -51,9 +45,6 @@ block content %}
           name="gfatherName"
           placeholder="Enter Grandfather's name"
           value="{{Driver_license_renewal.gfatherName if Driver_license_renewal.gfatherName}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -68,9 +59,6 @@ block content %}
           name="birthDay"
           placeholder="Enter Date of Birth"
           value="{{Driver_license_renewal.birthDay if Driver_license_renewal.birthDay}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -81,7 +69,7 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="gender">Gender</label>
-        <select class="form-control" id="gender" name="gender" {% if buttontype == 'button3' %}disabled{% endif %} required>
+        <select class="form-control" id="gender" name="gender" required>
           <option value="">Select Gender</option>
           {% if Driver_license_renewal.gender %}
           <option value="{{ Driver_license_renewal.gender }}" selected>
@@ -103,9 +91,6 @@ block content %}
           name="region"
           placeholder="Enter Region"
           value="{{Driver_license_renewal.region if Driver_license_renewal.region}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -113,10 +98,7 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-        {% if buttontype == 'button3' %}<input type="text" class="form-control" value="{{ Birth_certificate.photo.filename if Birth_certificate.photo }}" readonly>
-        {% else %}
         {{form.hidden_tag()}} {{form.file()}}
-        {% endif %}
       </div>
     </div>
     <div class="col-md-3">
@@ -129,9 +111,6 @@ block content %}
           name="subCity"
           placeholder="Enter Sub-City"
           value="{{Driver_license_renewal.subCity if Driver_license_renewal.subCity}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -149,9 +128,6 @@ block content %}
           name="woreda"
           placeholder="Enter Woreda"
           value="{{Driver_license_renewal.woreda if Driver_license_renewal.woreda}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -166,9 +142,6 @@ block content %}
           name="houseNumber"
           placeholder="Enter House Number"
           value="{{Driver_license_renewal.houseNumber if Driver_license_renewal.houseNumber}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -181,13 +154,10 @@ block content %}
           class="form-control"
           id="phoneNumber"
           name="phoneNumber"
-          placeholder="Enter Phone Number"
+          placeholder="Enter Phone Number(+251-{9 digits})"
           value="{{Driver_license_renewal.phoneNumber if Driver_license_renewal.phoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -195,7 +165,7 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="bloodType">Blood Type</label>
-        <select class="form-control" id="bloodType" name="bloodType" {% if buttontype == 'button3' %}disabled{% endif %} required>
+        <select class="form-control" id="bloodType" name="bloodType" required>
           <option value="">Select Bloodtype</option>
           {% if Driver_license_renewal.bloodType %}
           <option value="{{ Driver_license_renewal.bloodType }}" selected>
@@ -226,9 +196,6 @@ block content %}
           name="expiryDate"
           placeholder="Current ID Expiry Date"
           value="{{Driver_license_renewal.expiryDate if Driver_license_renewal.expiryDate}}"
-          {% if buttontype == 'button3' %}
-          readonly
-          {% endif %}
           required
         />
       </div>
@@ -236,7 +203,7 @@ block content %}
     <div class="col-md-3">
       <div class="form-group">
         <label for="grade">Grade</label>
-        <select class="form-control" id="grade" name="grade" {% if buttontype == 'button3' %}disabled{% endif %} required>
+        <select class="form-control" id="grade" name="grade" required>
           <option value="">Select license grade</option>
           {% if Driver_license_renewal.grade %}
           <option value="{{ Driver_license_renewal.grade }}" selected>

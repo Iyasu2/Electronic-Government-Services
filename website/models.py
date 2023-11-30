@@ -8,6 +8,7 @@ class PendingStatus(Enum):
     NOT_APPLIED = 'Not Applied'
     APPLIED_PENDING = 'Applied and Pending'
     APPLIED_ACCEPTED = 'Applied and Accepted'
+    APPLIED_REJECTED = 'Applied and Rejected'
 
 class Common():
     id = db.Column(db.Integer, primary_key=True)

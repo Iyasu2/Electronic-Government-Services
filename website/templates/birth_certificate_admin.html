@@ -1,0 +1,144 @@
+{% extends "base.html" %} {% block title %}BirthCertificate{% endblock %} {%
+    block content %}
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      onsubmit="return validateForm()"
+    >
+      <h3 align="center">Application</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              value="{{Birth_certificate.firstName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="fatherName">Father's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fatherName"
+              name="fatherName"
+              value="{{Birth_certificate.fatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gfatherName">Grandfather's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gfatherName"
+              name="gfatherName"
+              value="{{Birth_certificate.gfatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="birthDay">Date of Birth</label>
+            <input
+              type="date"
+              class="form-control"
+              id="birthDay"
+              name="birthDay"
+              value="{{Birth_certificate.birthDay}}"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gender"
+              name="gender"
+              value="{{Birth_certificate.gender}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="region">Region</label>
+            <input
+              type="text"
+              class="form-control"
+              id="region"
+              name="region"
+              value="{{Birth_certificate.region}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="photo">photo(.jpg or .png)</label>
+            <input
+              type="text"
+              class="form-control"
+              id="photo"
+              name="photo"
+              value="{{Birth_certificate.photo}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="fatherfullName">Father's Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fatherfullName"
+              name="fatherfullName"
+              value="{{Birth_certificate.fatherfullName}}"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="motherfullName">Mother's Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="motherfullName"
+              name="motherfullName"
+              value="{{Birth_certificate.motherfullName}}"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    
+      <br />
+      <div class="d-flex justify-content-center">
+        <div class="btn-group" role="group">
+          <button type="submit" name="action" value="approve" class="btn btn-primary">Approve</button>
+          <button type="submit" name="action" value="reject" class="btn btn-primary">Reject</button>
+          </div>
+          </div>
+    </form>
+    {% endblock %}
+    

@@ -120,17 +120,27 @@ def birth_certificate():
         db.session.commit()
         flash('Application completed!', category='success')
         return redirect(url_for('views.home'))
-    birth = Birth_certificate.query.first()
+    birth = Birth_certificate.query.filter_by(user_id=current_user.id).first()
     return render_template("birth_certificate.html", user=current_user, form=form, Birth_certificate=birth, button_type=button_type)
 
 @views.route('admin/form/birth_certificate', methods=['GET', 'POST'])
 @login_required
 def birth_certificate_admin():
     user_id = request.args.get('user_id', type=int)
-    if request.method == 'POST':
-        pass
     birth = Birth_certificate.query.filter_by(user_id=user_id).first()
-    return render_template("birth_certificate.html", user=current_user, Birth_certificate=birth)
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'approve':
+            birth.pending = PendingStatus.APPLIED_ACCEPTED
+            db.session.commit()
+            flash('Application approved', category='success')
+            return redirect(url_for('views.home_admin'))
+        elif action == 'reject':
+            birth.pending = PendingStatus.APPLIED_REJECTED
+            db.session.commit()
+            flash('Application rejected', category='error')
+            return redirect(url_for('views.home_admin'))
+    return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth)
     
 @views.route('/form/driver_license_renewal', methods=['GET', 'POST'])
 @login_required
@@ -194,8 +204,28 @@ def driver_license_renewal():
         db.session.commit()
         flash('Application completed!', category='success')
         return redirect(url_for('views.home'))
-    license = Driver_license_renewal.query.first()
+    license = Driver_license_renewal.query.filter_by(user_id=current_user.id).first()
     return render_template("driver_license_renewal.html", user=current_user, form=form, Driver_license_renewal=license, button_type=button_type)
+
+@views.route('admin/form/driver_license_renewal', methods=['GET', 'POST'])
+@login_required
+def driver_license_renewal_admin():
+    user_id = request.args.get('user_id', type=int)
+    license = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'approve':
+            license.pending = PendingStatus.APPLIED_ACCEPTED
+            db.session.commit()
+            flash('Application approved', category='success')
+            return redirect(url_for('views.home_admin'))
+        elif action == 'reject':
+            license.pending = PendingStatus.APPLIED_REJECTED
+            db.session.commit()
+            flash('Application rejected', category='error')
+            return redirect(url_for('views.home_admin'))
+    
+    return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license)
     
 @views.route('/form/national_id', methods=['GET', 'POST'])
 @login_required
@@ -262,21 +292,51 @@ def national_id():
         db.session.commit()
         flash('Application completed!', category='success')
         return redirect(url_for('views.home'))
-    national = National_id.query.first()
+    national = National_id.query.filter_by(user_id=current_user.id).first()
     return render_template("national_id.html", user=current_user, form=form, National_id=national, button_type=button_type)
 
+@views.route('admin/form/national_id', methods=['GET', 'POST'])
+@login_required
+def national_id_admin():
+    user_id = request.args.get('user_id', type=int)
+    national_id = National_id.query.filter_by(user_id=user_id).first()
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'approve':
+            national_id.pending = PendingStatus.APPLIED_ACCEPTED
+            db.session.commit()
+            flash('Application approved', category='success')
+            return redirect(url_for('views.home_admin'))
+        elif action == 'reject':
+            national_id.pending = PendingStatus.APPLIED_REJECTED
+            db.session.commit()
+            flash('Application rejected', category='error')
+            return redirect(url_for('views.home_admin'))
+    national = National_id.query.filter_by(user_id=user_id).first()
+    return render_template("national_id_admin.html", user=current_user, National_id=national)
+    
 @views.route('/applications', methods=['GET'])
 @login_required
 def applications():
-    applied_pending_models = []
+    applied_models = []
 
     table_models = [Driver_license_renewal, National_id, Birth_certificate]
 
     for table_model in table_models:
         table_name = table_model.__tablename__
-        table_pending_status = table_model.query.filter_by(pending=PendingStatus.APPLIED_PENDING).first()
+        table_pending_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_PENDING).first()
         if table_pending_status:
             table_id = table_pending_status.id
-            applied_pending_models.append((table_name, table_id))
+            applied_models.append((table_name, table_id, 'Pending'))
+
+        table_accepted_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_ACCEPTED).first()
+        if table_accepted_status:
+            table_id = table_accepted_status.id
+            applied_models.append((table_name, table_id, 'Accepted'))
+
+        table_rejected_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_REJECTED).first()
+        if table_rejected_status:
+            table_id = table_rejected_status.id
+            applied_models.append((table_name, table_id, 'Rejected'))
             
-    return render_template('applications.html', tables=applied_pending_models, user=current_user)
+    return render_template('applications.html', tables=applied_models, user=current_user)

@@ -1,0 +1,225 @@
+{% extends "base.html" %} {% block title %}BirthCertificate{% endblock %} {%
+    block content %}
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      onsubmit="return validateForm()"
+    >
+      <h3 align="center">Application</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              value="{{National_id.firstName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="fatherName">Father's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fatherName"
+              name="fatherName"
+              value="{{National_id.fatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gfatherName">Grandfather's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gfatherName"
+              name="gfatherName"
+              value="{{National_id.gfatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="birthDay">Date of Birth</label>
+            <input
+              type="date"
+              class="form-control"
+              id="birthDay"
+              name="birthDay"
+              value="{{National_id.birthDay}}"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gender"
+              name="gender"
+              value="{{National_id.gender}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="region">Region</label>
+            <input
+              type="text"
+              class="form-control"
+              id="region"
+              name="region"
+              value="{{National_id.region}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="photo">photo(.jpg or .png)</label>
+            <input
+              type="text"
+              class="form-control"
+              id="photo"
+              name="photo"
+              value="{{National_id.photo}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+              <label for="subCity">Sub-City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subCity"
+                name="subCity"
+                value="{{National_id.subCity}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="woreda">Woreda</label>
+              <input
+                type="text"
+                class="form-control"
+                id="woreda"
+                name="woreda"
+                value="{{National_id.woreda}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="houseNumber">House Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="houseNumber"
+                name="houseNumber"
+                value="{{National_id.houseNumber}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phoneNumber"
+                name="phoneNumber"
+                value="{{National_id.phoneNumber}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="bloodType">Blood Type</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="bloodType"
+                name="bloodType"
+                value="{{National_id.bloodType}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="expiryDate">Current ID Expiry Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="expiryDate"
+                name="expiryDate"
+                value="{{National_id.expiryDate}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="ecName">Emergency Contact Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="ecName"
+                name="ecName"
+                value="{{National_id.ecName}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="ecphoneNumber">Emergency Contact Phone Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="ecphoneNumber"
+                name="ecphoneNumber"
+                value="{{National_id.ecphoneNumber}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <br />
+        <div class="d-flex justify-content-center">
+          <div class="btn-group" role="group">
+            <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+          </div>
+        </div>
+      </form>
+      {% endblock %}
+      

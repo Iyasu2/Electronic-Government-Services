@@ -18,6 +18,15 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}"
   />
+  
+  <link 
+  rel="stylesheet" type="text/css" 
+  href="{{ url_for('static', filename='style_login.css') }}"
+  />
+  <link 
+  rel="stylesheet" type="text/css" 
+  href="{{ url_for('static', filename='style_signup.css') }}"
+  />
   <script
     type="text/javascript"
     src="{{ url_for('static', filename='script.js') }}"
@@ -36,7 +45,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      {% else %}
+      {% elif category == 'error' %}
       <div class="alert alert-danger alert-dismissible fade show fixed-top custom-alert text-center" role="alert">
         {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -53,13 +62,13 @@
           data-toggle="collapse"
           data-target="#navbar"
         >
-          <span class="navbar-toggler-icon mb-4"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbar">
-          <div class="navbar-nav ml-auto">
+          <div class="navbar-nav ml-auto style="margin-top: 20px;">
             {% if user.is_authenticated %}
-              <button class="btnLogin-popup btn-nav" id="applications" onclick="window.location.href='/applications'">Applications</button>
-              <button class="btnLogin-popup btn-nav " id="logout" onclick="window.location.href='/logout'">Logout</button>
+            <button class="btnLogin-popup btn-nav mb-4" id="applications" onclick="window.location.href='/applications'">Applications</button>
+            <button class="btnLogin-popup btn-nav mb-4" id="logout" onclick="window.location.href='/logout'">Logout</button>
             {% else %}
               <a class="nav-link mb-4" id="home" href='/'>Home</a>
               <a class="nav-link mb-4" href="#">About</a>

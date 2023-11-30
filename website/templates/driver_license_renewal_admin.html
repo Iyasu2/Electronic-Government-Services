@@ -1,0 +1,212 @@
+{% extends "base.html" %} {% block title %}BirthCertificate{% endblock %} {%
+    block content %}
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      onsubmit="return validateForm()"
+    >
+      <h3 align="center">Application</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              value="{{Driver_license_renewal.firstName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="fatherName">Father's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fatherName"
+              name="fatherName"
+              value="{{Driver_license_renewal.fatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gfatherName">Grandfather's Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gfatherName"
+              name="gfatherName"
+              value="{{Driver_license_renewal.gfatherName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="birthDay">Date of Birth</label>
+            <input
+              type="date"
+              class="form-control"
+              id="birthDay"
+              name="birthDay"
+              value="{{Driver_license_renewal.birthDay}}"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <input
+              type="text"
+              class="form-control"
+              id="gender"
+              name="gender"
+              value="{{Driver_license_renewal.gender}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="region">Region</label>
+            <input
+              type="text"
+              class="form-control"
+              id="region"
+              name="region"
+              value="{{Driver_license_renewal.region}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="photo">photo(.jpg or .png)</label>
+            <input
+              type="text"
+              class="form-control"
+              id="photo"
+              name="photo"
+              value="{{Driver_license_renewal.photo}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+              <label for="subCity">Sub-City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subCity"
+                name="subCity"
+                value="{{Driver_license_renewal.subCity}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="woreda">Woreda</label>
+              <input
+                type="text"
+                class="form-control"
+                id="woreda"
+                name="woreda"
+                value="{{Driver_license_renewal.woreda}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="houseNumber">House Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="houseNumber"
+                name="houseNumber"
+                value="{{Driver_license_renewal.houseNumber}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phoneNumber"
+                name="phoneNumber"
+                value="{{Driver_license_renewal.phoneNumber}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="bloodType">Blood Type</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="bloodType"
+                name="bloodType"
+                value="{{Driver_license_renewal.bloodType}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="expiryDate">Current ID Expiry Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="expiryDate"
+                name="expiryDate"
+                value="{{Driver_license_renewal.expiryDate}}"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="grade">Grade</label>
+              <input
+                type="date"
+                class="form-control"
+                id="grade"
+                name="grade"
+                value="{{Driver_license_renewal.grade}}"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      
+        <br />
+        <div class="d-flex justify-content-center">
+          <div class="btn-group" role="group">
+            <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+          </div>
+        </div>
+      </form>
+      {% endblock %}
+      

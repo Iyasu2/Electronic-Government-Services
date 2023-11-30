@@ -1,26 +1,36 @@
-{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block
-content %}
+{% extends "base.html" %} 
+{% block title %}Applications{% endblock %} 
+{% block content %}
 <h1>Applications</h1>
 <ul>
   {% for table in tables %}
   <li style="font-size: 20px; font-weight: bold">
-    {{ table[0] }} - <span style="color: red">Pending</span>
-    <div>
+    {{ table[0] }} - 
+    {% if table[2] == 'Accepted' %}
+      <span style="color: green">Accepted</span>
       <div>
-        <button
-          class="btn btn-primary"
-          onclick="redirectToForm('/{{ table[0] }}', 'button1')"
-        >
-          Edit
-        </button>
-        <button
-          class="btn btn-primary"
-          onclick="sendDeleteRequest('{{ table[1] }}')"
-        >
-          Delete
-        </button>
+        <div>
+          <button class="btn btn-primary" disabled>Edit</button>
+          <button class="btn btn-primary" disabled>Delete</button>
+        </div>
       </div>
-    </div>
+    {% elif table[2] == 'Pending' %}
+      <span style="color: purple">Pending</span>
+      <div>
+        <div>
+          <button class="btn btn-primary" onclick="redirectToForm('/{{ table[0] }}', 'button1')">Edit</button>
+          <button class="btn btn-primary" onclick="sendDeleteRequest('{{ table[1] }}')">Delete</button>
+        </div>
+      </div>
+    {% elif table[2] == 'Rejected' %}
+      <span style="color: red">Rejected</span>
+      <div>
+        <div>
+          <button class="btn btn-primary" disabled>Edit</button>
+          <button class="btn btn-primary" disabled>Delete</button>
+        </div>
+      </div>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>
