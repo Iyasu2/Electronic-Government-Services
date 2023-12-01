@@ -1,0 +1,70 @@
+{% extends "base.html" %} {% block title %}Reject{% endblock %} {% block content
+%}
+<body onload="openPopup()">
+  <!-- The popup -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <textarea
+        id="comment"
+        placeholder="Enter your comment"
+        style="height: 150px"
+        .
+      ></textarea>
+      <button onclick="submitComment('/admin/reject', '{{ table_name }}')">
+        Send
+      </button>
+      <button onclick="go_back('/admin/reject', 'close', '{{ table_name }}')">
+        Close
+      </button>
+    </div>
+  </div>
+  <style>
+    /* Styles for the popup */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f9f9f9;
+      padding: 20px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+    }
+    .popup-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .popup textarea {
+      margin-bottom: 10px;
+      width: 400px;
+    }
+    .popup button {
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    function openPopup() {
+      var popup = document.getElementById("popup");
+      popup.style.display = "block";
+    }
+    function go_back(variable, buttonType, tableName) {
+      window.location.href =
+        variable + "?button_type=" + buttonType + "&table_name=" + tableName;
+    }
+    function submitComment(variable, tableName) {
+      var comment = document.getElementById("comment").value;
+
+      fetch(variable, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment: comment, table_name: tableName }),
+      }).then((_res) => {
+        window.location.href = variable;
+      });
+    }
+  </script>
+</body>
+{% endblock %}

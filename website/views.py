@@ -136,10 +136,8 @@ def birth_certificate_admin():
             flash('Application approved', category='success')
             return redirect(url_for('views.home_admin'))
         elif action == 'reject':
-            birth.pending = PendingStatus.APPLIED_REJECTED
-            db.session.commit()
-            flash('Application rejected', category='error')
-            return redirect(url_for('views.home_admin'))
+            table_name = Birth_certificate.__tablename__
+            return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth)
     
 @views.route('/form/driver_license_renewal', methods=['GET', 'POST'])
@@ -220,10 +218,8 @@ def driver_license_renewal_admin():
             flash('Application approved', category='success')
             return redirect(url_for('views.home_admin'))
         elif action == 'reject':
-            license.pending = PendingStatus.APPLIED_REJECTED
-            db.session.commit()
-            flash('Application rejected', category='error')
-            return redirect(url_for('views.home_admin'))
+            table_name = Driver_license_renewal.__tablename__
+            return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
     return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license)
     
@@ -308,12 +304,10 @@ def national_id_admin():
             flash('Application approved', category='success')
             return redirect(url_for('views.home_admin'))
         elif action == 'reject':
-            national_id.pending = PendingStatus.APPLIED_REJECTED
-            db.session.commit()
-            flash('Application rejected', category='error')
-            return redirect(url_for('views.home_admin'))
-    national = National_id.query.filter_by(user_id=user_id).first()
-    return render_template("national_id_admin.html", user=current_user, National_id=national)
+            table_name = National_id.__tablename__
+            return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
+    
+    return render_template("national_id_admin.html", user=current_user, National_id=national_id)
     
 @views.route('/applications', methods=['GET'])
 @login_required
@@ -340,3 +334,39 @@ def applications():
             applied_models.append((table_name, table_id, 'Rejected'))
             
     return render_template('applications.html', tables=applied_models, user=current_user)
+
+@views.route('/admin/reject', methods=['GET', 'POST'])
+@login_required
+def reject_admin():
+    table_name = request.args.get('table_name')
+    if request.method == 'POST':
+        data = request.get_json()
+        table_name = data.get('table_name')
+        view_func = f'views.{table_name}_admin'
+        button_type = data.get('button_type')
+        if button_type == 'close':
+            return redirect(url_for(view_func))
+        else:
+            user_id = data.get('user_id')
+            comment = data.get('comment')
+
+            if table_name == 'national_id':
+                table = National_id.query.filter_by(user_id=user_id).first()
+            elif table_name == 'driver_license_renewal':
+                table = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+            elif table_name == 'birth_certificate':
+                table = Birth_certificate.query.filter_by(user_id=user_id).first()
+            else:
+                # Handle the case when the table name is not recognized
+                flash('Invalid table name', category='error')
+                return redirect(url_for('views.reject_admin'))
+            if table:
+                table.comment = comment
+                table.pending = PendingStatus.APPLIED_REJECTED
+                db.session.commit()
+                flash('Application rejected', category='error')
+            else:
+                # Handle the case when the table is not found
+                flash('Table not found', category='error')
+
+    return render_template('reject_admin.html', user=current_user, table_name=table_name)

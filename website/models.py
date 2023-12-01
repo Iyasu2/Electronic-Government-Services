@@ -20,6 +20,7 @@ class Common():
     region = db.Column(db.String(50))
     photo = db.Column(db.String(100))
     pending = db.Column(db.Enum(PendingStatus), default=PendingStatus.NOT_APPLIED)
+    comment = db.Column(db.String(255), default='')
 
 class Common2():
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +36,8 @@ class Driver_license_renewal(Common, Common2, db.Model):
     grade = db.Column(db.String(20))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    __tablename__ = 'driver_license_renewal'
+
 class National_id(Common, Common2, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ecName = db.Column(db.String(50))
@@ -42,11 +45,15 @@ class National_id(Common, Common2, db.Model):
     expiryDate = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    __tablename__ = 'national_id'
+
 class Birth_certificate(Common, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fatherfullName = db.Column(db.String(50))
     motherfullName = db.Column(db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    __tablename__ = 'birth_certificate'
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
