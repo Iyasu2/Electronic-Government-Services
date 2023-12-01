@@ -148,13 +148,13 @@ content %}
     </div>
     <div class="col-md-3">
       <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
+        <label for="phoneNumber">Phone Number(+251-{9 digits})</label>
         <input
           type="tel"
           class="form-control"
           id="phoneNumber"
           name="phoneNumber"
-          placeholder="Enter Phone Number(+251-{9 digits})"
+          placeholder="Enter Phone Number"
           value="{{National_id.phoneNumber if National_id.phoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
@@ -216,13 +216,15 @@ content %}
     </div>
     <div class="col-md-3">
       <div class="form-group">
-        <label for="ecphoneNumber">Emergency Contact Phone Number</label>
+        <label for="ecphoneNumber"
+          >Emergency Contact Phone Number(+251-{9 digits})</label
+        >
         <input
           type="tel"
           class="form-control"
           id="ecphoneNumber"
           name="ecphoneNumber"
-          placeholder="Enter Emergency Contact Phone Number(+251-{9 digits})"
+          placeholder="Enter Emergency Contact Phone Number"
           value="{{National_id.ecphoneNumber if National_id.ecphoneNumber}}"
           pattern="^(\+251-)?\d{9}$"
           value="+251-"
