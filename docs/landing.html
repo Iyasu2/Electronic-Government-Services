@@ -1,0 +1,481 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<!-- Favicons -->
+<link href="assets/img/favicon.png" rel="icon" />
+<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/boxicons/2.0.7/css/boxicons.min.css">
+
+<link
+  href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+  rel="stylesheet"
+/>
+
+<!-- Vendor CSS Files -->
+<link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link
+  href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+  rel="stylesheet"
+/>
+<link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+<link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+<link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style_landing.css') }}"
+/>
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<!-- Hero -->
+<section
+  id="hero"
+  class="d-flex align-items-center"
+  data-aos="fade-up"
+  data-aos-delay="500"
+>
+  <div
+    class="container fade-in position-relative"
+    data-aos="fade-up"
+    data-aos-delay="500"
+  >
+    <h1>Welcome to E-GOV</h1>
+    <h2>Where modern technology meets government services.</h2>
+    <a href="#about" class="btn-get-started scrollto">Get Started</a>
+  </div>
+</section>
+<!-- End Hero -->
+
+<main id="main">
+  <!-- ======= About Section ======= -->
+  <section style="color: aliceblue;" id="about" class="about" data-aos="fade-up">
+    <div class="container fade-in">
+      <div class="section-title">
+        <span class="section-subtitle">About</span>
+        <h2 class="invisible">About</h2>
+</div>
+      <div class="row">
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left">
+          <img
+            src="static/assets/about.jpg"
+            class="img-fluid rounded-corner"
+            alt=""
+          />
+        </div>
+        <div
+          class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content"
+          data-aos="fade-right"
+          <h3 class="mb-4">Streamlined Application Process</h3>
+          <p class="fst-italic mb-4">
+            Simplifying your experience for a seamless journey.
+          </p>
+          <ul class="list-unstyled mb-4">
+            <li>
+              <strong>Effortless Applications:</strong> Apply for driver's
+              licenses, birth certificates, and national IDs through
+              user-friendly online forms.
+            </li>
+            <li>
+              <strong>Application Tracking:</strong> Keep tabs on your
+              application status, starting from the "Pending" stage.
+            </li>
+            <li>
+              <strong>User Control:</strong> Edit or delete your submissions,
+              providing you with flexibility and control.
+            </li>
+            <li>
+              <strong>Admin Oversight:</strong> An intuitive admin panel ensures
+              efficient application review and management, empowering
+              administrators to approve or deny applications after necessary
+              checks.
+            </li>
+          </ul>
+          <p>
+            Traditionally, individuals were forced to endure lengthy queues and time-consuming processes, often resulting in substantial delays and disruptions to their daily lives. This predicament not only hindered people from efficiently managing their time but also posed a significant obstacle to their professional pursuits. Many individuals faced the unfortunate consequence of missing important opportunities, job interviews, and crucial appointments due to the cumbersome and inefficient nature of government service applications.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End About Section -->
+
+  <!-- ======= Services Section ======= -->
+<section id="services" class="services zoom-select" style="border: none;">
+  <div class="container mt-5">
+    <div class="section-title">
+      <span class="section-subtitle">Services</span>
+      <h2 class="invisible">Services</h2>
+      <!-- <p>Sit sint consectetur velit quisquam cupiditate impedit suscipit alias</p> -->
+    </div>
+    <div class="row">
+      <div class="col-lg-4" data-aos="fade-up">
+        <div class="box service-card dark-bg"> <!-- Added dark-bg class -->
+          <img
+            src="static/assets/Driver's License Renewal.jpg"
+            class="card-img-top"
+            alt="Driver's License Renewal"
+          />
+          <span>01</span>
+          <h5 style="color: aliceblue;"card-title">Driver's License</h5>
+          <p class="card-text">
+            Start your journey towards a Driver's License! Our user-friendly
+            form makes the application process quick and easy. Get ready for
+            the freedom to explore the open road.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="150">
+        <div class="box service-card dark-bg"> <!-- Added dark-bg class -->
+          <img
+            src="static/assets/National Id.jpg"
+            class="card-img-top"
+            alt="Driver's License Renewal"
+          />
+          <span>02</span>
+          <h5 style="color: aliceblue;"card-title">National ID</h5>
+          <p class="card-text">
+            Apply for your National ID to secure your identity and access
+            essential services. Our streamlined process ensures a hassle-free
+            application experience.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+        <div class="box service-card dark-bg"> <!-- Added dark-bg class -->
+          <img
+            src="static/assets/Birth Certificate.jpg"
+            class="card-img-top"
+            alt="Driver's License Renewal"
+          />
+          <span>03</span>
+          <h5 style="color: aliceblue;"card-title">Birth Certificate</h5>
+          <p class="card-text">
+            Secure your official Birth Certificate with our streamlined
+            application process. Experience a hassle-free journey to obtaining
+            this vital document.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Services Section -->
+
+
+
+  
+  <!-- ======= Cta Section ======= -->
+  <section id="cta" class="cta">
+    <div class="container" data-aos="zoom-in">
+      <div class="text-center">
+        <h3>Signup Now</h3>
+        <p>
+          Please Signup now to access our different services like applying for Driver's license renewal, Birth certificate and National id.
+        </p>
+        <!-- <a class="cta-btn" href="#">Get Started</a> -->
+        <a style="color: aliceblue;" class="cta-btn" id="signUp" onclick="window.location.href='/signup'" href="#">Sign up</a>
+      </div>
+    </div>
+  </section>
+  <!-- End Cta Section -->
+
+  <!-- ======= Team Section ======= -->
+<section id="team" class="team">
+  <div class="container">
+    <div class="section-title text-center">
+      <span class="section-subtitle">Team</span>
+      <h2 class="invisible">Our Amazing Team</h2>
+      <!-- <p>Sit sint consectetur velit quisquam cupiditate impedit suscipit alias</p> -->
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="zoom-select col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in">
+        <div class="box member">
+          <img src="static/assets/Profile(W).jpg" alt="" />
+          <h4>Abel Demere</h4>
+          <span>Frontend Engineer</span>
+          <p>Implementing the visual and interactive elements of the website</p>
+          <div class="social">
+            <a href="https://www.linkedin.com/in/abel-demere-521776269/"><box-icon type='logo' name='linkedin'></box-icon></a></a>
+            <a href="https://github.com/Ab-Ruh"><box-icon name='github' type='logo' ></box-icon></a></a>
+            <a href="https://twitter.com/AbellDemere"><box-icon name='twitter' type='logo' ></box-icon></a></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="zoom-select col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+        <div class="box member">
+          <img src="static/assets/profile_iya.jpg" alt="" />
+          <h4>Iyasu Asnake</h4>
+          <span>Backend Engineer</span>
+          <p>Handle the logic, data storage, and communication between the frontend and backend systems</p>
+          <div class="social">
+            <a href="https://www.linkedin.com/in/iyasu-asnake-9616251b1/"><box-icon type='logo' name='linkedin'></box-icon></a></a>
+            <a href="https://github.com/Iyasu2"><box-icon name='github' type='logo' ></box-icon></a></a>
+            <a href="https://twitter.com/AsnakeIyasu"><box-icon name='twitter' type='logo' ></box-icon></a></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Team Section -->
+
+
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact">
+    <div style="color: aliceblue;" class="container mt-5">
+      <div class="section-title">
+        <span class="section-subtitle">Contact</span>
+        <h2 class="invisible">Clients</h2>
+        <!-- <p>
+          Sit sint consectetur velit quisquam cupiditate impedit suscipit alias
+        </p> -->
+      </div>
+
+      <div class="row" data-aos="fade-up">
+        <div class="col-lg-6">
+          <div class="info-box mb-4">
+            <box-icon name='map'></box-icon>
+            
+            <h3>Our Address</h3>
+            <p>Lebu, Addis Ababa</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <box-icon type='solid' name='envelope'></box-icon>
+            <h3>Email Us</h3>
+            <p>egov@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <box-icon name='phone-call' ></box-icon>
+            <h3>Call Us</h3>
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" data-aos="fade-up">
+        <div class="col-lg-6">
+          <iframe
+            class="mb-4 mb-lg-0"
+            src="https://www.google.com/maps/d/embed?mid=1l7_7snjVPATCA7b6tIBnneUTuHI&hl=en&ehbc=2E312F"
+            frameborder="0"
+            style="border: 0; width: 100%; height: 384px"
+            allowfullscreen
+          ></iframe>
+          <!-- <iframe class="mb-4 mb-lg-0" src="269!3d40.7101282!39443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe> -->
+        </div>
+
+        <div class="col-lg-6">
+          <form
+            action="forms/contact.php"
+            method="post"
+            role="form"
+            class="php-email-form"
+          >
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  id="name"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <input
+                type="text"
+                class="form-control"
+                name="subject"
+                id="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+            <div class="form-group mt-3">
+              <textarea
+                class="form-control"
+                name="message"
+                rows="5"
+                placeholder="Message"
+                required
+              ></textarea>
+            </div>
+            <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">
+                Your message has been sent. Thank you!
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Contact Section -->
+</main>
+<!-- ======= Footer ======= -->
+<footer id="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-info">
+            <h3>E-GOV</h3>
+            <p>
+              Lebu <br />
+              Addis Ababa Ethiopia<br /><br />
+              <strong>Phone:</strong> +251<br />
+              <strong>Email:</strong> egov@gmail.com<br />
+            </p>
+            <div class="social-links mt-3">
+              <!-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a> -->
+              <a href="#" class="google-plus"><box-icon name='github' type='logo' ></box-icon></a>
+              <a href="#" class="linkedin"><box-icon type='logo' name='linkedin'></box-icon></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">About us</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">Services</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i>
+              <a href="#">Terms of service</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">Web Design</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i>
+              <a href="#">Web Development</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i>
+              <a href="#">Product Management</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">Marketing</a>
+            </li>
+            <li>
+              <i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a>
+            </li>
+          </ul>
+        </div> -->
+
+        <!-- <div class="col-lg-4 col-md-6 footer-newsletter">
+          <h4>Our Newsletter</h4>
+          <p>
+            Tamen quem nulla quae legam multos aute sint culpa legam noster
+            magna
+          </p>
+          <form action="" method="post">
+            <input type="email" name="email" /><input
+              type="submit"
+              value="Subscribe"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="container">
+    <div class="copyright">
+      &copy; Copyright <strong><span>E-GOV</span></strong
+      >. All Rights Reserved
+    </div>
+    <div class="credits">
+  
+    </div>
+  </div>
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"
+  ><i class="bi bi-arrow-up-short"></i
+></a>
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="static/assets/vendor/aos/aos.js"></script>
+<script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script type="text/javascript" src="../static/your_js_file.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const elements = document.querySelectorAll(".fade-in");
+
+    function fadeInOnScroll() {
+      elements.forEach((element) => {
+        if (isElementInViewport(element)) {
+          element.classList.add("appear");
+        }
+      });
+    }
+
+    function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <=
+          (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <=
+          (window.innerWidth || document.documentElement.clientWidth)
+      );
+    }
+
+    window.addEventListener("scroll", fadeInOnScroll);
+    fadeInOnScroll(); // Trigger the animation on page load
+  });
+</script>
+{% endblock %}
