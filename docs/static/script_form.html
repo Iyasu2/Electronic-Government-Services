@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Button Container</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      .button-pair {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+      }
+
+      .button-wrapper {
+        position: relative;
+        width: 200px;
+        height: 150px;
+        margin: 0 10px;
+        overflow: hidden;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4" id="button-container"></div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const buttonTexts = [
+        { text: "Driver's license Renewal", route: "driver_license_renewal" },
+        { text: "National ID", route: "national_id" },
+        { text: "Birth Certificate", route: "birth_certificate" },
+      ];
+      const container = document.getElementById("button-container");
+
+      for (let i = 0; i < buttonTexts.length; i++) {
+        if (i % 2 === 0) {
+          const buttonPairDiv = document.createElement("div");
+          buttonPairDiv.className = "button-pair";
+          container.appendChild(buttonPairDiv);
+        }
+
+        const buttonDiv = document.createElement("div");
+        buttonDiv.className = "button-wrapper";
+        container.lastElementChild.appendChild(buttonDiv);
+
+        const button = document.createElement("a");
+        button.textContent = "Apply";
+        button.href = "/form/" + buttonTexts[i].route;
+        buttonDiv.appendChild(button);
+
+        const text = document.createElement("p");
+        text.textContent = buttonTexts[i].text;
+        buttonDiv.appendChild(text);
+      }
+    </script>
+  </body>
+</html>

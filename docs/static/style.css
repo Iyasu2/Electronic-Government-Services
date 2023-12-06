@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "arial", sans-serif;
+}
+
+
+body,
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  margin-top: 25px;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "arial", sans-serif;
+}
+
+.navbar {
+  background-color: #030303; /* Change this color to the background color you want */
+  z-index: 1000; /* Adjust the value as needed */
+}
+.navbar a {
+  position: relative;
+  font-size: 1.1em;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navbar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 3px;
+  background: #2236ea;
+  border-radius: 5px;
+  transform-origin: left;
+  transform: scalex(0);
+  transition: transform 0.5s;
+}
+.navbar a:hover::after {
+  transform: scalex(1);
+}
+
+.navbar .btnLogin-popup {
+  width: 130px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid #fff;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.5s;
+}
+.navbar .btnLogin-popup:hover {
+  background: #fff;
+  color: #162938;
+}
