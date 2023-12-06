@@ -1,11 +1,38 @@
 {% extends "base.html" %} {% block title %}BirthCertificate{% endblock %} {%
 block content %}
-<form
-  method="POST"
-  enctype="multipart/form-data"
-  onsubmit="return validateForm()"
->
+<link rel="stylesheet" href="/static/style_form.css" />
+<div class="container mt-5 mb-5">
+  <form
+    method="POST"
+    enctype="multipart/form-data"
+    style="color: rgb(0, 0, 0)"
+    onsubmit="return validateForm()"
+  >
   <h3 align="center">Application</h3>
+  <div class="container mt-5">
+    <div class="row text-center">
+      <div class="col-lg-4 col-md-6 mx-auto">
+        <div class="service-card mx-auto">
+          <div class="d-flex align-items-center justify-content-center">
+            <img
+              id="cardImage"
+              class="card-img-top2"
+              src="/static/uploads/{{ Driver_license_renewal.photo.split('/')[-1] }}"
+              alt="Placeholder Image"
+            />
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            name="fileInput"
+            style="display: none"
+            onchange="previewImage(this)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col-md-3">
       <div class="form-group">
@@ -84,19 +111,6 @@ block content %}
           id="region"
           name="region"
           value="{{Driver_license_renewal.region}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="photo">photo(.jpg or .png)</label>
-        <input
-          type="text"
-          class="form-control"
-          id="photo"
-          name="photo"
-          value="{{Driver_license_renewal.photo}}"
           readonly
         />
       </div>
@@ -216,5 +230,26 @@ block content %}
       </button>
     </div>
   </div>
+  </div>
 </form>
+
+<script>
+  function previewImage(input) {
+if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+        document.getElementById('cardImage').src = e.target.result;
+    }
+    
+    reader.readAsDataURL(input.files[0]);
+}
+}
+
+var photoPath = "/static/uploads/{{ Driver_license_renewal.photo.split('/')[-1] }}"
+if (photoPath && photoPath !== "https://via.placeholder.com/300x400") {
+  var image = document.getElementById("cardImage");
+  image.src = photoPath;
+}
+</script>
 {% endblock %}

@@ -57,6 +57,7 @@ def delete_application():
     data = request.get_json()
     table_id = data['table_id']
 
+
     table_models = [Driver_license_renewal, National_id, Birth_certificate]
     for table_model in table_models:
         table = table_model.query.filter_by(user_id=current_user.id, id=table_id).first()
@@ -91,16 +92,16 @@ def birth_certificate():
         pending = PendingStatus.APPLIED_PENDING
         fatherfullName = request.form.get('fatherfullName')
         motherfullName = request.form.get('motherfullName')
-        if form.validate_on_submit():
-            file = form.file.data
-            filename_parts = file.filename.rsplit('.', 1)
-            if len(filename_parts) > 1:
-                file_extension = filename_parts[1].lower()
-            else:
-                file_extension = ""
-            filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
-            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
-            photo = UPLOAD_FOLDER + '/' + filename
+        
+        file = request.files['fileInput']
+        filename_parts = file.filename.rsplit('.', 1)
+        if len(filename_parts) > 1:
+            file_extension = filename_parts[1].lower()
+        else:
+            file_extension = ""
+        filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
+        photo = UPLOAD_FOLDER + '/' + filename
 
         existing_birth_certificate = Birth_certificate.query.filter_by(user_id=current_user.id).first()
         if existing_birth_certificate:
@@ -110,7 +111,8 @@ def birth_certificate():
             existing_birth_certificate.birthDay = birthDay
             existing_birth_certificate.gender = gender
             existing_birth_certificate.region = region
-            existing_birth_certificate.photo = photo
+            if file:
+                existing_birth_certificate.photo = photo
             existing_birth_certificate.pending = pending
             existing_birth_certificate.fatherfullName = fatherfullName
             existing_birth_certificate.motherfullName = motherfullName
@@ -168,16 +170,15 @@ def driver_license_renewal():
         expiryDate_str = request.form.get('expiryDate')
         expiryDate = datetime.strptime(expiryDate_str, '%Y-%m-%d').date()
         grade = request.form.get('grade')
-        if form.validate_on_submit():
-            file = form.file.data
-            filename_parts = file.filename.rsplit('.', 1)
-            if len(filename_parts) > 1:
-                file_extension = filename_parts[1].lower()
-            else:
-                file_extension = ""
-            filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
-            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
-            photo = UPLOAD_FOLDER + '/' + filename
+        file = request.files['fileInput']
+        filename_parts = file.filename.rsplit('.', 1)
+        if len(filename_parts) > 1:
+            file_extension = filename_parts[1].lower()
+        else:
+            file_extension = ""
+        filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
+        photo = UPLOAD_FOLDER + '/' + filename
 
         existing_driver_license_renewal = Driver_license_renewal.query.filter_by(user_id=current_user.id).first()
         if existing_driver_license_renewal:
@@ -187,7 +188,8 @@ def driver_license_renewal():
             existing_driver_license_renewal.birthDay = birthDay
             existing_driver_license_renewal.gender = gender
             existing_driver_license_renewal.region = region
-            existing_driver_license_renewal.photo = photo
+            if file:
+                existing_driver_license_renewal.photo = photo
             existing_driver_license_renewal.pending = pending
             existing_driver_license_renewal.subCity = subCity
             existing_driver_license_renewal.woreda = woreda
@@ -252,16 +254,15 @@ def national_id():
         expiryDate = datetime.strptime(expiryDate_str, '%Y-%m-%d').date()
         ecName = request.form.get('ecName')
         ecphoneNumber = request.form.get('ecphoneNumber')
-        if form.validate_on_submit():
-            file = form.file.data
-            filename_parts = file.filename.rsplit('.', 1)
-            if len(filename_parts) > 1:
-                file_extension = filename_parts[1].lower()
-            else:
-                file_extension = ""
-            filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
-            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
-            photo = UPLOAD_FOLDER + '/' + filename
+        file = request.files['fileInput']
+        filename_parts = file.filename.rsplit('.', 1)
+        if len(filename_parts) > 1:
+            file_extension = filename_parts[1].lower()
+        else:
+            file_extension = ""
+        filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
+        photo = UPLOAD_FOLDER + '/' + filename
 
         new_national_id = National_id(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, subCity=subCity, woreda=woreda, houseNumber=houseNumber, phoneNumber=phoneNumber, bloodType=bloodType, expiryDate=expiryDate, ecName=ecName, ecphoneNumber=ecphoneNumber, user_id=current_user.id)
         existing_national_id = National_id.query.filter_by(user_id=current_user.id).first()
@@ -272,7 +273,8 @@ def national_id():
             existing_national_id.birthDay = birthDay
             existing_national_id.gender = gender
             existing_national_id.region = region
-            existing_national_id.photo = photo
+            if file:
+                existing_national_id.photo = photo
             existing_national_id.pending = pending
             existing_national_id.subCity = subCity
             existing_national_id.woreda = woreda

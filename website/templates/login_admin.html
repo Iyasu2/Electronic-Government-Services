@@ -1,28 +1,75 @@
-{% extends "base.html" %} {% block title %}Admin Login{% endblock %} {% block content
-    %}
-    <form method="POST">
-        <h3 align="center">Admin Login</h3>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            placeholder="Enter email"
-          />
+{% extends "base.html" %} {% block title %}Admin Login{% endblock %} {% block
+content %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='style_login-signup.css') }}"
+/>
+<style></style>
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <!-- Center the row -->
+    <div class="col-lg-4">
+      <div class="card service-card">
+        <img src="static/assets/login.jpg" class="card-img-top" alt="Login" />
+        <div class="card-body">
+          <!-- Transparent blurred card with rounded corners -->
+          <div class="blurred-card">
+            <form method="POST" style="color: white">
+              <h3 style="color: black" align="center">Welcome back!</h3>
+              <div class="form-group">
+                <div class="input-group">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Email Address"
+                    aria-label="Email Address"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="basic-addon2"
+                  />
+                </div>
+              </div>
+              <div class="remember-forgot">
+                <label><input type="checkbox" /> Remember</label>
+                <a href="#">Forgot Password?</a>
+              </div>
+              <div class="justify-content-center">
+                <button type="submit" class="form-control btn-primary btn-lg">
+                  Login
+                </button>
+                <div class="login-register">
+                  <p>
+                    Don't have an admin account?
+                    <a
+                      href="#"
+                      class="register-link"
+                      onclick="window.location.href='/admin/signup'"
+                      >Register</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End of transparent blurred card -->
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            placeholder="Enter password"
-          />
-        <br />
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-    {% endblock %}
-    
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

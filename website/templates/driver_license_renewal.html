@@ -1,225 +1,309 @@
-{% extends "base.html" %} {% block title %}Driver'slicense{% endblock %} {%
+{% extends "base.html" %} {% block title %}Driver's license{% endblock %} {%
 block content %}
-<form
-  method="POST"
-  enctype="multipart/form-data"
-  onsubmit="return validateForm()"
->
+<link rel="stylesheet" href="/static/style_form.css" />
+<div class="container mt-5 mb-5">
+  <form
+    method="POST"
+    enctype="multipart/form-data"
+    style="color: white"
+    onsubmit="return validateForm()"
+  >
   <h3 align="center">Please fill in this form</h3>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="firstName"
-          name="firstName"
-          placeholder="Enter first name"
-          value="{{Driver_license_renewal.firstName if Driver_license_renewal.firstName}}"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="fatherName">Father's Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="fatherName"
-          name="fatherName"
-          placeholder="Enter Father's name"
-          value="{{Driver_license_renewal.fatherName if Driver_license_renewal.fatherName}}"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="gfatherName">Grandfather's Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="gfatherName"
-          name="gfatherName"
-          placeholder="Enter Grandfather's name"
-          value="{{Driver_license_renewal.gfatherName if Driver_license_renewal.gfatherName}}"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="birthDay">Date of Birth</label>
-        <input
-          type="date"
-          class="form-control"
-          id="birthDay"
-          name="birthDay"
-          placeholder="Enter Date of Birth"
-          value="{{Driver_license_renewal.birthDay if Driver_license_renewal.birthDay}}"
-          required
-        />
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="gender">Gender</label>
-        <select class="form-control" id="gender" name="gender" required>
-          <option value="">Select Gender</option>
-          {% if Driver_license_renewal.gender %}
-          <option value="{{ Driver_license_renewal.gender }}" selected>
-            {{ Driver_license_renewal.gender }}
-          </option>
-          {% endif %}
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="region">Region</label>
-        <input
-          type="text"
-          class="form-control"
-          id="region"
-          name="region"
-          placeholder="Enter Region"
-          value="{{Driver_license_renewal.region if Driver_license_renewal.region}}"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="photo">Upload a 3x4 photo(.jpg or .png)</label>
-        {{form.hidden_tag()}} {{form.file()}}
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="subCity">Sub-City</label>
-        <input
-          type="text"
-          class="form-control"
-          id="subCity"
-          name="subCity"
-          placeholder="Enter Sub-City"
-          value="{{Driver_license_renewal.subCity if Driver_license_renewal.subCity}}"
-          required
-        />
-      </div>
-    </div>
-  </div>
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-lg-4 col-md-6 mx-auto">
+          <div class="service-card mx-auto">
+            <div class="d-flex align-items-center justify-content-center">
+              <img
+                id="cardImage"
+                class="card-img-top2"
+                src="{% if Driver_license_renewal.photo %}/static/uploads/{{ Driver_license_renewal.photo.split('/')[-1] }}{% else %}https://via.placeholder.com/300x400{% endif %}"
+                alt="Placeholder Image"
+              />
+            </div>
+            {{ form.hidden_tag() }}
+            <input
+              type="file"
+              id="fileInput"
+              name="fileInput"
+              style="display: none"
+              onchange="previewImage(this)"
+            />
 
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="woreda">Woreda</label>
-        <input
-          type="text"
-          class="form-control"
-          id="woreda"
-          name="woreda"
-          placeholder="Enter Woreda"
-          value="{{Driver_license_renewal.woreda if Driver_license_renewal.woreda}}"
-          required
-        />
+            <!-- Visible button to trigger file input click -->
+            <button
+              type="button"
+              style="width: 175px;"
+              class="btn btn-primary rounded-bottom"
+              onclick="openFileInput()"
+            >
+              Select Image
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="houseNumber">House Number</label>
-        <input
-          type="text"
-          class="form-control"
-          id="houseNumber"
-          name="houseNumber"
-          placeholder="Enter House Number"
-          value="{{Driver_license_renewal.houseNumber if Driver_license_renewal.houseNumber}}"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number(+251-{9 digits})</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="phoneNumber"
-          name="phoneNumber"
-          placeholder="Enter Phone Number"
-          value="{{Driver_license_renewal.phoneNumber if Driver_license_renewal.phoneNumber}}"
-          pattern="^(\+251-)?\d{9}$"
-          value="+251-"
-          required
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="bloodType">Blood Type</label>
-        <select class="form-control" id="bloodType" name="bloodType" required>
-          <option value="">Select Bloodtype</option>
-          {% if Driver_license_renewal.bloodType %}
-          <option value="{{ Driver_license_renewal.bloodType }}" selected>
-            {{ Driver_license_renewal.bloodType }}
-          </option>
-          {% endif %}
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-        </select>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="expiryDate">Current ID Expiry Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="expiryDate"
-          name="expiryDate"
-          placeholder="Current ID Expiry Date"
-          value="{{Driver_license_renewal.expiryDate if Driver_license_renewal.expiryDate}}"
-          required
-        />
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter first name"
+            value="{{Driver_license_renewal.firstName if Driver_license_renewal.firstName}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="fatherName">Father's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="fatherName"
+            name="fatherName"
+            placeholder="Enter Father's name"
+            value="{{Driver_license_renewal.fatherName if Driver_license_renewal.fatherName}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="gfatherName">Grandfather's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="gfatherName"
+            name="gfatherName"
+            placeholder="Enter Grandfather's name"
+            value="{{Driver_license_renewal.gfatherName if Driver_license_renewal.gfatherName}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="birthDay">Date of Birth</label>
+          <input
+            type="date"
+            class="form-control"
+            id="birthDay"
+            name="birthDay"
+            placeholder="Enter Date of Birth"
+            value="{{Driver_license_renewal.birthDay if Driver_license_renewal.birthDay}}"
+            required
+          />
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="grade">Grade</label>
-        <select class="form-control" id="grade" name="grade" required>
-          <option value="">Select license grade</option>
-          {% if Driver_license_renewal.grade %}
-          <option value="{{ Driver_license_renewal.grade }}" selected>
-            {{ Driver_license_renewal.grade }}
-          </option>
-          {% endif %}
-          <option value="Auto">Auto</option>
-          <option value="Public1">Public1</option>
-          <option value="Public2">Public2</option>
-          <option value="Heavy Truck">Heavy Truck</option>
-        </select>
-      </div>
-    </div>
-  </div>
 
-  <br />
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select class="form-control" id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            {% if Driver_license_renewal.gender %}
+            <option value="{{ Driver_license_renewal.gender }}" selected>
+              {{ Driver_license_renewal.gender }}
+            </option>
+            {% endif %}
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="region">Region</label>
+          <input
+            type="text"
+            class="form-control"
+            id="region"
+            name="region"
+            placeholder="Enter Region"
+            value="{{Driver_license_renewal.region if Driver_license_renewal.region}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="subCity">Sub-City</label>
+          <input
+            type="text"
+            class="form-control"
+            id="subCity"
+            name="subCity"
+            placeholder="Enter Sub-City"
+            value="{{Driver_license_renewal.subCity if Driver_license_renewal.subCity}}"
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="woreda">Woreda</label>
+          <input
+            type="text"
+            class="form-control"
+            id="woreda"
+            name="woreda"
+            placeholder="Enter Woreda"
+            value="{{Driver_license_renewal.woreda if Driver_license_renewal.woreda}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="houseNumber">House Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="houseNumber"
+            name="houseNumber"
+            placeholder="Enter House Number"
+            value="{{Driver_license_renewal.houseNumber if Driver_license_renewal.houseNumber}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number(+251-{9 digits})</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            name="phoneNumber"
+            placeholder="Enter Phone Number"
+            value="{{Driver_license_renewal.phoneNumber if Driver_license_renewal.phoneNumber}}"
+            pattern="^(\+251-)?\d{9}$"
+            value="+251-"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="bloodType">Blood Type</label>
+          <select class="form-control" id="bloodType" name="bloodType" required>
+            <option value="">Select Bloodtype</option>
+            {% if Driver_license_renewal.bloodType %}
+            <option value="{{ Driver_license_renewal.bloodType }}" selected>
+              {{ Driver_license_renewal.bloodType }}
+            </option>
+            {% endif %}
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="expiryDate">Current ID Expiry Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="expiryDate"
+            name="expiryDate"
+            placeholder="Current ID Expiry Date"
+            value="{{Driver_license_renewal.expiryDate if Driver_license_renewal.expiryDate}}"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="grade">Grade</label>
+          <select class="form-control" id="grade" name="grade" required>
+            <option value="">Select license grade</option>
+            {% if Driver_license_renewal.grade %}
+            <option value="{{ Driver_license_renewal.grade }}" selected>
+              {{ Driver_license_renewal.grade }}
+            </option>
+            {% endif %}
+            <option value="Auto">Auto</option>
+            <option value="Public1">Public1</option>
+            <option value="Public2">Public2</option>
+            <option value="Heavy Truck">Heavy Truck</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <!-- Additional form rows -->
+
+    <div class="row justify-content-center">
+      <button type="submit" class="btn btn-primary btn-sm" style="width: 100px">
+        Submit
+      </button>
+    </div>
+  </form>
+
+  <script>
+    function redirectToForm(formPath) {
+      // Add your logic to redirect to the specified form path
+      console.log("Redirect to form: " + formPath);
+
+      // Trigger the file input click when "Apply" is clicked
+      var fileUploadButton = document.getElementById("fileUpload");
+      fileUploadButton.click();
+    }
+
+    function openFileInput() {
+      // Trigger the hidden file input click when the button is clicked
+      document.getElementById("fileInput").click();
+    }
+
+    function validateForm() {
+      var fileInput = document.getElementById("fileInput");
+      var photoPath = "{{ Driver_license_renewal.photo }}";
+      if (!photoPath && fileInput.files.length === 0) {
+        alert("Please upload an image.");
+        return false;
+      }
+      return true;
+    }
+
+    function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('cardImage').src = e.target.result;
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+var photoPath = "{% if Driver_license_renewal.photo %}/static/uploads/{{ Driver_license_renewal.photo.split('/')[-1] }}{% else %}https://via.placeholder.com/300x400{% endif %}"
+if (photoPath && photoPath !== "https://via.placeholder.com/300x400") {
+      var image = document.getElementById("cardImage");
+      image.src = photoPath;
+    }
+  </script>
+</div>
 {% endblock %}

@@ -11,7 +11,6 @@ class PendingStatus(Enum):
     APPLIED_REJECTED = 'Applied and Rejected'
 
 class Common():
-    id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.String(50))
     fatherName = db.Column(db.String(50))
     gfatherName = db.Column(db.String(50))
@@ -23,7 +22,6 @@ class Common():
     comment = db.Column(db.String(255), default='')
 
 class Common2():
-    id = db.Column(db.Integer, primary_key=True)
     subCity = db.Column(db.String(50))
     woreda = db.Column(db.String(50))
     houseNumber = db.Column(db.String(50))
@@ -31,7 +29,7 @@ class Common2():
     bloodType = db.Column(db.String(10))
 
 class Driver_license_renewal(Common, Common2, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     expiryDate = db.Column(db.Date)
     grade = db.Column(db.String(20))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -39,7 +37,7 @@ class Driver_license_renewal(Common, Common2, db.Model):
     __tablename__ = 'driver_license_renewal'
 
 class National_id(Common, Common2, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     ecName = db.Column(db.String(50))
     ecphoneNumber = db.Column(db.String(50))
     expiryDate = db.Column(db.Date)
@@ -48,7 +46,7 @@ class National_id(Common, Common2, db.Model):
     __tablename__ = 'national_id'
 
 class Birth_certificate(Common, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fatherfullName = db.Column(db.String(50))
     motherfullName = db.Column(db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

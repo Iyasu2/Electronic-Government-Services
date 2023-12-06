@@ -1,57 +1,51 @@
-{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block
-content %}
-<h1>Applications</h1>
-<ul>
-  {% for table in tables %}
-  <li style="font-size: 20px; font-weight: bold">
-    {{ table[0] }} - {% if table[2] == 'Accepted' %}
-    <span style="color: green">Accepted</span>
-    <div>
-      <div>
-        <button class="btn btn-primary" disabled>Edit</button>
-        <button class="btn btn-primary" disabled>Delete</button>
+{% extends "base.html" %} {% block title %}Applications{% endblock %} {% block content %}
+<link rel="stylesheet" href="/static/style_home.css" />
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Applications</h1>
+  <div class="row">
+    {% for table in tables %}
+    <div class="col-lg-4 mb-4">
+      <div class="card service-card">
+        <img src="static/assets/Driver's License Renewal.jpg" class="card-img-top" alt="Driver's License Renewal" />
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 20px; font-weight: bold">
+            {{ table[0] | upper }} -
+            {% if table[2] == 'Accepted' %}
+            <div class="text-success mb-3">Accepted</div>
+            <div class="btn-group" role="group">
+              <button class="btn btn-secondary" disabled>Edit</button>
+              <button class="btn btn-secondary" disabled>Delete</button>
+            </div>
+            {% elif table[2] == 'Pending' %}
+            <div class="text-purple mb-3">Pending</div>
+            <div class="btn-group mt-2" role="group">
+              <button class="btn btn-success" onclick="redirectToForm('/{{ table[0] }}', 'button1')">Edit</button>
+              <button class="btn btn-danger" onclick="sendDeleteRequest('{{ table[1] }}')">Delete</button>
+            </div>
+            {% elif table[2] == 'Rejected' %}
+            <div class="text-danger mb-3">Rejected</div>
+            <div class="btn-group" role="group">
+              <button class="btn btn-secondary" disabled>Edit</button>
+              <button class="btn btn-secondary" disabled>Delete</button>
+            </div>
+            <div class="mt-2">
+              <button class="btn btn-primary" onclick="readComment('{{ table[3] }}', '{{ table[0] }}')">Read Comment</button>
+            </div>
+            {% endif %}
+          </h5>
+        </div>
       </div>
     </div>
-    {% elif table[2] == 'Pending' %}
-    <span style="color: purple">Pending</span>
-    <div>
-      <div>
-        <button
-          class="btn btn-primary"
-          onclick="redirectToForm('/{{ table[0] }}', 'button1')"
-        >
-          Edit
-        </button>
-        <button
-          class="btn btn-primary"
-          onclick="sendDeleteRequest('{{ table[1] }}')"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-    {% elif table[2] == 'Rejected' %}
-    <span style="color: red">Rejected</span>
-    <div>
-      <div>
-        <button class="btn btn-primary" disabled>Edit</button>
-        <button class="btn btn-primary" disabled>Delete</button>
-      </div>
-    </div>
-    <div>
-      <button class="btn btn-primary" onclick="readComment('{{ table[3] }}')">
-        Read Comment
-      </button>
-    </div>
-    {% endif %}
-  </li>
-  {% endfor %}
-</ul>
+    {% endfor %}
+  </div>
+</div>
+<div id="commentDisplay" class="card sliding-card mt-3"></div> <!-- Container to display the comment -->
 <script>
   function redirectToForm(variable, buttonType) {
     var route = "/form" + variable + "?button_type=" + buttonType;
     window.location.href = route;
   }
+
   function sendDeleteRequest(table_id) {
     fetch("/delete", {
       method: "POST",
@@ -63,8 +57,45 @@ content %}
       window.location.href = "/";
     });
   }
-  function readComment(comment) {
-    alert("Comment: " + comment);
+
+  function readComment(comment, cardId) {
+    // Create a sliding card with the comment
+    var commentCard = document.getElementById("commentDisplay");
+    commentCard.innerHTML = "<div class='card-body'><p class='card-text'><strong>Comment:</strong> " + comment + "</p></div>";
+
+    // Add animation classes for sliding effect
+    commentCard.classList.add("slide-in");
+    commentCard.classList.remove("slide-out");
+
+    // Set a timeout to remove the card after a few seconds (adjust as needed)
+    setTimeout(function () {
+      commentCard.classList.add("slide-out");
+      commentCard.classList.remove("slide-in");
+      commentCard.innerHTML = ""; // Clear the content after sliding out
+    }, 5000); // Adjust the duration of the card display
   }
 </script>
+<style>
+  .sliding-card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    border-radius: 15px; /* Rounded corners */
+    overflow: hidden; /* Hide overflow for rounded corners */
+    transition: transform 0.5s ease-in-out;
+    transform: translateY(100%);
+    z-index: 1000;
+    background-color: #ffffff; /* Card background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for elevation */
+  }
+
+  .slide-in {
+    transform: translateY(0);
+  }
+
+  .slide-out {
+    transform: translateY(100%);
+  }
+</style>
 {% endblock %}

@@ -1,233 +1,271 @@
-{% extends "base.html" %} {% block title %}BirthCertificate{% endblock %} {%
-block content %}
-<form
-  method="POST"
-  enctype="multipart/form-data"
-  onsubmit="return validateForm()"
->
-  <h3 align="center">Application</h3>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="firstName"
-          name="firstName"
-          value="{{National_id.firstName}}"
-          readonly
-        />
+{% extends "base.html" %} {% block title %}National_id{% endblock %} {%
+  block content %}
+  <link rel="stylesheet" href="/static/style_form.css" />
+  <div class="container mt-5 mb-5">
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      style="color: rgb(0, 0, 0)"
+      onsubmit="return validateForm()"
+    >
+    <h3 align="center">Application</h3>
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-lg-4 col-md-6 mx-auto">
+          <div class="service-card mx-auto">
+            <div class="d-flex align-items-center justify-content-center">
+              <img
+                id="cardImage"
+                class="card-img-top2"
+                src="/static/uploads/{{ National_id.photo.split('/')[-1] }}"
+                alt="Placeholder Image"
+              />
+            </div>
+            <input
+              type="file"
+              id="fileInput"
+              name="fileInput"
+              style="display: none"
+              onchange="previewImage(this)"
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="fatherName">Father's Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="fatherName"
-          name="fatherName"
-          value="{{National_id.fatherName}}"
-          readonly
-        />
+    
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            value="{{National_id.firstName}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="fatherName">Father's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="fatherName"
+            name="fatherName"
+            value="{{National_id.fatherName}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="gfatherName">Grandfather's Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="gfatherName"
+            name="gfatherName"
+            value="{{National_id.gfatherName}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="birthDay">Date of Birth</label>
+          <input
+            type="date"
+            class="form-control"
+            id="birthDay"
+            name="birthDay"
+            value="{{National_id.birthDay}}"
+            readonly
+          />
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="gfatherName">Grandfather's Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="gfatherName"
-          name="gfatherName"
-          value="{{National_id.gfatherName}}"
-          readonly
-        />
+  
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <input
+            type="text"
+            class="form-control"
+            id="gender"
+            name="gender"
+            value="{{National_id.gender}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="region">Region</label>
+          <input
+            type="text"
+            class="form-control"
+            id="region"
+            name="region"
+            value="{{National_id.region}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="subCity">Sub-City</label>
+          <input
+            type="text"
+            class="form-control"
+            id="subCity"
+            name="subCity"
+            value="{{National_id.subCity}}"
+            readonly
+          />
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="birthDay">Date of Birth</label>
-        <input
-          type="date"
-          class="form-control"
-          id="birthDay"
-          name="birthDay"
-          value="{{National_id.birthDay}}"
-          readonly
-        />
+  
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="woreda">Woreda</label>
+          <input
+            type="text"
+            class="form-control"
+            id="woreda"
+            name="woreda"
+            value="{{National_id.woreda}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="houseNumber">House Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="houseNumber"
+            name="houseNumber"
+            value="{{National_id.houseNumber}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            name="phoneNumber"
+            value="{{National_id.phoneNumber}}"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="bloodType">Blood Type</label>
+          <input
+            type="text"
+            class="form-control"
+            id="bloodType"
+            name="bloodType"
+            value="{{National_id.bloodType}}"
+            readonly
+          />
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="gender">Gender</label>
-        <input
-          type="text"
-          class="form-control"
-          id="gender"
-          name="gender"
-          value="{{National_id.gender}}"
-          readonly
-        />
+  
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="expiryDate">Current ID Expiry Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="expiryDate"
+            name="expiryDate"
+            value="{{National_id.expiryDate}}"
+            readonly
+          />
+        </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="ecName">Emergency Contact Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="ecName"
+              name="ecName"
+              value="{{National_id.ecName}}"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="ecphoneNumber"
+              >Emergency Contact Number</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              id="ecphoneNumber"
+              name="ecphoneNumber"
+              value="{{National_id.ecphoneNumber}}"
+              readonly
+            />
+          </div>
+        </div>
+    </div>
+  
+    <br />
+    <div class="d-flex justify-content-center">
+      <div class="btn-group" role="group">
+        <button
+          type="submit"
+          name="action"
+          value="approve"
+          class="btn btn-success"
+        >
+          Approve
+        </button>
+        <button type="submit" name="action" value="reject" class="btn btn-danger">
+          Reject
+        </button>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="region">Region</label>
-        <input
-          type="text"
-          class="form-control"
-          id="region"
-          name="region"
-          value="{{National_id.region}}"
-          readonly
-        />
-      </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="photo">photo(.jpg or .png)</label>
-        <input
-          type="text"
-          class="form-control"
-          id="photo"
-          name="photo"
-          value="{{National_id.photo}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="subCity">Sub-City</label>
-        <input
-          type="text"
-          class="form-control"
-          id="subCity"
-          name="subCity"
-          value="{{National_id.subCity}}"
-          readonly
-        />
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="woreda">Woreda</label>
-        <input
-          type="text"
-          class="form-control"
-          id="woreda"
-          name="woreda"
-          value="{{National_id.woreda}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="houseNumber">House Number</label>
-        <input
-          type="text"
-          class="form-control"
-          id="houseNumber"
-          name="houseNumber"
-          value="{{National_id.houseNumber}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="phoneNumber"
-          name="phoneNumber"
-          value="{{National_id.phoneNumber}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="bloodType">Blood Type</label>
-        <input
-          type="text"
-          class="form-control"
-          id="bloodType"
-          name="bloodType"
-          value="{{National_id.bloodType}}"
-          readonly
-        />
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="expiryDate">Current ID Expiry Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="expiryDate"
-          name="expiryDate"
-          value="{{National_id.expiryDate}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="ecName">Emergency Contact Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="ecName"
-          name="ecName"
-          value="{{National_id.ecName}}"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="ecphoneNumber">Emergency Contact Phone Number</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="ecphoneNumber"
-          name="ecphoneNumber"
-          value="{{National_id.ecphoneNumber}}"
-          readonly
-        />
-      </div>
-    </div>
-  </div>
-
-  <br />
-  <div class="d-flex justify-content-center">
-    <div class="btn-group" role="group">
-      <button
-        type="submit"
-        name="action"
-        value="approve"
-        class="btn btn-success"
-      >
-        Approve
-      </button>
-      <button type="submit" name="action" value="reject" class="btn btn-danger">
-        Reject
-      </button>
-    </div>
-  </div>
-</form>
-{% endblock %}
+  </form>
+  
+  <script>
+    function previewImage(input) {
+  if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      
+      reader.onload = function(e) {
+          document.getElementById('cardImage').src = e.target.result;
+      }
+      
+      reader.readAsDataURL(input.files[0]);
+  }
+  }
+  
+  var photoPath = "/static/uploads/{{ National_id.photo.split('/')[-1] }}"
+  if (photoPath && photoPath !== "https://via.placeholder.com/300x400") {
+    var image = document.getElementById("cardImage");
+    image.src = photoPath;
+  }
+  </script>
+  {% endblock %}
+  

@@ -3,6 +3,10 @@
 <head>
   <link
     rel="stylesheet"
+    href="{{ url_for('static', filename='style_home.css') }}"
+  />
+  <link
+    rel="stylesheet"
     href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous"
@@ -16,7 +20,7 @@
 <body>
   <div class="container mt-5">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-4 col-md-6">
         <div class="card service-card">
           <img
             src="static/assets/Driver's License Renewal.jpg"
@@ -26,7 +30,9 @@
           <div class="card-body">
             <h5 class="card-title">Driver's License</h5>
             <p class="card-text">
-              Get your Driver's license renewed quick by filling out this form!!
+              Start your journey towards a Driver's License! Our user-friendly
+            form makes the application process quick and easy. Get ready for
+            the freedom to explore the open road.
             </p>
             <button
               class="btn btn-primary btn-apply"
@@ -38,7 +44,7 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md-6">
         <div class="card service-card">
           <img
             src="static/assets/National Id.jpg"
@@ -48,7 +54,9 @@
           <div class="card-body">
             <h5 class="card-title">National ID</h5>
             <p class="card-text">
-              Get your National ID issued quick by filling out this form
+              Apply for your National ID to secure your identity and access
+            essential services. Our streamlined process ensures a hassle-free
+            application experience.
             </p>
             <button
               class="btn btn-primary btn-apply"
@@ -60,7 +68,7 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md-6">
         <div class="card service-card">
           <img
             src="static/assets/Birth Certificate.jpg"
@@ -70,7 +78,9 @@
           <div class="card-body">
             <h5 class="card-title">Birth Certificate</h5>
             <p class="card-text">
-              Get your Birth Certificate here quickly by filling out this form
+              Secure your official Birth Certificate with our streamlined
+            application process. Experience a hassle-free journey to obtaining
+            this vital document.
             </p>
             <button
               class="btn btn-primary btn-apply"
@@ -84,47 +94,10 @@
     </div>
   </div>
 
-  <style>
-    .service-card {
-      margin: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-      max-width: 300px; /* Set the maximum width of the card */
-    }
-
-    .service-card:hover img {
-      transform: scale(1.05);
-    }
-
-    .service-card:hover .card-body {
-      transform: scale(1.05);
-    }
-
-    .card-img-top {
-      height: 200px;
-      object-fit: cover;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    .card-body {
-      background-color: #007bff;
-      color: #fff;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    .btn-apply {
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-    }
-
-    .service-card:hover .btn-apply {
-      opacity: 1;
-    }
-  </style>
-
   <script>
     function redirectToForm(variable, buttonType) {
-      var route = "/form" + variable + "?button_type=" + buttonType;
+      const route = "/form" + variable + "?button_type=" + buttonType;
+      console.log(route);
       window.location.href = route;
     }
   </script>
