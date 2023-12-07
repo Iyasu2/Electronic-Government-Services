@@ -2,7 +2,7 @@ body {
   margin-top: 0px;
 }
 html, body {
-  background: url("assets/background.jpg") top center;
+  background: url("assets/Background.jpg") top center;
 }
 .button-pair {
   display: flex;
