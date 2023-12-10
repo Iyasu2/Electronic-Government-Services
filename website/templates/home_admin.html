@@ -17,9 +17,9 @@
               <ul style="list-style-type: none; padding-left: 0;">
                 {% for table_name in applications %}
                   <li style="font-size: 15px; font-weight: bold;">
-                    {{ table_name }}
+                    {{ table_name[0] }}
                     <div class="mt-1"> <!-- Adjusted margin here -->
-                      <button class="btn btn-primary" onclick="redirectToForm('/{{ table_name.lower() }}', '{{ user_id }}')">
+                      <button class="btn btn-primary" onclick="redirectToForm('/{{ table_name[0].lower() }}', '{{ user_id }}', '{{ table_name[1] }}')">
                         Review
                       </button>
                     </div>
@@ -35,8 +35,12 @@
   </div>
 </div>
 <script>
-  function redirectToForm(variable, user_id) {
+  function redirectToForm(variable, user_id, pending_status) {
     var route = "/admin/form" + variable + "?user_id=" + user_id;
+    if (pending_status == 'APPLIED_AWAITING_VERIFICATION') {
+      route += "&status="
+      route += pending_status
+    }
     window.location.href = route;
   }
 </script>

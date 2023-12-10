@@ -26,22 +26,23 @@ def home():
 @views.route('/admin/home', methods=['GET', 'POST'])
 @login_required
 def home_admin():
-    applied_pending_models = []
+    applied_models = []
 
     table_models = [(Driver_license_renewal, 'Driver_license_renewal'), (National_id, 'National_id'), (Birth_certificate, 'Birth_certificate')]
 
     for table_model, table_name in table_models:
-        table_pending_status = table_model.query.filter_by(pending=PendingStatus.APPLIED_PENDING).all()
+        table_pending_status = table_model.query.filter((table_model.pending == PendingStatus.APPLIED_PENDING) | (table_model.pending == PendingStatus.APPLIED_AWAITING_VERIFICATION)).all()
         for item in table_pending_status:
             user_id = item.user_id
-            applied_pending_models.append((user_id, table_name))
+            pending_status = item.pending.name
+            applied_models.append((user_id, table_name, pending_status))
 
     grouped_applications = {}
-    for user_id, table_name in applied_pending_models:
+    for user_id, table_name, pending_status in applied_models:
         if user_id in grouped_applications:
-            grouped_applications[user_id].append(table_name)
+            grouped_applications[user_id].append((table_name, pending_status))
         else:
-            grouped_applications[user_id] = [table_name]
+            grouped_applications[user_id] = [(table_name, pending_status)]
             
     return render_template('home_admin.html', tables=grouped_applications, user=current_user)
 
@@ -129,18 +130,26 @@ def birth_certificate():
 @login_required
 def birth_certificate_admin():
     user_id = request.args.get('user_id', type=int)
+    pending_status = request.args.get('status', type=str)
     birth = Birth_certificate.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
         action = request.form.get('action')
+        table_name = Birth_certificate.__tablename__
         if action == 'approve':
-            birth.pending = PendingStatus.APPLIED_ACCEPTED
-            db.session.commit()
-            flash('Application approved', category='success')
-            return redirect(url_for('views.home_admin'))
+            if pending_status != 'APPLIED_AWAITING_VERIFICATION':
+                birth.pending = PendingStatus.APPLIED_AWAITING_VERIFICATION
+                db.session.commit()
+                flash('Application awaiting physical verification', category='success')
+                return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
+            else:
+                birth.pending = PendingStatus.APPLIED_ACCEPTED
+                db.session.commit()
+                flash('Application accepted', category='success')
+                return redirect(url_for('views.home_admin'))
+            
         elif action == 'reject':
-            table_name = Birth_certificate.__tablename__
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
-    return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth)
+    return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth, status=pending_status)
     
 @views.route('/form/driver_license_renewal', methods=['GET', 'POST'])
 @login_required
@@ -211,19 +220,25 @@ def driver_license_renewal():
 @login_required
 def driver_license_renewal_admin():
     user_id = request.args.get('user_id', type=int)
+    pending_status = request.args.get('status', type=str)
     license = Driver_license_renewal.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
         action = request.form.get('action')
+        table_name = Driver_license_renewal.__tablename__
         if action == 'approve':
-            license.pending = PendingStatus.APPLIED_ACCEPTED
-            db.session.commit()
-            flash('Application approved', category='success')
-            return redirect(url_for('views.home_admin'))
+            if pending_status != 'APPLIED_AWAITING_VERIFICATION':
+                license.pending = PendingStatus.APPLIED_AWAITING_VERIFICATION
+                db.session.commit()
+                flash('Application awaiting physical verification', category='success')
+                return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
+            else:
+                license.pending = PendingStatus.APPLIED_ACCEPTED
+                db.session.commit()
+                flash('Application accepted', category='success')
+                return redirect(url_for('views.home_admin'))
         elif action == 'reject':
-            table_name = Driver_license_renewal.__tablename__
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
-    
-    return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license)
+    return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license, status=pending_status)
     
 @views.route('/form/national_id', methods=['GET', 'POST'])
 @login_required
@@ -297,19 +312,26 @@ def national_id():
 @login_required
 def national_id_admin():
     user_id = request.args.get('user_id', type=int)
+    pending_status = request.args.get('status', type=str)
     national_id = National_id.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
         action = request.form.get('action')
+        table_name = National_id.__tablename__
         if action == 'approve':
-            national_id.pending = PendingStatus.APPLIED_ACCEPTED
-            db.session.commit()
-            flash('Application approved', category='success')
-            return redirect(url_for('views.home_admin'))
+            if pending_status != 'APPLIED_AWAITING_VERIFICATION':
+                national_id.pending = PendingStatus.APPLIED_AWAITING_VERIFICATION
+                db.session.commit()
+                flash('Application awaiting physical verification', category='success')
+                return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
+            else:
+                national_id.pending = PendingStatus.APPLIED_ACCEPTED
+                db.session.commit()
+                flash('Application accepted', category='success')
+                return redirect(url_for('views.home_admin'))
         elif action == 'reject':
-            table_name = National_id.__tablename__
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
-    return render_template("national_id_admin.html", user=current_user, National_id=national_id)
+    return render_template("national_id_admin.html", user=current_user, National_id=national_id, status=pending_status)
     
 @views.route('/applications', methods=['GET'])
 @login_required
@@ -333,7 +355,17 @@ def applications():
         table_rejected_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_REJECTED).first()
         if table_rejected_status:
             table_id = table_rejected_status.id
+            print(table_rejected_status.comment)
+            print(table_rejected_status.comment)
+            print(table_rejected_status.comment)
+            print(table_rejected_status.comment)
             applied_models.append((table_name, table_id, 'Rejected', table_rejected_status.comment))
+            print(applied_models)
+
+        table_waiting_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_AWAITING_VERIFICATION).first()
+        if table_waiting_status:
+            table_id = table_waiting_status.id
+            applied_models.append((table_name, table_id, 'Waiting', ''))
             
     return render_template('applications.html', tables=applied_models, user=current_user)
 
@@ -370,3 +402,53 @@ def reject_admin():
                 flash('Table not found', category='error')
 
     return render_template('reject_admin.html', user=current_user, user_id=user_id, table_name=table_name)
+
+@views.route('/admin/schedule', methods=['GET', 'POST'])
+@login_required
+def schedule_admin():
+    user_id = request.args.get('user_id')
+    table_name = request.args.get('table_name')
+    if request.method == 'POST':
+        date1_str = request.form.get('date1')
+        date2_str = request.form.get('date2')
+        date3_str = request.form.get('date3')
+        date4_str = request.form.get('date4')
+        date5_str = request.form.get('date5')
+
+        time1 = request.form.get('time1')
+        time2 = request.form.get('time2')
+        time3 = request.form.get('time3')
+        time4 = request.form.get('time4')
+        time5 = request.form.get('time5')
+
+        if table_name == 'national_id':
+            table = National_id.query.filter_by(user_id=user_id).first()
+        elif table_name == 'driver_license_renewal':
+            table = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+        elif table_name == 'birth_certificate':
+            table = Birth_certificate.query.filter_by(user_id=user_id).first()
+        else:
+            # Handle the case when the table name is not recognized
+            flash('Invalid table name', category='error')
+            return redirect(url_for('views.home_admin'))
+        if table:
+            date_format = "%Y-%m-%d"
+            table.Date1 = datetime.strptime(date1_str, date_format).date() if date1_str else None
+            table.Date2 = datetime.strptime(date2_str, date_format).date() if date2_str else None
+            table.Date3 = datetime.strptime(date3_str, date_format).date() if date3_str else None
+            table.Date4 = datetime.strptime(date4_str, date_format).date() if date4_str else None
+            table.Date5 = datetime.strptime(date5_str, date_format).date() if date5_str else None
+            table.time1 = time1
+            table.time2 = time2
+            table.time3 = time3
+            table.time4 = time4
+            table.time5 = time5
+            table.pending = PendingStatus.APPLIED_AWAITING_VERIFICATION
+            db.session.commit()
+            flash('Schedule sent. Waiting for user to choose', category='success')
+            return redirect(url_for('views.home_admin'))
+        else:
+            # Handle the case when the table is not found
+            flash('Table not found', category='error')
+
+    return render_template('schedule_admin.html', user=current_user, user_id=user_id, table_name=table_name)

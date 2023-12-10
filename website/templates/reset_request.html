@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Reset password{% endblock %} {% block content
+    %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style_login-signup.css') }}"
+    />
+    <style></style>
+    <div class="container mt-5 pt-5">
+      <div class="row justify-content-center">
+        <!-- Center the row -->
+        <div class="col-lg-4">
+          <div class="card service-card">
+            <img src="static/assets/login.jpg" class="card-img-top" alt="Login" />
+            <div class="card-body">
+              <!-- Transparent blurred card with rounded corners -->
+              <div class="blurred-card">
+                <form method="POST" style="color: white">
+                  <h3 style="color: black" align="center">Reset password!</h3>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Email Address"
+                        aria-label="Email Address"
+                        aria-describedby="basic-addon1"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div class="justify-content-center">
+                    <button type="submit" class="form-control btn-primary btn-lg">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- End of transparent blurred card -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+    

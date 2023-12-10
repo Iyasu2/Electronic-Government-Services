@@ -31,6 +31,15 @@
             <div class="mt-2">
               <button class="btn btn-primary" onclick="readComment('{{ table[3] }}', '{{ table[0] }}')">Read Comment</button>
             </div>
+            {% elif table[2] == 'Waiting' %}
+            <div class="text-danger mb-3">Awaiting Verification</div>
+            <div class="btn-group" role="group">
+              <button class="btn btn-secondary" disabled>Edit</button>
+              <button class="btn btn-secondary" disabled>Delete</button>
+            </div>
+            <div class="mt-2">
+              <button class="btn btn-primary" onclick="chooseSchedule('{{ table[3] }}', '{{ table[0] }}')">Choose Schedule</button>
+            </div>
             {% endif %}
           </h5>
         </div>

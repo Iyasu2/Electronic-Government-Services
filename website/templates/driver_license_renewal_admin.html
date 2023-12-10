@@ -215,8 +215,42 @@ block content %}
   </div>
 
   <br />
-  <div class="d-flex justify-content-center">
-    <div class="btn-group" role="group">
+  {% if status == 'APPLIED_AWAITING_VERIFICATION' %}
+          <div class="d-flex justify-content-center">
+            <div class="form-check">
+      <input type="checkbox" id="verificationCheck" name="verificationCheck" class="form-check-input">
+      <label for="verificationCheck" class="form-check-label" style="font-weight: bold;">Did you verify the user's identity through a zoom call?</label>
+      </div>
+      </div>
+      <div class="d-flex justify-content-center"></div>
+      <div class="btn-group" role="group">
+      <button
+        type="submit"
+        name="action"
+        value="approve"
+        class="btn btn-success"
+        id="approveButton"
+        disabled
+      >
+        Approve
+      </button>
+      <button 
+        type="submit" 
+        name="action" 
+        value="reject" 
+        class="btn btn-danger"
+        id="rejectButton"
+        disabled
+      >
+        Reject
+      </button>
+      <script>
+        document.getElementById('verificationCheck').addEventListener('change', function() {
+          document.getElementById('approveButton').disabled = !this.checked;
+          document.getElementById('rejectButton').disabled = !this.checked;
+        });
+      </script>
+    {% else %}
       <button
         type="submit"
         name="action"
@@ -225,12 +259,17 @@ block content %}
       >
         Approve
       </button>
-      <button type="submit" name="action" value="reject" class="btn btn-danger">
+      <button 
+        type="submit" 
+        name="action" 
+        value="reject" 
+        class="btn btn-danger"
+      >
         Reject
       </button>
-    </div>
-  </div>
-  </div>
+    {% endif %}
+          </div>
+          </div>
 </form>
 
 <script>

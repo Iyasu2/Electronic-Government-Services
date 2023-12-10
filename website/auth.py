@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User, Admin_User
-from . import db
+from . import db, mail
+from . import create_app as app
 from passlib.hash import sha256_crypt
 from flask_login import login_user, login_required, logout_user, current_user
+from flask_mail import Message
+ 
 
 auth = Blueprint('auth', __name__)
 
@@ -95,11 +98,62 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
-                flash('Incorrect password or email', category='error')
+                flash('Incorrect password', category='error')
         else:
             flash('Email does not exist.', category='error')
     return render_template("login.html", user=current_user)
 
+def send_email(user):
+    token = user.get_token()
+    msg = Message('Password Reset Request', recipients=[user.email], sender='noreply@egov.com')
+    msg.body = f''' To reset your password, Please follow the link below.
+
+    {url_for('auth.reset_token', token=token, _external=True)}
+If you didn't send a password reset request, Please ignore this message.
+
+'''
+    mail.send(msg)
+
+
+@auth.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            send_email(user) 
+            flash('Reset request sent. Check your email.', category='success')
+
+    return render_template("reset_request.html", user=current_user)
+
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    user = User.verify_token(token)
+    if user is None:
+        flash('That is an invalid or expired token!', category='error')
+        return redirect(url_for('reset_password'))
+
+    if request.method == 'POST':
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+
+        if password1 != password2:
+            flash('Passwords don\'t match.', category='error')
+            return redirect(url_for('auth.reset_token'))
+        elif len(password1) < 7:
+            #make sure password is strong
+            flash('Password must be at least 7 characters.', category='error')
+            return redirect(url_for('auth.reset_token'))
+        else:
+            user.password = sha256_crypt.hash(password1)
+            db.session.commit()
+            flash('Password changed!', category='success')
+            return redirect(url_for('auth.login'))
+        
+    return render_template("change_password.html", user=current_user)
+
+ 
 @auth.route('/admin/login', methods=['GET', 'POST'])
 def login_admin():
     if request.method == 'POST':
