@@ -252,16 +252,22 @@
     <script>
         function validateForm() {
       var date1 = document.getElementById('date1').value;
+      var time1 = document.getElementById('hour1').value + document.getElementById('minute1').value + document.getElementById('ampm1').value;
       var date2 = document.getElementById('date2').value;
+      var time2 = document.getElementById('hour2').value + document.getElementById('minute2').value + document.getElementById('ampm2').value;
       var date3 = document.getElementById('date3').value;
+      var time3 = document.getElementById('hour3').value + document.getElementById('minute3').value + document.getElementById('ampm3').value;
       var date4 = document.getElementById('date4').value;
+      var time4 = document.getElementById('hour4').value + document.getElementById('minute4').value + document.getElementById('ampm4').value;
       var date5 = document.getElementById('date5').value;
+      var time5 = document.getElementById('hour5').value + document.getElementById('minute5').value + document.getElementById('ampm5').value;
 
       var dates = [date1, date2, date3, date4, date5];
+      var times = [time1, time2, time3, time4, time5];
       var count = 0;
 
       for (var i = 0; i < dates.length; i++) {
-        if (dates[i] !== '') {
+        if (dates[i] !== '' && times[i] !== '') {
           count++;
         }
       }
@@ -269,7 +275,7 @@
       if (count >= 2) {
         return true;
       } else {
-        alert('Please insert at least two dates.');
+        alert('Please insert at least two dates and their associated times.');
         return false;
       }
     }

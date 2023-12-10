@@ -1,14 +1,20 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask_login import login_required, current_user, login_user, logout_user
 from .models import PendingStatus, Birth_certificate, National_id, Driver_license_renewal
 from . import db
-import json
+import pytz
+import requests
+import base64
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from wtforms.validators import InputRequired
+
+API_ID = '_WpL3z2nTC28wnlhzEzgww'
+API_SECRET = 'ZU38zpkGKNXa2ebibIb18iZPdSKcMsCU'
+REDIRECT_URI = 'http://127.0.0.1:5000/zoom_callback'
 
 views = Blueprint('views', __name__)
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
@@ -355,10 +361,6 @@ def applications():
         table_rejected_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_REJECTED).first()
         if table_rejected_status:
             table_id = table_rejected_status.id
-            print(table_rejected_status.comment)
-            print(table_rejected_status.comment)
-            print(table_rejected_status.comment)
-            print(table_rejected_status.comment)
             applied_models.append((table_name, table_id, 'Rejected', table_rejected_status.comment))
             print(applied_models)
 
@@ -406,20 +408,23 @@ def reject_admin():
 @views.route('/admin/schedule', methods=['GET', 'POST'])
 @login_required
 def schedule_admin():
+    possible_schedules = []
     user_id = request.args.get('user_id')
     table_name = request.args.get('table_name')
     if request.method == 'POST':
-        date1_str = request.form.get('date1')
-        date2_str = request.form.get('date2')
-        date3_str = request.form.get('date3')
-        date4_str = request.form.get('date4')
-        date5_str = request.form.get('date5')
+        date_format = "%Y-%m-%d"
+        time_format = "%I:%M %p"
+        for i in range(1, 6):
+            date_str = request.form.get(f'date{i}')
+            hour = request.form.get(f'hour{i}')
+            minute = request.form.get(f'minute{i}')
+            ampm = request.form.get(f'ampm{i}')
+            time_str = hour + ":" + minute + " " + ampm
 
-        time1 = request.form.get('time1')
-        time2 = request.form.get('time2')
-        time3 = request.form.get('time3')
-        time4 = request.form.get('time4')
-        time5 = request.form.get('time5')
+            if date_str and time_str:
+                date = datetime.strptime(date_str, date_format).date()
+                time = datetime.strptime(time_str, time_format).time()
+                possible_schedules.append((date, time))
 
         if table_name == 'national_id':
             table = National_id.query.filter_by(user_id=user_id).first()
@@ -432,17 +437,10 @@ def schedule_admin():
             flash('Invalid table name', category='error')
             return redirect(url_for('views.home_admin'))
         if table:
-            date_format = "%Y-%m-%d"
-            table.Date1 = datetime.strptime(date1_str, date_format).date() if date1_str else None
-            table.Date2 = datetime.strptime(date2_str, date_format).date() if date2_str else None
-            table.Date3 = datetime.strptime(date3_str, date_format).date() if date3_str else None
-            table.Date4 = datetime.strptime(date4_str, date_format).date() if date4_str else None
-            table.Date5 = datetime.strptime(date5_str, date_format).date() if date5_str else None
-            table.time1 = time1
-            table.time2 = time2
-            table.time3 = time3
-            table.time4 = time4
-            table.time5 = time5
+            for i, schedule in enumerate(possible_schedules):
+                date, time = schedule
+                setattr(table, f'Date{i+1}', date)
+                setattr(table, f'Time{i+1}', time)
             table.pending = PendingStatus.APPLIED_AWAITING_VERIFICATION
             db.session.commit()
             flash('Schedule sent. Waiting for user to choose', category='success')
@@ -452,3 +450,144 @@ def schedule_admin():
             flash('Table not found', category='error')
 
     return render_template('schedule_admin.html', user=current_user, user_id=user_id, table_name=table_name)
+
+@views.route('/see_schedule', methods=['GET', 'POST'])
+def see_schedule():
+    user_id = current_user.id
+    table_name = request.args.get('table_name')
+
+    schedule_list = []
+
+    if table_name == 'national_id':
+        table = National_id.query.filter_by(user_id=user_id).first()
+    elif table_name == 'driver_license_renewal':
+        table = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+    elif table_name == 'birth_certificate':
+        table = Birth_certificate.query.filter_by(user_id=user_id).first()
+    else:
+        # Handle the case when the table name is not recognized
+        flash('Invalid table name', category='error')
+        return redirect(url_for('views.home_admin'))
+
+    if table:
+        for i in range(1, 6):
+            date = getattr(table, f'Date{i}', None)
+            time = getattr(table, f'Time{i}', None)
+            if date and time:
+                schedule_list.append((date, time))
+    
+    if request.method == 'POST':
+        selected_schedule = request.form.get('schedule')
+        if selected_schedule:
+            selected_date, selected_time = selected_schedule.split(' ')
+            selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+            selected_time = datetime.strptime(selected_time, '%H:%M:%S').time()
+
+            # Update the table with the selected date and time
+            setattr(table, 'Date1', selected_date)
+            setattr(table, 'Time1', selected_time)
+
+            # Clear other dates and times
+            for i in range(2, 6):
+                setattr(table, f'Date{i}', None)
+                setattr(table, f'Time{i}', None)
+
+            db.session.commit()
+            flash('Schedule saved successfully', category='success')
+            return redirect(url_for('views.zoom', date=selected_date, time=selected_time))
+
+    return render_template('see_schedule.html', user=current_user, table_name=table_name, schedule_list=schedule_list)
+
+@views.route('/zoom', methods=['GET'])
+def zoom():
+    date_str = request.args.get('date')
+    time_str = request.args.get('time')
+
+    date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    time = datetime.strptime(time_str, '%H:%M:%S').time()
+
+    datetime_obj = datetime.combine(date, time)
+
+    # You may need to adjust the timezone based on your requirements
+    tz = pytz.timezone('Africa/Nairobi')
+    datetime_obj = tz.localize(datetime_obj)
+
+    # Generate the OAuth authorization URL
+    authorization_url = f'https://zoom.us/oauth/authorize?response_type=code&client_id={API_ID}&redirect_uri={REDIRECT_URI}'
+
+    # Store the date and time in session for later use
+    session['date'] = date
+    session['time'] = time_str
+
+    # Redirect the user to the OAuth authorization URL
+    return redirect(authorization_url)
+
+@views.route('/zoom_callback', methods=['GET'])
+def zoom_callback():
+    code = request.args.get('code')
+
+    # Exchange the authorization code for an access token
+    token_url = 'https://zoom.us/oauth/token'
+    payload = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': REDIRECT_URI
+    }
+    headers = {
+        'Authorization': f'Basic {base64.b64encode(f"{API_ID}:{API_SECRET}".encode()).decode()}'
+    }
+    response = requests.post(token_url, data=payload, headers=headers)
+    if response.status_code == 200:
+        access_token = response.json().get('access_token')
+
+        # Retrieve the stored date and time from session
+        date = session.pop('date', None)
+        time = session.pop('time', None)
+
+        if access_token and date and time:
+            date_obj = datetime.strptime(date, '%a, %d %b %Y %H:%M:%S %Z').date()
+            datetime_obj = datetime.combine(date_obj, datetime.strptime(time, '%H:%M:%S').time())
+
+            # You may need to adjust the timezone based on your requirements
+            tz = pytz.timezone('Africa/Nairobi')
+            datetime_obj = tz.localize(datetime_obj)
+
+            # Generate the Zoom meeting link based on the datetime
+            zoom_link = generate_zoom_link(access_token, datetime_obj)
+
+            # Redirect to the Zoom meeting link
+            return render_template('zoom.html', user=current_user, zoom_link=zoom_link, date=date_obj, time=time)
+
+    # Handle error case if the required data is missing
+    return "Error: Missing required data"
+
+def generate_zoom_link(access_token, datetime_obj):
+    # Convert the datetime object to ISO 8601 format
+    start_time = datetime_obj.isoformat()
+
+    # Set up the meeting parameters
+    meeting_params = {
+        'topic': 'Physical verification',
+        'type': 2,  # Scheduled meeting
+        'start_time': start_time,
+        'timezone': 'Africa/Nairobi',
+        'password': '123456',  # Set your desired password
+    }
+
+    # Create the Zoom meeting using the API
+    create_meeting_url = 'https://api.zoom.us/v2/users/me/meetings'
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(create_meeting_url, json=meeting_params, headers=headers)
+    if response.status_code == 201:
+        meeting_data = response.json()
+        meeting_id = meeting_data.get('id')
+        zoom_link = f'https://zoom.us/j/{meeting_id}'
+
+        # Return the generated Zoom meeting link
+        return zoom_link
+
+    # Handle error case if the meeting creation failed
+    return "Error: Failed to create Zoom meeting"

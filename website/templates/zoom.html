@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}Zoom meeting{% endblock %} {% block content
+    %}
+
+    <h1>Zoom Meeting Details</h1>
+    <p>Date: {{ date }}</p>
+    <p>Time: {{ time }}</p>
+    <p>Zoom Meeting Link: <a href="{{ zoom_link }}">{{ zoom_link }}</a></p>
+    <p>Please copy the Zoom meeting link to join the meeting.</p>
+
+    
+    {% endblock %}
