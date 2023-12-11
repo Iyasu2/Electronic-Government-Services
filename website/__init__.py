@@ -45,11 +45,11 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        user = User.query.get(int(id))
+        user = User.query.get(id)
         if user:
             return user
         
-        admin_user = Admin_User.query.get(int(id))
+        admin_user = Admin_User.query.get(id)
         if admin_user:
             return admin_user
         

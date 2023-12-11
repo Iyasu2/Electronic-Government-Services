@@ -34,6 +34,7 @@ class Common():
     Time3 = db.Column(db.Time)
     Time4 = db.Column(db.Time)
     Time5 = db.Column(db.Time)
+    link = db.Column(db.String)
 
 class Common2():
     subCity = db.Column(db.String(50))
@@ -46,7 +47,7 @@ class Driver_license_renewal(Common, Common2, db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     expiryDate = db.Column(db.Date)
     grade = db.Column(db.String(20))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String, db.ForeignKey('user.id'))
 
     __tablename__ = 'driver_license_renewal'
 
@@ -55,7 +56,7 @@ class National_id(Common, Common2, db.Model):
     ecName = db.Column(db.String(50))
     ecphoneNumber = db.Column(db.String(50))
     expiryDate = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String, db.ForeignKey('user.id'))
 
     __tablename__ = 'national_id'
 
@@ -63,16 +64,17 @@ class Birth_certificate(Common, db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fatherfullName = db.Column(db.String(50))
     motherfullName = db.Column(db.String(50))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String, db.ForeignKey('user.id'))
 
     __tablename__ = 'birth_certificate'
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
     first_name = db.Column(db.String(50))
     admin = db.Column(db.Boolean, default=False)
+    
 
     def get_token(self, expires_sec=300):
         serial = Serializer(current_app.config['SECRET_KEY'])

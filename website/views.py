@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask_login import login_required, current_user, login_user, logout_user
-from .models import PendingStatus, Birth_certificate, National_id, Driver_license_renewal
+from .models import PendingStatus, Birth_certificate, National_id, Driver_license_renewal, User
 from . import db
 import pytz
 import requests
@@ -135,7 +135,7 @@ def birth_certificate():
 @views.route('admin/form/birth_certificate', methods=['GET', 'POST'])
 @login_required
 def birth_certificate_admin():
-    user_id = request.args.get('user_id', type=int)
+    user_id = request.args.get('user_id')
     pending_status = request.args.get('status', type=str)
     birth = Birth_certificate.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
@@ -149,13 +149,20 @@ def birth_certificate_admin():
                 return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
             else:
                 birth.pending = PendingStatus.APPLIED_ACCEPTED
+                user = User.query.get(user_id)
+                if user:
+                    user.link = ''
                 db.session.commit()
                 flash('Application accepted', category='success')
                 return redirect(url_for('views.home_admin'))
             
         elif action == 'reject':
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
-    return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth, status=pending_status)
+    
+    user_link = birth.link if birth else None
+    date1 = birth.Date1 if birth else None
+    time1 = birth.Time1 if birth else None
+    return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth, status=pending_status, user_link=user_link, date1=date1, time1=time1)
     
 @views.route('/form/driver_license_renewal', methods=['GET', 'POST'])
 @login_required
@@ -225,7 +232,7 @@ def driver_license_renewal():
 @views.route('admin/form/driver_license_renewal', methods=['GET', 'POST'])
 @login_required
 def driver_license_renewal_admin():
-    user_id = request.args.get('user_id', type=int)
+    user_id = request.args.get('user_id')
     pending_status = request.args.get('status', type=str)
     license = Driver_license_renewal.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
@@ -239,12 +246,19 @@ def driver_license_renewal_admin():
                 return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
             else:
                 license.pending = PendingStatus.APPLIED_ACCEPTED
+                user = User.query.get(user_id)
+                if user:
+                    user.link = ''
                 db.session.commit()
                 flash('Application accepted', category='success')
                 return redirect(url_for('views.home_admin'))
         elif action == 'reject':
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
-    return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license, status=pending_status)
+    
+    user_link = license.link if license else None
+    date1 = license.Date1 if license else None
+    time1 = license.Time1 if license else None
+    return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license, status=pending_status, user_link=user_link, date1=date1, time1=time1)
     
 @views.route('/form/national_id', methods=['GET', 'POST'])
 @login_required
@@ -317,7 +331,7 @@ def national_id():
 @views.route('admin/form/national_id', methods=['GET', 'POST'])
 @login_required
 def national_id_admin():
-    user_id = request.args.get('user_id', type=int)
+    user_id = request.args.get('user_id')
     pending_status = request.args.get('status', type=str)
     national_id = National_id.query.filter_by(user_id=user_id).first()
     if request.method == 'POST':
@@ -331,13 +345,19 @@ def national_id_admin():
                 return redirect(url_for('views.schedule_admin', user_id=user_id, table_name=table_name))
             else:
                 national_id.pending = PendingStatus.APPLIED_ACCEPTED
+                user = User.query.get(user_id)
+                if user:
+                    user.link = ''
                 db.session.commit()
                 flash('Application accepted', category='success')
                 return redirect(url_for('views.home_admin'))
         elif action == 'reject':
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
-    return render_template("national_id_admin.html", user=current_user, National_id=national_id, status=pending_status)
+    user_link = national_id.link if national_id else None
+    date1 = national_id.Date1 if national_id else None
+    time1 = national_id.Time1 if national_id else None
+    return render_template("national_id_admin.html", user=current_user, National_id=national_id, status=pending_status, user_link=user_link, date1=date1, time1=time1)
     
 @views.route('/applications', methods=['GET'])
 @login_required
@@ -345,6 +365,7 @@ def applications():
     applied_models = []
 
     table_models = [Driver_license_renewal, National_id, Birth_certificate]
+    user_link = ''
 
     for table_model in table_models:
         table_name = table_model.__tablename__
@@ -367,9 +388,10 @@ def applications():
         table_waiting_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_AWAITING_VERIFICATION).first()
         if table_waiting_status:
             table_id = table_waiting_status.id
+            user_link = table_waiting_status.link
             applied_models.append((table_name, table_id, 'Waiting', ''))
             
-    return render_template('applications.html', tables=applied_models, user=current_user)
+    return render_template('applications.html', tables=applied_models, user=current_user, user_link=user_link)
 
 @views.route('/admin/reject', methods=['GET', 'POST'])
 @login_required
@@ -494,14 +516,18 @@ def see_schedule():
 
             db.session.commit()
             flash('Schedule saved successfully', category='success')
-            return redirect(url_for('views.zoom', date=selected_date, time=selected_time))
+            return redirect(url_for('views.zoom', date=selected_date, time=selected_time, table_name=table_name, user_id=user_id))
 
     return render_template('see_schedule.html', user=current_user, table_name=table_name, schedule_list=schedule_list)
 
 @views.route('/zoom', methods=['GET'])
 def zoom():
+    user_id = request.args.get('user_id')
     date_str = request.args.get('date')
     time_str = request.args.get('time')
+    table_name = request.args.get('table_name')
+    session['table_name'] = table_name
+    session['user_id'] = user_id
 
     date = datetime.strptime(date_str, '%Y-%m-%d').date()
     time = datetime.strptime(time_str, '%H:%M:%S').time()
@@ -513,7 +539,7 @@ def zoom():
     datetime_obj = tz.localize(datetime_obj)
 
     # Generate the OAuth authorization URL
-    authorization_url = f'https://zoom.us/oauth/authorize?response_type=code&client_id={API_ID}&redirect_uri={REDIRECT_URI}'
+    authorization_url = f'https://zoom.us/oauth/authorize?response_type=code&client_id={API_ID}&redirect_uri={REDIRECT_URI}&table_name={table_name}&user_id={user_id}'
 
     # Store the date and time in session for later use
     session['date'] = date
@@ -524,7 +550,31 @@ def zoom():
 
 @views.route('/zoom_callback', methods=['GET'])
 def zoom_callback():
+    user_id = session.get('user_id')
+    variable = request.args.get('variable')
+    table_name = session.get('table_name')
+    table = None
+    if variable == 'schedule_agreed':
+        zoom_link = ''
+        date_agreed = ''
+        time_agreed = ''
+        if table_name == 'national_id':
+            table = National_id.query.filter_by(user_id=user_id).first()
+        elif table_name == 'driver_license_renewal':
+            table = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+        elif table_name == 'birth_certificate':
+            table = Birth_certificate.query.filter_by(user_id=user_id).first()
+
+        if table:
+            date_agreed = table.Date1
+            time_agreed = table.Time1
+            zoom_link = table.link
+
+        
+        return render_template('zoom.html', user=current_user, zoom_link=zoom_link, date=date_agreed, time=time_agreed, table_name=table_name)
+
     code = request.args.get('code')
+    
 
     # Exchange the authorization code for an access token
     token_url = 'https://zoom.us/oauth/token'
@@ -555,8 +605,21 @@ def zoom_callback():
             # Generate the Zoom meeting link based on the datetime
             zoom_link = generate_zoom_link(access_token, datetime_obj)
 
+            
+            if table_name == 'national_id':
+                table = National_id.query.filter_by(user_id=user_id).first()
+            elif table_name == 'driver_license_renewal':
+                table = Driver_license_renewal.query.filter_by(user_id=user_id).first()
+            elif table_name == 'birth_certificate':
+                table = Birth_certificate.query.filter_by(user_id=user_id).first()
+
+
+            if table:
+                table.link = zoom_link
+            db.session.commit()
+
             # Redirect to the Zoom meeting link
-            return render_template('zoom.html', user=current_user, zoom_link=zoom_link, date=date_obj, time=time)
+            return render_template('zoom.html', user=current_user, zoom_link=zoom_link, date=date_obj, time=time, table_name=table_name)
 
     # Handle error case if the required data is missing
     return "Error: Missing required data"
@@ -585,6 +648,7 @@ def generate_zoom_link(access_token, datetime_obj):
         meeting_data = response.json()
         meeting_id = meeting_data.get('id')
         zoom_link = f'https://zoom.us/j/{meeting_id}'
+
 
         # Return the generated Zoom meeting link
         return zoom_link

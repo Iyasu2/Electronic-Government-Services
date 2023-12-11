@@ -37,9 +37,15 @@
               <button class="btn btn-secondary" disabled>Edit</button>
               <button class="btn btn-secondary" disabled>Delete</button>
             </div>
+            {% if user_link %}
+            <div class="mt-2">
+              <button class="btn btn-primary" onclick="seeSchedule('{{ table[0] }}', 'schedule_agreed')">See Schedule</button>
+            </div>
+            {% else %}
             <div class="mt-2">
               <button class="btn btn-primary" onclick="chooseSchedule('{{ table[0] }}')">Choose Schedule</button>
             </div>
+            {% endif %}
             {% endif %}
           </h5>
         </div>
@@ -87,6 +93,10 @@
     var route = "/see_schedule?table_name=" + table_name;
     window.location.href = route;
   }
+  function seeSchedule(table_name, variable) {
+    var route = "/zoom_callback?variable=" + variable + "&table_name=" + table_name;
+  window.location.href = route;
+}
 </script>
 <style>
   .sliding-card {
