@@ -87,6 +87,9 @@ def signup_admin():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        flash('You are already signed in!', category='error')
+        return redirect(url_for('views.home'))
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')

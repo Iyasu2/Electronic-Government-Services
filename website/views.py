@@ -160,6 +160,10 @@ def birth_certificate_admin():
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
     user_link = birth.link if birth else None
+    print(user_link)
+    print(user_link)
+    print(user_link)
+    print(user_link)
     date1 = birth.Date1 if birth else None
     time1 = birth.Time1 if birth else None
     return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth, status=pending_status, user_link=user_link, date1=date1, time1=time1)
@@ -256,6 +260,7 @@ def driver_license_renewal_admin():
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
     user_link = license.link if license else None
+    
     date1 = license.Date1 if license else None
     time1 = license.Time1 if license else None
     return render_template("driver_license_renewal_admin.html", user=current_user, Driver_license_renewal=license, status=pending_status, user_link=user_link, date1=date1, time1=time1)
@@ -366,6 +371,7 @@ def applications():
 
     table_models = [Driver_license_renewal, National_id, Birth_certificate]
     user_link = ''
+    i = 0
 
     for table_model in table_models:
         table_name = table_model.__tablename__
@@ -381,17 +387,24 @@ def applications():
 
         table_rejected_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_REJECTED).first()
         if table_rejected_status:
+            
             table_id = table_rejected_status.id
             applied_models.append((table_name, table_id, 'Rejected', table_rejected_status.comment))
             print(applied_models)
 
         table_waiting_status = table_model.query.filter_by(user_id=current_user.id, pending=PendingStatus.APPLIED_AWAITING_VERIFICATION).first()
         if table_waiting_status:
+            print(i)
             table_id = table_waiting_status.id
             user_link = table_waiting_status.link
-            applied_models.append((table_name, table_id, 'Waiting', ''))
+            print(user_link)
+            print(user_link)
+            print(user_link)
+            print(user_link)
+            applied_models.append((table_name, table_id, 'Waiting', user_link))
+            i += 1
             
-    return render_template('applications.html', tables=applied_models, user=current_user, user_link=user_link)
+    return render_template('applications.html', tables=applied_models, user=current_user)
 
 @views.route('/admin/reject', methods=['GET', 'POST'])
 @login_required
