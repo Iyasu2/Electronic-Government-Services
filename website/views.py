@@ -24,71 +24,124 @@ class UploadFileForm(FlaskForm):
     file = FileField("FILE", validators=[InputRequired()])
     submit = SubmitField("Upload File")
 
+from flask_login import login_required
+from flask import render_template, redirect, url_for
+
 @views.route('/home', methods=['GET', 'POST'])
-@login_required
+@login_required  # Ensure the user is logged in
 def home():
+    '''
+    route for the home page for the users
+    '''
+    # Render the home page for the current user
     return render_template("home.html", user=current_user)
 
 @views.route('/admin/home', methods=['GET', 'POST'])
-@login_required
+@login_required  # Ensure the user is logged in
 def home_admin():
+    '''
+    route for the home page for the admins
+    '''
+    # Initialize an empty list to store applied models
     applied_models = []
 
+    # Define the models for different tables
     table_models = [(Driver_license_renewal, 'Driver_license_renewal'), (National_id, 'National_id'), (Birth_certificate, 'Birth_certificate')]
 
+    # Iterate over each table model
     for table_model, table_name in table_models:
+        # Query the table for pending statuses
         table_pending_status = table_model.query.filter((table_model.pending == PendingStatus.APPLIED_PENDING) | (table_model.pending == PendingStatus.APPLIED_AWAITING_VERIFICATION)).all()
+        # Iterate over each item with a pending status
         for item in table_pending_status:
+            # Get the user ID and pending status
             user_id = item.user_id
             pending_status = item.pending.name
+            # Append the user ID, table name, and pending status to the applied models list
             applied_models.append((user_id, table_name, pending_status))
 
+    # Initialize an empty dictionary to group applications by user ID
     grouped_applications = {}
+    # Iterate over each applied model
     for user_id, table_name, pending_status in applied_models:
+        # If the user ID is already in the dictionary, append the table name and pending status
         if user_id in grouped_applications:
             grouped_applications[user_id].append((table_name, pending_status))
+        # Otherwise, add the user ID to the dictionary with the table name and pending status
         else:
             grouped_applications[user_id] = [(table_name, pending_status)]
             
+    # Render the admin home page with the grouped applications and current user
     return render_template('home_admin.html', tables=grouped_applications, user=current_user)
 
 @views.route('/', methods=['GET', 'POST'])
 def landing():
+    '''
+    route for the landing page
+    '''
+    # If the user is authenticated, redirect them to the home page
     if current_user.is_authenticated:
         return redirect(url_for('views.home'))
+    # Otherwise, render the landing page for the current user
     return render_template("landing.html", user=current_user)
 
+
 @views.route('/delete', methods=['POST'])
-@login_required
+@login_required  # Ensure the user is logged in
 def delete_application():
+    '''
+    This function deletes an application from the database
+    '''
+    
+    # Get the JSON data from the request
     data = request.get_json()
+    # Get the table ID from the data
     table_id = data['table_id']
 
-
+    # Define the models for different tables
     table_models = [Driver_license_renewal, National_id, Birth_certificate]
+    # Iterate over each table model
     for table_model in table_models:
+        # Query the table for the current user and table ID
         table = table_model.query.filter_by(user_id=current_user.id, id=table_id).first()
+        # If the table exists, delete it
         if table:
             db.session.delete(table)
             db.session.commit()
+            # Show a success message
             flash('Application deleted successfully.', category='success')
+            # Redirect to the applications page
             return redirect(url_for('views.applications', user_id=current_user.id))
 
+    # If the table does not exist, show an error message
     flash('Table not found.', category='error')
+    # Redirect to the applications page
     return redirect(url_for('views.applications'))
 
 @views.route('/form/birth_certificate', methods=['GET', 'POST'])
-@login_required
+@login_required  # Ensure the user is logged in
 def birth_certificate():
+    '''
+    This function handles the birth certificate form
+    '''
+    # Get the button type from the request arguments
     button_type = request.args.get('button_type')
+    # If the button type is 'button2', check for an existing application
     if button_type == 'button2':
         existing_application = Birth_certificate.query.filter_by(user_id=current_user.id).first()
+        # If an application already exists and is pending or accepted, show an error message
         if existing_application and existing_application.pending in [PendingStatus.APPLIED_PENDING, PendingStatus.APPLIED_ACCEPTED]:
             flash('Application already exists!', category='error')
+            # Redirect to the home page
             return redirect(url_for('views.home'))
+
+    # Initialize the form
     form = UploadFileForm()
+    # Initialize the photo variable
     photo = None
+    # If the request method is POST, process the form data
     if request.method == 'POST':
+        # Get the form data
         firstName = request.form.get('firstName')
         fatherName = request.form.get('fatherName')
         gfatherName = request.form.get('gfatherName')
@@ -100,17 +153,25 @@ def birth_certificate():
         fatherfullName = request.form.get('fatherfullName')
         motherfullName = request.form.get('motherfullName')
         
+        # Get the file from the form
         file = request.files['fileInput']
+        # Split the filename into parts
         filename_parts = file.filename.rsplit('.', 1)
+        # Get the file extension
         if len(filename_parts) > 1:
             file_extension = filename_parts[1].lower()
         else:
             file_extension = ""
+        # Generate a secure filename
         filename = secure_filename(f"user_{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{file_extension}")
+        # Save the file
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),UPLOAD_FOLDER,filename))
+        # Set the photo variable to the file path
         photo = UPLOAD_FOLDER + '/' + filename
 
+        # Query for an existing birth certificate
         existing_birth_certificate = Birth_certificate.query.filter_by(user_id=current_user.id).first()
+        # If a birth certificate exists, update it
         if existing_birth_certificate:
             existing_birth_certificate.firstName = firstName
             existing_birth_certificate.fatherName = fatherName
@@ -123,14 +184,22 @@ def birth_certificate():
             existing_birth_certificate.pending = pending
             existing_birth_certificate.fatherfullName = fatherfullName
             existing_birth_certificate.motherfullName = motherfullName
+        # Otherwise, create a new birth certificate
         else:
             new_birth_certificate = Birth_certificate(firstName=firstName, fatherName=fatherName, gfatherName=gfatherName, birthDay=birthDay, gender=gender, region=region, photo=photo, pending=pending, fatherfullName=fatherfullName, motherfullName=motherfullName, user_id=current_user.id)
+            # Add the new birth certificate to the session
             db.session.add(new_birth_certificate)
+        # Commit the session
         db.session.commit()
+        # Show a success message
         flash('Application completed!', category='success')
+        # Redirect to the home page
         return redirect(url_for('views.home'))
+    # Query for a birth certificate
     birth = Birth_certificate.query.filter_by(user_id=current_user.id).first()
+    # Render the birth certificate form
     return render_template("birth_certificate.html", user=current_user, form=form, Birth_certificate=birth, button_type=button_type)
+
 
 @views.route('admin/form/birth_certificate', methods=['GET', 'POST'])
 @login_required
@@ -160,10 +229,6 @@ def birth_certificate_admin():
             return redirect(url_for('views.reject_admin', user_id=user_id, table_name=table_name))
     
     user_link = birth.link if birth else None
-    print(user_link)
-    print(user_link)
-    print(user_link)
-    print(user_link)
     date1 = birth.Date1 if birth else None
     time1 = birth.Time1 if birth else None
     return render_template("birth_certificate_admin.html", user=current_user, Birth_certificate=birth, status=pending_status, user_link=user_link, date1=date1, time1=time1)
