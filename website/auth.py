@@ -7,13 +7,14 @@ from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
 from twilio.rest import Client
 import random
+import os
  
 
 auth = Blueprint('auth', __name__)
 
 # Twilio configuration
-TWILIO_SID = 'AC7a8df7cc7b30d2fade8bb381ed473129'
-TWILIO_AUTH_TOKEN = 'aa927037a7facfec14338e7b93677742'
+TWILIO_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = '+1 661 347 2810'
 
 @auth.route('/signup', methods=['GET', 'POST'])

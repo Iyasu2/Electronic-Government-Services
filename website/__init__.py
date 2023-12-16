@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_basicauth import BasicAuth
+import os
 
 db =  SQLAlchemy()
 mail = Mail()
@@ -16,6 +18,8 @@ def create_app():
     this will create and configure our flask application
     '''
     app = Flask(__name__)
+    app.config['BASIC_AUTH_USERNAME'] = os.environ.get('TWILIO_ACCOUNT_SID')
+    app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('TWILIO_AUTH_TOKEN')
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.config['SECRET_KEY'] = 'AB-IYuh' #a better secret key might be needed for real applications
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
