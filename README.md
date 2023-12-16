@@ -49,10 +49,6 @@ To run EGOV locally, follow these straightforward steps:
 
 We warmly welcome contributions to enhance and extend the functionality of EGOV. Feel free to submit issues, feature requests, or pull requests.
 
-## License
-
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as needed.
-
 ## Contact
 
 For any inquiries or support, please contact [abell.demere@gmail.com](mailto:abell.demere@gmail.com).
