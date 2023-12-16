@@ -9,7 +9,9 @@ content %}
     onsubmit="return validateForm()"
     style="color: white"
   >
-  <h3 align="center">Please fill in this form</h3>
+  {% if button_type == 'button2' %}
+    <h3 align="center">Please fill in this form</h3>
+    {% endif %}
 
     <div class="container mt-5">
       <div class="row text-center">
@@ -45,7 +47,8 @@ content %}
         </div>
       </div>
     </div>
-
+    <div class="card rounded-lg bg-blur">
+      <div class="card-body">
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
@@ -218,23 +221,6 @@ content %}
           </select>
         </div>
       </div>
-  
-
-    
-      <div class="col-md-3">
-        <div class="form-group">
-          <label for="expiryDate">Current ID Expiry Date</label>
-          <input
-            type="date"
-            class="form-control"
-            id="expiryDate"
-            name="expiryDate"
-            placeholder="Current ID Expiry Date"
-            value="{{National_id.expiryDate if National_id.expiryDate}}"
-            required
-          />
-        </div>
-      </div>
       </div>
       <div class="row">
       <div class="col-md-3">
@@ -278,6 +264,9 @@ content %}
       <button type="submit" class="btn btn-primary btn-sm" style="width: 100px">
         Submit
       </button>
+    </div>
+    </div>
+    </div>
     </div>
   </form>
 

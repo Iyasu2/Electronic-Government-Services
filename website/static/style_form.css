@@ -1,9 +1,22 @@
-body {
-  margin-top: 0px;
+* {
+  padding: 0;
+  color: rgb(255, 255, 255);
+  
 }
+
 html, body {
-  background: url("assets/Background.jpg") top center;
+  background: url("assets/call.jpg");
+  background-size: cover;
+  height: 100%;
+  margin: 0;
+  
 }
+
+body {
+  margin-top: 70px; /* Increased margin-top to create space for the navbar */
+  overflow: auto;
+}
+
 .button-pair {
   display: flex;
 }
@@ -12,6 +25,7 @@ html, body {
   margin: 10px;
   width: 10px;
 }
+
 .wrapper {
   max-width: 400px;
   margin: auto;
@@ -21,25 +35,101 @@ html, body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 }
-
+select.form-control option {
+  color: black;
+}
 .form-group {
   margin-bottom: 15px;
 }
+
 .service-card {
   max-width: 175px;
-  max-height: 400px; /* Set the maximum width of the card */
+  max-height: 400px;
+  transition: transform 0.3s ease-in-out;
+  margin: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  max-width: 3006px;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+}
+
+.service-card:hover .card-body {
+  transform: scale(1.05);
 }
 
 .card-img-top2 {
-  width: 175px; /* Set the maximum width of the image */
-  height: 200px; /* Set the maximum height of the image */
-  /* Ensure the image covers the specified dimensions */
-  /* /* Allow the height to adjust based on the max-height */
+  width: 175px;
+  height: 200px;
 }
+
 .rounded-bottom {
   border-radius: 0 0 0.25rem 0.25rem;
 }
 
-/* Add other styles as needed */
+.card {
+  margin: 0;
+  padding: 0;
+}
 
-/* Center the card */
+.dark-bg {
+  background-color: #333;
+  color: #fff;
+}
+
+.container.mt-5 {
+  margin-top: 50px;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: black;
+  -webkit-box-shadow: 0 0 0px 1000px rgb(255, 255, 255) inset;
+}
+
+.bg-blur {
+  background: rgba(12, 12, 12, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.card-body label {
+  color: white;
+}
+
+
+
+/* scedule */
+
+
+label {
+  font-weight: bold;
+}
+
+select,
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.time-group {
+  display: flex;
+  gap: 10px;
+}
+
+.time-label {
+  flex: 1;
+}
+
+.time-select {
+  flex: 2;
+}
+
+.d-flex.justify-content-center {
+  margin-top: 20px;
+}

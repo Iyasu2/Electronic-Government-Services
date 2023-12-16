@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     crossorigin="anonymous" />
   <link rel="stylesheet" href="/static/style.css" />
-  
- <!-- Favicons -->
- <link href="assets/img/favicon.png" rel="icon">
- <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
 
 
@@ -33,24 +33,26 @@
 
 
 
-<body >
+<body>
 
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %} {% for category, message in messages %} {% if category ==
   'success' %}
-  <div style="margin-top: 100px; width: 400px;" class="alert alert-success alert-dismissible fade show fixed-top custom-alert text-center mx-auto" role="alert">
+  <div style="margin-top: 100px; width: 400px;"
+    class="alert alert-success alert-dismissible fade show fixed-top custom-alert text-center mx-auto" role="alert">
     {{ message }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">&times;</span>
     </button>
-</div>
-{% elif category == 'error' %}
-<div style="margin-top: 100px; width: 400px;" class="alert alert-danger alert-dismissible fade show fixed-top custom-alert text-center mx-auto" role="alert">
+  </div>
+  {% elif category == 'error' %}
+  <div style="margin-top: 100px; width: 400px;"
+    class="alert alert-danger alert-dismissible fade show fixed-top custom-alert text-center mx-auto" role="alert">
     {{ message }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">&times;</span>
     </button>
-</div>
+  </div>
 
   {% endif %} {% endfor %} {% endif %} {% endwith %}
   <header>
@@ -63,8 +65,12 @@
         <div class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <a class="nav-link invisible" id="home" href='/'></a>
+          {% if not request.path.startswith('/admin/') %}
+        <button class="btnLogin-popup btn-nav mb-1 mr-5" id="home-button"
+                onclick="window.location.href='/home'">Home</button>
+    {% endif %}
           <button class="btnLogin-popup btn-nav mb-1 mr-5" id="applications"
-            onclick="window.location.href='/applications'">Applications</button>
+            onclick="window.location.href='{% if request.path.startswith('/admin/') %}/admin/home{% else %}/applications{% endif %}'">Applications</button>
           <button class="btnLogin-popup btn-nav mb-1 mr-5" id="logout"
             onclick="window.location.href='/logout'">Logout</button>
           {% else %}
@@ -97,17 +103,17 @@
   <div>{% block content %} {% endblock %}</div>
 
 
- <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Automatically close the success alert after 5 seconds (5000 milliseconds)
-    setTimeout(function () {
-      var successAlert = document.querySelector(".alert-success");
-      if (successAlert) {
-        successAlert.classList.add("d-none"); // This class hides the alert (you can use "hidden" or your custom class)
-      }
-    }, 1500); // 5000 milliseconds (adjust the duration as needed)
-  });
-</script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Automatically close the success alert after 5 seconds (5000 milliseconds)
+      setTimeout(function () {
+        var successAlert = document.querySelector(".alert-success");
+        if (successAlert) {
+          successAlert.classList.add("d-none"); // This class hides the alert (you can use "hidden" or your custom class)
+        }
+      }, 2000); // 5000 milliseconds (adjust the duration as needed)
+    });
+  </script>
 
 
 

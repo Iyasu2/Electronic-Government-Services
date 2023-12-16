@@ -1,6 +1,22 @@
+*{
+	color: aliceblue;
+}
 html, body {
-	background: url("assets/background2.png") top center;
+	background: url("assets/call.jpg");
+	background-size: cover;
+	height: 100vh;
+	margin: 0; /* Reset margin to remove default margin */
+	
   }
+  
+  body {
+	margin-top: 70px;
+	padding-top: 0; /* Reset padding-top to remove default padding */
+	overflow: auto;
+  }
+  
+  /* Add your other styles as needed */
+  
 .service-card {
 	margin: 10px;
 	border-radius: 10px;

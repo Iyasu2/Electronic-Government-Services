@@ -1,278 +1,95 @@
-{% extends "base.html" %} {% block title %}Schedule{% endblock %} {%
-    block content %}
-    <link rel="stylesheet" href="/static/style_form.css" />
-    <div class="container mt-5 mb-5">
-      <form
-        method="POST"
-        enctype="multipart/form-data"
-        onsubmit="return validateForm()"
-      >
-      <h3 align="center">Please choose dates and times when you will be available to verify the user's identity</h3>
-      <div class="container mt-5">
-        <div class="row text-center">
-          <div class="col-lg-4 col-md-6 mx-auto">
-            <div class="service-card mx-auto">
-          </div>
+{% extends "base.html" %}
+{% block title %}Schedule{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/style_form.css" />
+
+<div class="container mt-5 mb-5">
+  <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <h3 align="center">Please choose dates and times when you will be available to verify the user's identity</h3>
+
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-lg-4 col-md-6 mx-auto">
+          <div class="service-card mx-auto"></div>
         </div>
       </div>
-      
+      <div class="card rounded-lg bg-blur">
+        <div class="card-body">
+
       <div class="row">
+        {% for i in range(1, 6) %}
         <div class="col-md-3">
           <div class="form-group">
-            <label for="date1">Date</label>
-            <input
-              type="date"
-              class="form-control"
-              id="date1"
-              name="date1"
-              onchange="showTimeForm('timeForm1')"
-            />
-            <div id="timeForm1" style="display: none;">
-            <label for="hour1">Hour</label>
-        <select id="hour1" name="hour1">
-            <option value="">Select...</option>
-        <option value="01">01</option>
-    <option value="02">02</option>
-    <option value="03">03</option>
-    <option value="04">04</option>
-    <option value="05">05</option>
-    <option value="06">06</option>
-    <option value="07">07</option>
-    <option value="08">08</option>
-    <option value="09">09</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option></Select>
-<label for="minute1">Minute</label>
-<select id="minute1" name="minute1">
-    <option value="">Select...</option>
-    <option value="00">00</option>
-    <option value="15">15</option>
-    <option value="30">30</option>
-    <option value="45">45</option>
-  </select>
-  <label for="ampm1">AM/PM</label>
-  <select id="ampm1" name="ampm1">
-    <option value="">Select...</option>
-    <option value="AM">AM</option>
-    <option value="PM">PM</option>
-  </select>
-</div>
-</div>
-</div>
-<div class="col-md-3">
-    <div class="form-group">
-      <label for="date2">Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="date2"
-        name="date2"
-        onchange="showTimeForm('timeForm2')"
-      />
-      <div id="timeForm2" style="display: none;">
-      <label for="hour2">Hour</label>
-  <select id="hour2" name="hour2">
-      <option value="">Select...</option>
-  <option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option></Select>
-<label for="minute2">Minute</label>
-<select id="minute2" name="minute2">
-<option value="">Select...</option>
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<label for="ampm2">AM/PM</label>
-<select id="ampm2" name="ampm2">
-<option value="">Select...</option>
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
-</div>
-</div>
-</div>
-<div class="col-md-3">
-    <div class="form-group">
-      <label for="date3">Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="date3"
-        name="date3"
-        onchange="showTimeForm('timeForm3')"
-      />
-      <div id="timeForm3" style="display: none;">
-      <label for="hour3">Hour</label>
-  <select id="hour3" name="hour3">
-      <option value="">Select...</option>
-  <option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option></Select>
-<label for="minute3">Minute</label>
-<select id="minute3" name="minute3">
-<option value="">Select...</option>
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<label for="ampm3">AM/PM</label>
-<select id="ampm3" name="ampm3">
-<option value="">Select...</option>
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
-</div>
-</div>
-</div>
-<div class="col-md-3">
-    <div class="form-group">
-      <label for="date4">Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="date4"
-        name="date4"
-        onchange="showTimeForm('timeForm4')"
-      />
-      <div id="timeForm4" style="display: none;">
-      <label for="hour4">Hour</label>
-  <select id="hour4" name="hour4">
-      <option value="">Select...</option>
-  <option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option></Select>
-<label for="minute4">Minute</label>
-<select id="minute4" name="minute4">
-<option value="">Select...</option>
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<label for="ampm4">AM/PM</label>
-<select id="ampm4" name="ampm4">
-<option value="">Select...</option>
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
-</div>
-</div>
-</div>
-<div class="col-md-3">
-    <div class="form-group">
-      <label for="date5">Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="date5"
-        name="date5"
-        onchange="showTimeForm('timeForm5')"
-      />
-      <div id="timeForm5" style="display: none;">
-      <label for="hour5">Hour</label>
-  <select id="hour5" name="hour5">
-      <option value="">Select...</option>
-  <option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option></Select>
-<label for="minute5">Minute</label>
-<select id="minute5" name="minute5">
-<option value="">Select...</option>
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<label for="ampm5">AM/PM</label>
-<select id="ampm5" name="ampm5">
-<option value="">Select...</option>
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
-</div>
-</div>
-</div>
+            <label for="date{{ i }}">Date</label>
+            <input type="date" class="form-control" id="date{{ i }}" name="date{{ i }}" onchange="showTimeForm('timeForm{{ i }}')" />
+            <div id="timeForm{{ i }}" class="time-group" style="display: none;">
+              <div class="time-group">
+                <div class="time-label">
+                  <label for="hour{{ i }}">Hour</label>
+                  <select id="hour{{ i }}" name="hour{{ i }}" class="time-select  form-control">
+                    <option value="">Set</option>
+                    {% for hour in range(1, 13) %}
+                    <option value="{{ '%02d'|format(hour) }}">{{ '%02d'|format(hour) }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="time-label">
+                  <label for="minute{{ i }}">Minute</label>
+                  <select id="minute{{ i }}" name="minute{{ i }}" class="time-select  form-control">
+                    <option value="">Set</option>
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                  </select>
+                </div>
+                <div class="time-label">
+                  <label for="ampm{{ i }}">AM/PM</label>
+                  <select id="ampm{{ i }}" name="ampm{{ i }}" class="time-select  form-control">
+                    <option value="">Set</option>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    
+        {% endfor %}
+      </div>
+
       <br />
       <div class="d-flex justify-content-center">
         <div class="btn-group" role="group">
-          <button
-        type="submit"
-        name="action"
-        value="approve"
-        class="btn btn-success"
-      >
-        Submit
-      </button>
-          </div>
-          </div>
-    </form>
+          <button type="submit" name="action" value="approve" class="btn btn-success">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </form>
 
-    <script>
-        function validateForm() {
-      var date1 = document.getElementById('date1').value;
-      var time1 = document.getElementById('hour1').value + document.getElementById('minute1').value + document.getElementById('ampm1').value;
-      var date2 = document.getElementById('date2').value;
-      var time2 = document.getElementById('hour2').value + document.getElementById('minute2').value + document.getElementById('ampm2').value;
-      var date3 = document.getElementById('date3').value;
-      var time3 = document.getElementById('hour3').value + document.getElementById('minute3').value + document.getElementById('ampm3').value;
-      var date4 = document.getElementById('date4').value;
-      var time4 = document.getElementById('hour4').value + document.getElementById('minute4').value + document.getElementById('ampm4').value;
-      var date5 = document.getElementById('date5').value;
-      var time5 = document.getElementById('hour5').value + document.getElementById('minute5').value + document.getElementById('ampm5').value;
+  <script>
+    function validateForm() {
+      var dates = [];
+      var times = [];
 
-      var dates = [date1, date2, date3, date4, date5];
-      var times = [time1, time2, time3, time4, time5];
-      var count = 0;
+      for (var i = 1; i <= 5; i++) {
+        var date = document.getElementById('date' + i).value;
+        var time =
+          document.getElementById('hour' + i).value +
+          document.getElementById('minute' + i).value +
+          document.getElementById('ampm' + i).value;
 
-      for (var i = 0; i < dates.length; i++) {
-        if (dates[i] !== '' && times[i] !== '') {
-          count++;
+        if (date !== '' && time !== '') {
+          dates.push(date);
+          times.push(time);
         }
       }
 
-      if (count >= 2) {
+      if (dates.length >= 2) {
         return true;
       } else {
         alert('Please insert at least two dates and their associated times.');
@@ -284,6 +101,6 @@
       var timeForm = document.getElementById(id);
       timeForm.style.display = 'block';
     }
-    </script>
-    {% endblock %}
-    
+  </script>
+</div>
+{% endblock %}

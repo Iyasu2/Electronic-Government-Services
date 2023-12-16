@@ -2,13 +2,16 @@
 block content %}
 <link rel="stylesheet" href="/static/style_form.css" />
 <div class="container mt-5 mb-5">
+  
   <form
     method="POST"
     enctype="multipart/form-data"
     style="color: white"
     onsubmit="return validateForm()"
   >
+  {% if button_type == 'button2' %}
     <h3 align="center">Please fill in this form</h3>
+    {% endif %}
     <div class="container mt-5">
       <div class="row text-center">
         <div class="col-lg-4 col-md-6 mx-auto">
@@ -43,7 +46,8 @@ block content %}
         </div>
       </div>
     </div>
-
+    <div class="card rounded-lg bg-blur">
+      <div class="card-body">
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
@@ -173,7 +177,9 @@ block content %}
       </button>
     </div>
   </form>
-
+</div>
+</div>
+</div>
   <script>
     function redirectToForm(formPath) {
       // Add your logic to redirect to the specified form path
@@ -217,5 +223,5 @@ if (photoPath && photoPath !== "https://via.placeholder.com/300x400") {
       image.src = photoPath;
     }
   </script>
-</div>
+
 {% endblock %}

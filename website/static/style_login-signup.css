@@ -4,8 +4,17 @@
   color:black;
 }
 html, body {
-  background: url("assets/call.jpg") top center;
-}
+	background: url("assets/call.jpg");
+	background-size: cover;
+	height: 100vh;
+	margin: 0; /* Reset margin to remove default margin */
+	overflow: hidden;
+  }
+  
+  body {
+	margin-top: 35px;
+	padding-top: 0; /* Reset padding-top to remove default padding */
+  }
 .card {
   margin: 0;
   padding: 0;

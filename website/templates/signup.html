@@ -19,9 +19,11 @@
                 <input
                   type="text"
                   class="form-control"
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First Name"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="Enter Phone Number({+251-{9 digits}})"
+                  pattern="^(\+251-)?\d{9}$"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -31,6 +33,7 @@
                   id="email"
                   name="email"
                   placeholder="Email Address"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -40,6 +43,7 @@
                   id="password1"
                   name="password1"
                   placeholder="Password"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -49,6 +53,7 @@
                   id="password2"
                   name="password2"
                   placeholder="Confirm Password"
+                  required
                 />
               </div>
 

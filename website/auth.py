@@ -1,7 +1,3 @@
-'''
-This module defines the authentication routes and functions for the Flask application.
-'''
-
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User, Admin_User
 from . import db, mail
@@ -9,17 +5,22 @@ from . import create_app as app
 from passlib.hash import sha256_crypt
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
+from twilio.rest import Client
+import random
+ 
 
 auth = Blueprint('auth', __name__)
 
+# Twilio configuration
+TWILIO_SID = 'AC7a8df7cc7b30d2fade8bb381ed473129'
+TWILIO_AUTH_TOKEN = 'aa927037a7facfec14338e7b93677742'
+TWILIO_PHONE_NUMBER = '+1 661 347 2810'
+
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-    '''
-    This route handles the user signup process.
-    '''
     if request.method == 'POST':
         email = request.form.get('email')
-        first_name = request.form.get('firstName')
+        phone = request.form.get('phoneNumber')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
@@ -32,31 +33,84 @@ def signup():
         if len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
             return redirect(url_for('auth.signup'))
-        elif len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
-            return redirect(url_for('auth.signup'))
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
             return redirect(url_for('auth.signup'))
         elif len(password1) < 7:
-            # Make sure password is strong
             flash('Password must be at least 7 characters.', category='error')
             return redirect(url_for('auth.signup'))
+        elif not is_strong_password(password1):
+            flash('Password must be strong and include at least one uppercase letter, one lowercase letter, one digit, and one special character.', category='error')
+            return redirect(url_for('auth.signup'))
         else:
-            new_user = User(email=email, first_name=first_name, password=sha256_crypt.hash(password1))
+            otp = generate_otp()
+            send_otp(phone, otp)
+            new_user = User(email=email, phoneNumber=phone, password=sha256_crypt.hash(password1), otp=otp)
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            flash('OTP sent to your phone. Please verify.', category='success')
+            return redirect(url_for('auth.verify_otp', email=email, phone=phone))
 
     return render_template("signup.html", user=current_user)
 
+def is_strong_password(password):
+    # Check if the password is strong
+    has_uppercase = False
+    has_lowercase = False
+    has_digit = False
+    has_special = False
+
+    special_characters = "!@#$%^&*()-_=+[]{}|\\;:'\",.<>/?`~"
+
+    for char in password:
+        if char.isupper():
+            has_uppercase = True
+        elif char.islower():
+            has_lowercase = True
+        elif char.isdigit():
+            has_digit = True
+        elif char in special_characters:
+            has_special = True
+
+    return has_uppercase and has_lowercase and has_digit and has_special
+
+@auth.route('/verify_otp/<phone>', methods=['GET', 'POST'])
+def verify_otp(phone):
+    email = request.args.get('email')
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash('User not found.', category='error')
+        return redirect(url_for('auth.signup'))
+
+    if request.method == 'POST':
+        entered_otp = request.form.get('otp')
+
+        if entered_otp == user.otp:
+            user.verified = True
+            db.session.commit()
+            login_user(user, remember=True)
+            flash('Phone number verified!', category='success')
+            return redirect(url_for('views.home'))
+        else:
+            flash('Invalid OTP. Please try again.', category='error')
+            return redirect(url_for('auth.verify_otp', email=email, phone=phone))
+
+    return render_template("verify_otp.html", user=current_user, phone=phone)
+
+
+def generate_otp():
+    return str(random.randint(1000, 9999))
+
+def send_otp(phone, otp):
+    client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
+    message = client.messages.create(
+        body=f"Your OTP is: {otp}",
+        from_=TWILIO_PHONE_NUMBER,
+        to=phone
+    )
+
 @auth.route('/admin/signup', methods=['GET', 'POST'])
 def signup_admin():
-    '''
-    This route handles the admin user signup process.
-    '''
     admin_user = Admin_User.query.first()
 
     if admin_user:
@@ -79,8 +133,11 @@ def signup_admin():
             flash('Passwords don\'t match.', category='error')
             return redirect(url_for('auth.signup_admin'))
         elif len(password1) < 7:
-            # Make sure password is strong
+            #make sure password is strong
             flash('Password must be at least 7 characters.', category='error')
+            return redirect(url_for('auth.signup_admin'))
+        elif not is_strong_password(password1):
+            flash('Password must be strong and include at least one uppercase letter, one lowercase letter, one digit, and one special character.', category='error')
             return redirect(url_for('auth.signup_admin'))
         else:
             new_user = Admin_User(email=email, first_name=first_name, password=sha256_crypt.hash(password1), admin=True)
@@ -90,13 +147,11 @@ def signup_admin():
             flash('Admin Account created!', category='success')
             return redirect(url_for('views.home_admin'))
 
+
     return render_template("signup_admin.html", user=current_user)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    '''
-    This route handles the user login process.
-    '''
     if current_user.is_authenticated:
         flash('You are already signed in!', category='error')
         return redirect(url_for('views.home'))
@@ -117,52 +172,35 @@ def login():
     return render_template("login.html", user=current_user)
 
 def send_email(user):
-    '''
-    This function sends a password reset email to the user.
-    '''
     token = user.get_token()
     msg = Message('Password Reset Request', recipients=[user.email], sender='noreply@egov.com')
-    msg.body = f''' Toreset your password, visit the following link:
-{url_for('auth.reset_password', token=token, _external=True)}
+    msg.body = f''' To reset your password, Please follow the link below.
 
-If you did not make this request, simply ignore this email and no changes will be made.
+    {url_for('auth.reset_token', token=token, _external=True)}
+If you didn't send a password reset request, Please ignore this message.
+
 '''
     mail.send(msg)
 
-@auth.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password():
-    '''
-    This route handles the forgot password process.
-    '''
-    if current_user.is_authenticated:
-        flash('You are already signed in!', category='error')
-        return redirect(url_for('views.home'))
 
+@auth.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
     if request.method == 'POST':
         email = request.form.get('email')
+
         user = User.query.filter_by(email=email).first()
         if user:
-            send_email(user)
-            flash('An email has been sent with instructions to reset your password.', category='success')
-            return redirect(url_for('auth.login'))
-        else:
-            flash('Email does not exist.', category='error')
+            send_email(user) 
+            flash('Reset request sent. Check your email.', category='success')
 
-    return render_template("forgot_password.html", user=current_user)
+    return render_template("reset_request.html", user=current_user)
 
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    '''
-    This route handles the password reset process.
-    '''
-    if current_user.is_authenticated:
-        flash('You are already signed in!', category='error')
-        return redirect(url_for('views.home'))
-
+def reset_token(token):
     user = User.verify_token(token)
-    if not user:
-        flash('That is an invalid or expired token.', category='error')
-        return redirect(url_for('auth.forgot_password'))
+    if user is None:
+        flash('That is an invalid or expired token!', category='error')
+        return redirect(url_for('reset_password'))
 
     if request.method == 'POST':
         password1 = request.form.get('password1')
@@ -170,24 +208,40 @@ def reset_password(token):
 
         if password1 != password2:
             flash('Passwords don\'t match.', category='error')
-            return redirect(url_for('auth.reset_password', token=token))
+            return redirect(url_for('auth.reset_token'))
         elif len(password1) < 7:
-            # Make sure password is strong
+            #make sure password is strong
             flash('Password must be at least 7 characters.', category='error')
-            return redirect(url_for('auth.reset_password', token=token))
+            return redirect(url_for('auth.reset_token'))
         else:
             user.password = sha256_crypt.hash(password1)
             db.session.commit()
-            flash('Your password has been reset! You are now able to log in.', category='success')
+            flash('Password changed!', category='success')
             return redirect(url_for('auth.login'))
+        
+    return render_template("change_password.html", user=current_user)
 
-    return render_template("reset_password.html", user=current_user)
+ 
+@auth.route('/admin/login', methods=['GET', 'POST'])
+def login_admin():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        Admin_user = Admin_User.query.filter_by(email=email).first()
+        if Admin_user:
+            if sha256_crypt.verify(password, Admin_user.password):
+                flash('Logged in successfully!', category='success')
+                login_user(Admin_user, remember=True)
+                return redirect(url_for('views.home_admin'))
+            else:
+                flash('Incorrect password or email', category='error')
+        else:
+            flash('Email does not exist.', category='error')
+    return render_template("login_admin.html", user=current_user)
 
 @auth.route('/logout')
 @login_required
 def logout():
-    '''
-    This route handles the user logout process.
-    '''
     logout_user()
-    return redirect(url_for('views.home'))
+    return redirect(url_for('auth.login') )

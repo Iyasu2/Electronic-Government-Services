@@ -31,7 +31,8 @@
           </div>
         </div>
       </div>
-      
+       <div class="card rounded-lg bg-blur">
+      <div class="card-body">
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
@@ -150,87 +151,96 @@
           {% if user_link %}
             <p>User has chosen this time and date: {{ date1 }} {{ time1 }}</p>
             <p>Use this link to have a Zoom meeting with the user when the time arrives: <a href="{{ user_link }}">{{ user_link }}</a></p>
+            <div class="form-check text-center">
+              <input type="checkbox" id="verificationCheck" name="verificationCheck" class="form-check-input" onchange="showTimeForm('datePicker')">
+              <label for="verificationCheck" class="form-check-label" style="font-weight: bold;">Did you verify the user's identity through a zoom call?</label>
+            </div>
+            <div class= "form-group text-center" id="datePicker" style="display: none;">
+            <form method="post">
+              <label for="datePicker">Tell the user when their birth certificate will be ready:</label>
+              <input class="form-control" type="date" id="datePicker" name="datePicker" required>
+              </form>
+            </div>
             <div class="d-flex justify-content-center">
-              <div class="form-check">
-        <input type="checkbox" id="verificationCheck" name="verificationCheck" class="form-check-input">
-        <label for="verificationCheck" class="form-check-label" style="font-weight: bold;">Did you verify the user's identity through a zoom call?</label>
-        </div>
-        </div>
-        <div class="d-flex justify-content-center"></div>
-        <div class="btn-group" role="group">
-        <button
-          type="submit"
-          name="action"
-          value="approve"
-          class="btn btn-success"
-          id="approveButton"
-          disabled
-        >
-          Approve
-        </button>
-        <button 
-          type="submit" 
-          name="action" 
-          value="reject" 
-          class="btn btn-danger"
-          id="rejectButton"
-          disabled
-        >
-          Reject
-        </button>
-        {% else %}
-        <p>Waiting for user to choose a schedule</p>
-        <div class="d-flex justify-content-center"></div>
-        <div class="btn-group" role="group">
-        <button
-          type="submit"
-          name="action"
-          value="approve"
-          class="btn btn-success"
-          id="approveButton2"
-          disabled
-        >
-          Approve
-        </button>
-        <button 
-          type="submit" 
-          name="action" 
-          value="reject" 
-          class="btn btn-danger"
-          id="rejectButton2"
-          disabled
-        >
-          Reject
-        </button>
+              <div class="btn-group" role="group">
+                <button
+                  type="submit"
+                  name="action"
+                  value="approve"
+                  class="btn btn-success"
+                  id="approveButton"
+                  disabled
+                >
+                  Approve
+                </button>
+                <button 
+                  type="submit" 
+                  name="action" 
+                  value="reject" 
+                  class="btn btn-danger"
+                  id="rejectButton"
+                  disabled
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          {% else %}
+            <p align="center">Waiting for the user to choose a schedule</p>
+            <div class="d-flex justify-content-center">
+              <div class="btn-group" role="group">
+                <button
+                  type="submit"
+                  name="action"
+                  value="approve"
+                  class="btn btn-success"
+                  id="approveButton2"
+                  disabled
+                >
+                  Approve
+                </button>
+                <button 
+                  type="submit" 
+                  name="action" 
+                  value="reject" 
+                  class="btn btn-danger"
+                  id="rejectButton2"
+                  disabled
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
           {% endif %}
-          
-      <script>
-        document.getElementById('verificationCheck').addEventListener('change', function() {
-          document.getElementById('approveButton').disabled = !this.checked;
-          document.getElementById('rejectButton').disabled = !this.checked;
-        });
-      </script>
-    {% else %}
-      <button
-        type="submit"
-        name="action"
-        value="approve"
-        class="btn btn-success"
-      >
-        Approve
-      </button>
-      <button 
-        type="submit" 
-        name="action" 
-        value="reject" 
-        class="btn btn-danger"
-      >
-        Reject
-      </button>
-    {% endif %}
+          <script>
+            document.getElementById('verificationCheck').addEventListener('change', function() {
+              document.getElementById('approveButton').disabled = !this.checked;
+              document.getElementById('rejectButton').disabled = !this.checked;
+            });
+          </script>
+        {% else %}
+          <div class="d-flex justify-content-center">
+            <button
+              type="submit"
+              name="action"
+              value="approve"
+              class="btn btn-success"
+            >
+              Approve
+            </button>
+            <button 
+              type="submit" 
+              name="action" 
+              value="reject" 
+              class="btn btn-danger"
+            >
+              Reject
+            </button>
           </div>
-          </div>
-    </form>
+        {% endif %}
+      </div>
+    </div>
+  </form>
 
     <script>
       function previewImage(input) {
@@ -249,6 +259,11 @@ var photoPath = "/static/uploads/{{ Birth_certificate.photo.split('/')[-1] }}"
 if (photoPath && photoPath !== "https://via.placeholder.com/300x400") {
       var image = document.getElementById("cardImage");
       image.src = photoPath;
+    }
+
+    function showTimeForm(id) {
+      var timeForm = document.getElementById(id);
+      timeForm.style.display = 'block';
     }
     </script>
     {% endblock %}
