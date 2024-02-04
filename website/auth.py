@@ -12,16 +12,11 @@ import os
 
 auth = Blueprint('auth', __name__)
 
-# Twilio configuration
-TWILIO_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-TWILIO_PHONE_NUMBER = '+1 661 347 2810'
-
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         email = request.form.get('email')
-        phone = request.form.get('phoneNumber')
+        first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
@@ -34,6 +29,9 @@ def signup():
         if len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
             return redirect(url_for('auth.signup'))
+        elif len(first_name) < 2:
+            flash('First name must be greater than 1 character.', category='error')
+            return redirect(url_for('auth.signup'))
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
             return redirect(url_for('auth.signup'))
@@ -44,13 +42,12 @@ def signup():
             flash('Password must be strong and include at least one uppercase letter, one lowercase letter, one digit, and one special character.', category='error')
             return redirect(url_for('auth.signup'))
         else:
-            otp = generate_otp()
-            send_otp(phone, otp)
-            new_user = User(email=email, phoneNumber=phone, password=sha256_crypt.hash(password1), otp=otp)
+            new_user = User(email=email, first_name=first_name, password=sha256_crypt.hash(password1))
             db.session.add(new_user)
             db.session.commit()
-            flash('OTP sent to your phone. Please verify.', category='success')
-            return redirect(url_for('auth.verify_otp', email=email, phone=phone))
+            login_user(new_user, remember=True)
+            flash('Account created!', category='success')
+            return redirect(url_for('views.home'))
 
     return render_template("signup.html", user=current_user)
 
@@ -74,41 +71,6 @@ def is_strong_password(password):
             has_special = True
 
     return has_uppercase and has_lowercase and has_digit and has_special
-
-@auth.route('/verify_otp/<phone>', methods=['GET', 'POST'])
-def verify_otp(phone):
-    email = request.args.get('email')
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        flash('User not found.', category='error')
-        return redirect(url_for('auth.signup'))
-
-    if request.method == 'POST':
-        entered_otp = request.form.get('otp')
-
-        if entered_otp == user.otp:
-            user.verified = True
-            db.session.commit()
-            login_user(user, remember=True)
-            flash('Phone number verified!', category='success')
-            return redirect(url_for('views.home'))
-        else:
-            flash('Invalid OTP. Please try again.', category='error')
-            return redirect(url_for('auth.verify_otp', email=email, phone=phone))
-
-    return render_template("verify_otp.html", user=current_user, phone=phone)
-
-
-def generate_otp():
-    return str(random.randint(1000, 9999))
-
-def send_otp(phone, otp):
-    client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
-    message = client.messages.create(
-        body=f"Your OTP is: {otp}",
-        from_=TWILIO_PHONE_NUMBER,
-        to=phone
-    )
 
 @auth.route('/admin/signup', methods=['GET', 'POST'])
 def signup_admin():

@@ -14,7 +14,7 @@ from wtforms.validators import InputRequired
 
 API_ID = os.environ.get('ZOOM_ID')
 API_SECRET = os.environ.get('ZOOM_SECRET')
-REDIRECT_URI = 'https://www.mindgrow.tech/zoom_callback'
+REDIRECT_URI = 'http://127.0.0.1:5000/zoom_callback'
 
 views = Blueprint('views', __name__)
 current_file_dir = os.path.dirname(os.path.abspath(__file__))

@@ -71,8 +71,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
-    phoneNumber = db.Column(db.String(50))
-    otp = db.Column(db.String(10))
+    first_name = db.Column(db.String(50))
     verified = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
     
