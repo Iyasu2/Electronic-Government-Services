@@ -8,3 +8,4 @@ Flask-WTF
 passlib
 twilio
 flask_basicauth
+pysqlite
