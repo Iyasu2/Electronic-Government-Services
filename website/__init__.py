@@ -19,7 +19,7 @@ def create_app():
     '''
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
-    app.config['SECRET_KEY'] = 'AB-IYuh' #a better secret key might be needed for real applications
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
@@ -32,7 +32,12 @@ def create_app():
     
     from .models import User, Admin_User
 
-    create_database(app)
+    with app.app_context():
+        db.drop_all()
+
+    with app.app_context():
+        db.create_all()
+        print('Created Database!')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -59,8 +64,3 @@ def create_app():
         return None
 
     return app
-
-def create_database(app):
-    with app.app_context():
-        db.create_all()
-        print('Created Database!')

@@ -6,6 +6,5 @@ pytz
 requests
 Flask-WTF
 passlib
-twilio
 flask_basicauth
 psycopg2-binary==2.9.1

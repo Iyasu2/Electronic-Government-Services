@@ -21,7 +21,7 @@ class Common():
     birthDay = db.Column(db.Date)
     gender = db.Column(db.String(10))
     region = db.Column(db.String(50))
-    photo = db.Column(db.String(100))
+    photo = db.Column(db.String(255))
     pending = db.Column(db.Enum(PendingStatus), default=PendingStatus.NOT_APPLIED)
     comment = db.Column(db.String(255), default='')
     Date1 = db.Column(db.Date)
@@ -70,7 +70,7 @@ class Birth_certificate(Common, db.Model):
 class User(db.Model, UserMixin):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(100))
     first_name = db.Column(db.String(50))
     verified = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
@@ -92,8 +92,8 @@ class User(db.Model, UserMixin):
         return User.query.get(data['user_id'])
 
 class Admin_User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(100))
     first_name = db.Column(db.String(50))
     admin = db.Column(db.Boolean, default=False)
