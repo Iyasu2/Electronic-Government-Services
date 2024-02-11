@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_basicauth import BasicAuth
 import os
+import sqlite3
 
 db =  SQLAlchemy()
 mail = Mail()
