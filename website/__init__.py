@@ -8,22 +8,20 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_basicauth import BasicAuth
 import os
-import sqlite3
+import psycopg2
 
 db =  SQLAlchemy()
 mail = Mail()
-DB_NAME = "database.db"
 
 def create_app():
     '''
     this will create and configure our flask application
     '''
     app = Flask(__name__)
-    app.config['BASIC_AUTH_USERNAME'] = os.environ.get('TWILIO_ACCOUNT_SID')
-    app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('TWILIO_AUTH_TOKEN')
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.config['SECRET_KEY'] = 'AB-IYuh' #a better secret key might be needed for real applications
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
     from .views import views
@@ -63,7 +61,6 @@ def create_app():
     return app
 
 def create_database(app):
-    if not path.exists('website/instance/' + DB_NAME):
-        with app.app_context():
-            db.create_all()
-            print('Created Database!')
+    with app.app_context():
+        db.create_all()
+        print('Created Database!')
