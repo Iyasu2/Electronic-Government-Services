@@ -9,6 +9,7 @@ from flask_mail import Mail
 from flask_basicauth import BasicAuth
 import os
 import psycopg2
+import urllib.parse
 
 db =  SQLAlchemy()
 mail = Mail()
@@ -23,8 +24,16 @@ def create_app():
 
     db_url = os.environ.get('POSTGRES_URL')
     db_url_modified = db_url.replace('postgres://', 'postgresql://')
+
+    # Parse the URL to get the endpoint ID
+    url_parts = urllib.parse.urlparse(db_url_modified)
+    endpoint_id = url_parts.hostname.split('.')[0]
+
+    # Add the endpoint ID as a parameter
+    db_url_modified += "&options=endpoint%3D" + endpoint_id
+
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url_modified
-    
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
