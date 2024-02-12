@@ -94,6 +94,6 @@ class User(db.Model, UserMixin):
 class Admin_User(db.Model, UserMixin):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(100))
+    password = db.Column(db.String(150))
     first_name = db.Column(db.String(50))
     admin = db.Column(db.Boolean, default=False)
