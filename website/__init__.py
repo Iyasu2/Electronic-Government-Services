@@ -46,9 +46,6 @@ def create_app():
     from .models import User, Admin_User
 
     with app.app_context():
-        db.drop_all()
-
-    with app.app_context():
         db.create_all()
         print('Created Database!')
 
