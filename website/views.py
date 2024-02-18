@@ -11,14 +11,14 @@ from werkzeug.utils import secure_filename
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from wtforms.validators import InputRequired
+import tempfile
 
 API_ID = os.environ.get('ZOOM_ID')
 API_SECRET = os.environ.get('ZOOM_SECRET')
 REDIRECT_URI = 'http://127.0.0.1:5000/zoom_callback'
 
 views = Blueprint('views', __name__)
-current_file_dir = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(current_file_dir, 'static/uploads')
+UPLOAD_FOLDER = tempfile.gettempdir()
 
 class UploadFileForm(FlaskForm):
     file = FileField("FILE", validators=[InputRequired()])
