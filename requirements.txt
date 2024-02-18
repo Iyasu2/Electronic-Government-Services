@@ -9,3 +9,4 @@ passlib
 flask_basicauth
 psycopg2-binary==2.9.1
 urllib3==1.25.11
+gunicorn
